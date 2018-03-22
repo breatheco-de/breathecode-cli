@@ -1,17 +1,12 @@
-const {Command, flags} = require('@oclif/command')
-let BashScripts = require('../../utils/bash/index');
+const {Command} = require('@oclif/command')
+let BashScripts = require('../../utils/bash/index')
 
 class SingleCommand extends Command {
   async run() {
-//    const {flags} = this.parse(ReactCommans)
-    
-      this.log(`Creating React.js project...`.blue);
-      BashScripts.installBoilerplate('flux');
+      this.log(`Creating React.js project...`.blue)
+      BashScripts.installBoilerplate('flux')
   }
 }
 
-SingleCommand.description = 'Start a new React+Flux project';
-SingleCommand.flags = {
- //react: flags.boolean({description: 'start MySQL'}),
-}
+SingleCommand.description = 'Start a new React+Flux project'
 module.exports = SingleCommand

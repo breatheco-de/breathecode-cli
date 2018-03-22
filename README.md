@@ -3,14 +3,11 @@ breathecode-cli
 
 Command Line Interface for BreatheCode students
 
-[![Version](https://img.shields.io/npm/v/breathecode-cli.svg)](https://npmjs.org/package/breathecode-cli)
-[![CircleCI](https://circleci.com/gh/alesanchezr/breathecode/tree/master.svg?style=shield)](https://circleci.com/gh/alesanchezr/breathecode/tree/master)
-[![Appveyor CI](https://ci.appveyor.com/api/projects/status/github/alesanchezr/breathecode?branch=master&svg=true)](https://ci.appveyor.com/project/alesanchezr/breathecode/branch/master)
+[![Version](https://img.shields.io/npm/v/@breathecode/breathecode-cli.svg)](https://npmjs.org/package/breathecode-cli)
 [![Codecov](https://codecov.io/gh/alesanchezr/breathecode/branch/master/graph/badge.svg)](https://codecov.io/gh/alesanchezr/breathecode)
-[![Greenkeeper](https://badges.greenkeeper.io/alesanchezr/breathecode.svg)](https://greenkeeper.io/)
 [![Known Vulnerabilities](https://snyk.io/test/github/alesanchezr/breathecode/badge.svg)](https://snyk.io/test/github/alesanchezr/breathecode)
-[![Downloads/week](https://img.shields.io/npm/dw/breathecode-cli.svg)](https://npmjs.org/package/breathecode-cli)
-[![License](https://img.shields.io/npm/l/breathecode-cli.svg)](https://github.com/alesanchezr/breathecode/blob/master/package.json)
+[![Downloads/week](https://img.shields.io/npm/dw/@breathecode/breathecode-cli.svg)](https://npmjs.org/package/breathecode-cli)
+[![License](https://img.shields.io/npm/l/@breathecode/breathecode-cli.svg)](https://github.com/alesanchezr/breathecode/blob/master/package.json)
 
 <!-- toc -->
 * [Install](#install)

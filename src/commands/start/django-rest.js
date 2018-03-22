@@ -1,17 +1,12 @@
-const {Command, flags} = require('@oclif/command')
-let BashScripts = require('../../utils/bash/index');
-
+const {Command} = require('@oclif/command')
+let BashScripts = require('../../utils/bash/index')
+let Console = require('../../utils/console')
 class SingleCommand extends Command {
   async run() {
-//    const {flags} = this.parse(ReactCommans)
-    
-      this.log(`Creating Django-Rest project...`.blue);
-      BashScripts.installBoilerplate('django-rest');
+      Console.info(`Creating Django-Rest project...`)
+      BashScripts.installBoilerplate('django-rest')
   }
 }
 
-SingleCommand.description = 'Start a new Django+REST project';
-SingleCommand.flags = {
- //react: flags.boolean({description: 'start MySQL'}),
-}
+SingleCommand.description = 'Start a new Django+REST project'
 module.exports = SingleCommand

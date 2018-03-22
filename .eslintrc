@@ -1,3 +1,29 @@
 {
-  "extends": "oclif"
+    "extends": "eslint:recommended",
+    "parserOptions": {
+        "ecmaVersion": 8,
+        "sourceType": "module"
+    },
+    "env": {
+        "mocha": true,
+        "node": true
+    },
+    "rules": {
+        "indent": 0,
+        "no-console": 1, //warning for using the console.log
+        "no-unused-vars": 1, //warning for unused vars
+        "no-useless-escape": 0, //for usless escape characters
+        "semi": [2, "never"],
+        "comma-dangle": [1, { //when to use the last comma
+            "arrays": "never",
+            "objects": "never",
+            "imports": "never",
+            "exports": "never",
+            "functions": "ignore",
+        }],
+        "keyword-spacing": [1, { // Missing space before opening brace 
+            "before": true, 
+            "after": true 
+        }],
+    }
 }

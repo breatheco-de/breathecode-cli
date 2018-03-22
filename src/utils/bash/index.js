@@ -2,6 +2,7 @@ let fs = require('fs');
 let shell = require('shelljs');
 const fetch = require("node-fetch");
 const Console = require('../console');
+var sleep = require('sleep');
 
 module.exports = {
     basePath: __dirname+`/scripts/`,
@@ -11,7 +12,7 @@ module.exports = {
         if(this.scripts.indexOf(scriptName) !== -1) return true;
         else return false;
     },
-    installBoilerplate(type){
+    installBoilerplate(type, onRoot=false){
         Console.log('Fetching boilerplates...'); 
         fetch("https://breatheco-de.github.io/breathecode-cli/boilerplates.json")
         .then(response => {
@@ -19,7 +20,7 @@ module.exports = {
                 if(typeof(boilerplates[type]) === 'undefined') throw new Error('Invalid boilerplate: '+type);
                 
                 this.boilerplates = boilerplates;
-                this.install(type);
+                this.install(type, onRoot);
                 
             });
         })
@@ -36,8 +37,9 @@ module.exports = {
           });
         });
     },
-    install(projectType){
+    install(projectType, onRoot=false){
         
+        Console.startLoading();
         Console.log('Verifing git installation'); 
         if (!shell.which('git')) {
           Console.fatal('Sorry, this script requires git');
@@ -50,13 +52,29 @@ module.exports = {
           shell.exit(1);
         }
         
-        
         Console.log('Cleaning installation'); 
         if (shell.exec(`rm -R -f ./${this.boilerplates[projectType].folder}/.git`).code !== 0) {
           Console.fatal('Error: removing .git directory');
           shell.exit(1);
         }
         
+        if(onRoot)
+        {
+            let warning = false;
+            Console.log('Moving to root'); 
+            [
+                `mv ${this.boilerplates[projectType].folder}/* ./`,
+                `mv ${this.boilerplates[projectType].folder}/.* ./`,
+                `rmdir ${this.boilerplates[projectType].folder}/`,
+            ]
+            .forEach((cmd) => {
+                if(shell.exec(cmd).code !== 0) warning = true;
+                sleep.sleep(1)
+            });
+            if(warning) Console.warning(`There seems to be and error when moving the files, make sure there is no ${this.boilerplates[projectType].folder} directory anymore`);
+        }
+        
+        Console.stopLoading();
         Console.success('Done'); 
     },
     execute(scriptName){

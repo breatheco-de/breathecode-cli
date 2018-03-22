@@ -3,15 +3,15 @@ let BashScripts = require('../../utils/bash/index');
 
 class SingleCommand extends Command {
   async run() {
-//    const {flags} = this.parse(SingleCommand)
+    const {flags} = this.parse(SingleCommand)
     
       this.log(`Creating React.js project...`.blue);
-      BashScripts.installBoilerplate('react');
+      let response = BashScripts.installBoilerplate('react', flags.root);
   }
 }
 
 SingleCommand.description = 'Start a new react project';
 SingleCommand.flags = {
- //react: flags.boolean({description: 'start MySQL'}),
+ root: flags.boolean({char:'r', description: 'install on the root directory'}),
 }
 module.exports = SingleCommand

@@ -15,7 +15,8 @@
     "colors": "^1.2.1",
     "globby": "^8.0.1",
     "node-fetch": "^2.1.1",
-    "shelljs": "^0.8.1"
+    "shelljs": "^0.8.1",
+    "sleep": "^5.1.1"
   },
   "devDependencies": {
     "@oclif/dev-cli": "^1.2.20",

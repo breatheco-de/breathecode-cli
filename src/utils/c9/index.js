@@ -19,30 +19,22 @@ module.exports = {
         
         return this.allowedCommands[command];
     },
-    startLoading(){
-      var P = ["\\", "|", "/", "-"];
-      var x = 0;
-      this.loading = setInterval(function() {
-        process.stdout.write("\r" + P[x++]);
-        x &= 3;
-      }, 250);
-    },
-    stopLoading(){ clearInterval(this.loading); },
     execute(incomingCommand, flags=[]){
         
         let command = this.getCommand(incomingCommand);
         if(!command.cmd) throw new Error('Invalid command, missing cmd property'.red);
         // executes `pwd`
+        Console.startLoading();
         Console.log(`Executing: ${command.cmd}`.white.bgBlue);
         const cmd = exec(command.cmd, flags);
         //setTimeout(() => cmd.stdout.pipe(process.stdout), 1000);
         cmd.stdout.on('data', (data) => {
-            this.stopLoading();
+            Console.stopLoading();
             Console.log(data);
         });
         
         cmd.stderr.on('data', (data) => {
-            this.stopLoading();
+            Console.stopLoading();
             Console.error(`stderr: ${data}`);
             Console.log({
                 error: `Try the command manually:`,
@@ -51,13 +43,13 @@ module.exports = {
         });
         
         cmd.on('close', (code) => {
-            this.stopLoading();
+            Console.stopLoading();
             if(code === 0) Console.log(`Done`.white.bgGreen);
             else Console.fatal(`Done with error: ${code}`.white.bgRed);
         });
         
         cmd.on('error', (error) => {
-            this.stopLoading();
+            Console.stopLoading();
             Console.fatal(`${error}`.white.bgRed);
         });
     },
@@ -69,22 +61,22 @@ module.exports = {
         const cmd = spawn(command, flags);
         
         cmd.stdout.on('data', (data) => {
-            this.stopLoading();
+            Console.stopLoading();
             Console.log(`stdout: ${data}`);
         });
         
         cmd.stderr.on('data', (data) => {
-            this.stopLoading();
+            Console.stopLoading();
             Console.error(`Error!: ${data}`);
         });
         
         cmd.on('close', (code) => {
-            this.stopLoading();
+            Console.stopLoading();
             Console.success(`Done with code: ${code}`);
         });
         
         cmd.on('error', (error) => {
-            this.stopLoading();
+            Console.stopLoading();
             Console.error(error);
         });
     }

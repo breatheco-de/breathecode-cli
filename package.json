@@ -1,0 +1,57 @@
+{
+  "name": "breathecode-cli",
+  "description": "Command Line Interface for BreatheCode students",
+  "version": "0.0.1",
+  "author": "Alejandro Sanchez @alesanchezr",
+  "bin": {
+    "breathecode": "./bin/run"
+  },
+  "bugs": "https://github.com/breatheco-de/breathecode-cli/issues",
+  "dependencies": {
+    "@oclif/command": "^1.4.2",
+    "@oclif/config": "^1.3.59",
+    "@oclif/errors": "^1.0.2",
+    "@oclif/plugin-help": "^1.1.6",
+    "globby": "^8.0.1"
+  },
+  "devDependencies": {
+    "@oclif/dev-cli": "^1.2.20",
+    "@oclif/test": "^1.0.1",
+    "chai": "^4.1.2",
+    "eslint": "^4.19.1",
+    "eslint-config-oclif": "^1.3.8",
+    "mocha": "^5.0.4"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "files": [
+    ".oclif.manifest.json",
+    "/bin",
+    "/src"
+  ],
+  "homepage": "https://github.com/breatheco-de/breathecode-cli",
+  "keywords": [
+    "oclif"
+  ],
+  "license": "GPL-3.0",
+  "main": "src/index.js",
+  "oclif": {
+    "commands": "./src/commands",
+    "bin": "breathecode",
+    "plugins": [
+      "@oclif/plugin-help"
+    ]
+  },
+  "repository": "breatheco-de/breathecode-cli",
+  "scripts": {
+    "clean": "rm -f .oclif.manifest.json",
+    "lint": "eslint .",
+    "postpublish": "yarn run clean",
+    "posttest": "yarn run lint",
+    "prepublishOnly": "oclif-dev manifest && oclif-dev readme",
+    "preversion": "yarn run clean",
+    "test": "mocha --forbid-only \"test/**/*.test.js\"",
+    "version": "oclif-dev readme && git add README.md"
+  }
+}

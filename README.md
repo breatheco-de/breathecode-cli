@@ -11,6 +11,7 @@ Command Line Interface for BreatheCode students:
 - Syntact correction.
 - Any idea? [Suggest new features or integrations here.](https://github.com/breatheco-de/breathecode-cli/issues/new)
 
+## Table of contents
 
 <!-- toc -->
 * [BreatheCode-Cli](#breathe-code-cli)

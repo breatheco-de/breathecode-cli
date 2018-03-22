@@ -1,5 +1,5 @@
 const { exec,spawn } = require('child_process');
-const colors = require('colors');
+const Console = require('../console');
 
 module.exports = {
     child: null,
@@ -15,7 +15,7 @@ module.exports = {
         if(typeof(this.allowedCommands[command]) === 'undefined') 
             throw new Error('Invalid command: '+command);
         else if(this.allowedCommands[command].cmd === null) 
-            this.log(this.allowedCommands[command].msg.white.bgRed);
+            Console.fatal(this.allowedCommands[command].msg);
         
         return this.allowedCommands[command];
     },
@@ -33,65 +33,59 @@ module.exports = {
         let command = this.getCommand(incomingCommand);
         if(!command.cmd) throw new Error('Invalid command, missing cmd property'.red);
         // executes `pwd`
-        this.log(`Executing: ${command.cmd}`.white.bgBlue);
+        Console.log(`Executing: ${command.cmd}`.white.bgBlue);
         const cmd = exec(command.cmd, flags);
         //setTimeout(() => cmd.stdout.pipe(process.stdout), 1000);
         cmd.stdout.on('data', (data) => {
             this.stopLoading();
-            this.log(`${data}`.white);
+            Console.log(data);
         });
         
         cmd.stderr.on('data', (data) => {
             this.stopLoading();
-            this.log(`stderr: ${data}`.red);
-            this.log(`Try the command manually:`.red+` $ ${command.cmd}`.white.bgBlack);
+            Console.error(`stderr: ${data}`);
+            Console.log({
+                error: `Try the command manually:`,
+                toCopy: ` $ ${command.cmd}`
+            });
         });
         
         cmd.on('close', (code) => {
             this.stopLoading();
-            if(code === 0) this.log(`Done`.white.bgGreen);
-            else this.log(`Done with error: ${code}`.white.bgRed);
+            if(code === 0) Console.log(`Done`.white.bgGreen);
+            else Console.fatal(`Done with error: ${code}`.white.bgRed);
         });
         
         cmd.on('error', (error) => {
             this.stopLoading();
-            this.log(`${error}`.white.bgRed);
+            Console.fatal(`${error}`.white.bgRed);
         });
     },
     advancedExecute(incomingCommand, flags=[]){
         
         let command = this.getCommand(incomingCommand);
         // executes `pwd`
-        this.log(`Executing: ${command}`.white.bgBlue);
+        Console.log(`Executing: ${command}`.bgBlue);
         const cmd = spawn(command, flags);
         
         cmd.stdout.on('data', (data) => {
             this.stopLoading();
-            this.log(`stdout: ${data}`);
+            Console.log(`stdout: ${data}`);
         });
         
         cmd.stderr.on('data', (data) => {
             this.stopLoading();
-            this.log(`stderr: ${data}`);
+            Console.error(`Error!: ${data}`);
         });
         
         cmd.on('close', (code) => {
             this.stopLoading();
-            this.log(`Done with code: ${code}`);
+            Console.success(`Done with code: ${code}`);
         });
         
         cmd.on('error', (error) => {
             this.stopLoading();
-            this.log(`${error}`.red);
-        });
-    },
-    log(msg){
-        console.log(this.linkify(msg));
-    },
-    linkify(text) {
-        var urlRegex =/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
-        return text.replace(urlRegex, function(url) {
-            return  url.underline.blue;
+            Console.error(error);
         });
     }
 }

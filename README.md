@@ -34,10 +34,11 @@ $ npm install -g @breathecode/breathecode-cli
 # Usage
 
 ```sh-session
+$ npm install -g @breathecode/breathecode-cli
 $ breathecode COMMAND
 running command...
 $ breathecode (-v|--version|version)
-@breathecode/breathecode-cli/0.0.1 (linux-x64) node-v8.10.0
+@breathecode/breathecode-cli/0.0.3 linux-x64 node-v8.10.0
 $ breathecode --help [COMMAND]
 USAGE
   $ breathecode COMMAND
@@ -47,14 +48,76 @@ USAGE
 <!-- commands -->
 # Commands
 
+* [breathecode c9:all](#c-9-all)
+* [breathecode c9:mysql](#c-9-mysql)
+* [breathecode c9:node](#c-9-node)
+* [breathecode c9:phpmyadmin](#c-9-phpmyadmin)
 * [breathecode generate:all](#generateall)
 * [breathecode generate:flux-action](#generateflux-action)
 * [breathecode generate:flux-folders](#generateflux-folders)
 * [breathecode generate:flux-store](#generateflux-store)
 * [breathecode generate:flux-view](#generateflux-view)
 * [breathecode generate:react-component](#generatereact-component)
-* [breathecode hello](#hello)
 * [breathecode help [COMMAND]](#help-command)
+* [breathecode start:all](#startall)
+* [breathecode start:django-rest](#startdjango-rest)
+* [breathecode start:flux](#startflux)
+* [breathecode start:react](#startreact)
+## c9:all
+
+Interact with Cloud9 functionalities
+
+```
+USAGE
+  $ breathecode c9:all
+```
+
+_See code: [src/commands/c9/all.js](https://github.com/breatheco-de/breathecode-cli/blob/v0.0.3/src/commands/c9/all.js)_
+
+## c9:mysql
+
+Interact with MySQL
+
+```
+USAGE
+  $ breathecode c9:mysql
+
+OPTIONS
+  --install  install MySQL
+  --start    start MySQL
+  --stop     stop MySQL
+```
+
+_See code: [src/commands/c9/mysql.js](https://github.com/breatheco-de/breathecode-cli/blob/v0.0.3/src/commands/c9/mysql.js)_
+
+## c9:node
+
+Interact node.js
+
+```
+USAGE
+  $ breathecode c9:node
+
+OPTIONS
+  --upgrade  upgrade node to v8
+```
+
+_See code: [src/commands/c9/node.js](https://github.com/breatheco-de/breathecode-cli/blob/v0.0.3/src/commands/c9/node.js)_
+
+## c9:phpmyadmin
+
+Interact with PhpMyAdmin
+
+```
+USAGE
+  $ breathecode c9:phpmyadmin
+
+OPTIONS
+  --install  install phpmyadmin
+```
+
+_See code: [src/commands/c9/phpmyadmin.js](https://github.com/breatheco-de/breathecode-cli/blob/v0.0.3/src/commands/c9/phpmyadmin.js)_
+
 ## generate:all
 
 Generate template code and other boring stuff!
@@ -64,7 +127,7 @@ USAGE
   $ breathecode generate:all
 ```
 
-_See code: [src/commands/generate/all.js](https://github.com/breatheco-de/breathecode-cli/blob/v0.0.1/src/commands/generate/all.js)_
+_See code: [src/commands/generate/all.js](https://github.com/breatheco-de/breathecode-cli/blob/v0.0.3/src/commands/generate/all.js)_
 
 ## generate:flux-action
 
@@ -78,7 +141,7 @@ OPTIONS
   -n, --name=name  the action name (optional)
 ```
 
-_See code: [src/commands/generate/flux-action.js](https://github.com/breatheco-de/breathecode-cli/blob/v0.0.1/src/commands/generate/flux-action.js)_
+_See code: [src/commands/generate/flux-action.js](https://github.com/breatheco-de/breathecode-cli/blob/v0.0.3/src/commands/generate/flux-action.js)_
 
 ## generate:flux-folders
 
@@ -89,7 +152,7 @@ USAGE
   $ breathecode generate:flux-folders
 ```
 
-_See code: [src/commands/generate/flux-folders.js](https://github.com/breatheco-de/breathecode-cli/blob/v0.0.1/src/commands/generate/flux-folders.js)_
+_See code: [src/commands/generate/flux-folders.js](https://github.com/breatheco-de/breathecode-cli/blob/v0.0.3/src/commands/generate/flux-folders.js)_
 
 ## generate:flux-store
 
@@ -103,7 +166,7 @@ OPTIONS
   -n, --name=name  the store name (optional)
 ```
 
-_See code: [src/commands/generate/flux-store.js](https://github.com/breatheco-de/breathecode-cli/blob/v0.0.1/src/commands/generate/flux-store.js)_
+_See code: [src/commands/generate/flux-store.js](https://github.com/breatheco-de/breathecode-cli/blob/v0.0.3/src/commands/generate/flux-store.js)_
 
 ## generate:flux-view
 
@@ -117,7 +180,7 @@ OPTIONS
   -n, --name=name  the view name (optional)
 ```
 
-_See code: [src/commands/generate/flux-view.js](https://github.com/breatheco-de/breathecode-cli/blob/v0.0.1/src/commands/generate/flux-view.js)_
+_See code: [src/commands/generate/flux-view.js](https://github.com/breatheco-de/breathecode-cli/blob/v0.0.3/src/commands/generate/flux-view.js)_
 
 ## generate:react-component
 
@@ -131,26 +194,7 @@ OPTIONS
   -n, --name=name  the component name (optional)
 ```
 
-_See code: [src/commands/generate/react-component.js](https://github.com/breatheco-de/breathecode-cli/blob/v0.0.1/src/commands/generate/react-component.js)_
-
-## hello
-
-Describe the command here
-
-```
-USAGE
-  $ breathecode hello
-
-OPTIONS
-  -n, --name=name  name to print
-
-DESCRIPTION
-  Describe the command here
-  ...
-  Extra documentation goes here
-```
-
-_See code: [src/commands/hello.js](https://github.com/breatheco-de/breathecode-cli/blob/v0.0.1/src/commands/hello.js)_
+_See code: [src/commands/generate/react-component.js](https://github.com/breatheco-de/breathecode-cli/blob/v0.0.3/src/commands/generate/react-component.js)_
 
 ## help [COMMAND]
 
@@ -168,4 +212,48 @@ OPTIONS
 ```
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v1.1.6/src/commands/help.ts)_
+
+## start:all
+
+A collection of boilerplates to start new projects
+
+```
+USAGE
+  $ breathecode start:all
+```
+
+_See code: [src/commands/start/all.js](https://github.com/breatheco-de/breathecode-cli/blob/v0.0.3/src/commands/start/all.js)_
+
+## start:django-rest
+
+Start a new Django+REST project
+
+```
+USAGE
+  $ breathecode start:django-rest
+```
+
+_See code: [src/commands/start/django-rest.js](https://github.com/breatheco-de/breathecode-cli/blob/v0.0.3/src/commands/start/django-rest.js)_
+
+## start:flux
+
+Start a new React+Flux project
+
+```
+USAGE
+  $ breathecode start:flux
+```
+
+_See code: [src/commands/start/flux.js](https://github.com/breatheco-de/breathecode-cli/blob/v0.0.3/src/commands/start/flux.js)_
+
+## start:react
+
+Start a new react project
+
+```
+USAGE
+  $ breathecode start:react
+```
+
+_See code: [src/commands/start/react.js](https://github.com/breatheco-de/breathecode-cli/blob/v0.0.3/src/commands/start/react.js)_
 <!-- commandsstop -->

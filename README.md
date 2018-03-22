@@ -1,13 +1,16 @@
-breathecode-cli
-===============
-
-Command Line Interface for BreatheCode students
-
 [![Version](https://img.shields.io/npm/v/@breathecode/breathecode-cli.svg)](https://npmjs.org/package/breathecode-cli)
-[![Codecov](https://codecov.io/gh/alesanchezr/breathecode/branch/master/graph/badge.svg)](https://codecov.io/gh/alesanchezr/breathecode)
-[![Known Vulnerabilities](https://snyk.io/test/github/alesanchezr/breathecode/badge.svg)](https://snyk.io/test/github/alesanchezr/breathecode)
+[![Build Status](https://travis-ci.org/breatheco-de/breathecode-cli.svg?branch=master)](https://travis-ci.org/breatheco-de/breathecode-cli)
 [![Downloads/week](https://img.shields.io/npm/dw/@breathecode/breathecode-cli.svg)](https://npmjs.org/package/breathecode-cli)
-[![License](https://img.shields.io/npm/l/@breathecode/breathecode-cli.svg)](https://github.com/alesanchezr/breathecode/blob/master/package.json)
+[![License](https://img.shields.io/npm/l/@breathecode/breathecode-cli.svg)](https://github.com/breatheco-de/breathecode/blob/master/package.json)
+# BreatheCode-Cli
+
+Command Line Interface for BreatheCode students:
+- Download boilerplates.
+- Cloud 9 integration.
+- Automatic code generation (snippets).
+- Syntact correction.
+- Any idea? [Suggest new features or integrations here.](https://github.com/breatheco-de/breathecode-cli/issues/new)
+
 
 <!-- toc -->
 * [Install](#install)

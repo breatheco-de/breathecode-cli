@@ -63,12 +63,8 @@ module.exports = {
             let warning = false
             Console.log('Moving to root')
             
-            const chain = [
-                `mv ${this.boilerplates[projectType].folder}/* ./`,
-                `mv ${this.boilerplates[projectType].folder}/.* ./`,
-                `rmdir ${this.boilerplates[projectType].folder}/`
-            ]
-            chain.forEach((cmd) => {
+            const commands = [`mv ${this.boilerplates[projectType].folder}/* ./`,`mv ${this.boilerplates[projectType].folder}/.* ./`,`rmdir ${this.boilerplates[projectType].folder}/`]
+            commands.forEach((cmd) => {
                 if (shell.exec(cmd).code !== 0) warning = true
                 sleep.sleep(1)
             })
@@ -78,11 +74,14 @@ module.exports = {
         Console.stopLoading()
         Console.success('Done')
     },
-    execute(scriptName){
+    execute(scriptName, incomingFlags=null){
         
         this.isValidScript(scriptName)
         
-        if (shell.exec('node '+this.basePath+scriptName).code !== 0) {
+        let flags = ''
+        if (incomingFlags) for (var key in incomingFlags) flags += ` --${key} ${(incomingFlags[key]) ? incomingFlags[key] : ''}`
+        
+        if (shell.exec(`node ${this.basePath}${scriptName}${flags}`).code !== 0) {
           shell.echo(`Error executing ${scriptName}`)
           shell.exit(1)
         }

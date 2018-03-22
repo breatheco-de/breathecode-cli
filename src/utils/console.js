@@ -17,7 +17,10 @@ class Console {
     warning(msg){ return this.__print(`${'\u{0020}⚠ warning:'.bgYellow.white.bold} ${msg.yellow}`) }
     error(msg){ return this.__print(`${'\u{0020}\u{2794}'.red} ${msg.red}`) }
     help(msg){ return this.__print(`${'\u{0020}⚠ help:'.bgGreen.white.bold} ${msg.white}`) }
-    done(code=''){ return this.__print(`${'\u{0020}\u{2714} Done '.bgGreen.white.bold}`+((code!=='') ? ` with code: ${code}`.green : '')) }
+    todo(msg){ 
+        return this.__print(`${'\u{0020}▶ TODOs found on:'.bgBlue.white.bold} ${this.__todofy(msg)}`) 
+    }
+    done(msg=''){ return this.__print(`${'\u{0020}\u{2714} Done '.bgGreen.white.bold} ${msg.green}`) }
     fatal(msg){ return this.__print(msg.white.bgRed) }
     toCopy(msg){ return this.__print(`${'\u{0020}\u{2704} '.bgBlack.white.bold} ${('\u{0020}'+msg+'\u{0020}').cyan.bold}`) }
     __print(output){ 
@@ -25,13 +28,20 @@ class Console {
     }
     __linkify(output) {
         var urlRegex =/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig
-        output = output.replace(urlRegex, function(url) {
-            return  url.underline.blue
-        })
+        output = output.replace(urlRegex, url => url.underline.blue)
         
         //add bold
         output = output.replace(/(\*\*\*)(.*)(\*\*\*)/ig, '$2'.bold.yellow)
         
+        return output
+    }
+    __todofy(output) {
+        // finding urls
+        var urlRegex =/(.*).(js|jsx|php|py|html|css|scss|md)/ig
+        output = output.replace(urlRegex, src => src.underline)
+        //finding todos
+        output = output.replace(/line\s*(\d)\s*([a-zA-z]*)\s*(.*)/ig, `─ ${'line $1'.bold.yellow}: ${'$2'.red} ${'$3'.cyan}`)
+        output = output.replace(/\s*✖\s*(\d)\s*(.*)\s*(found)/ig, '')
         return output
     }
     startLoading(){

@@ -12,7 +12,7 @@
         "folder": "django-rest-hello" 
     },
     "wordpress": { 
-        "url": "git@github.com:WordPress/WordPress.git", 
+        "url": "git@github.com:4GeeksAcademy/wordpress-hello.git", 
         "folder": "wordpress" 
     }
 }

@@ -5,8 +5,8 @@ class SingleCommand extends Command {
   async run() {
     const {flags} = this.parse(SingleCommand)
     
-      Console.info(`Creating React.js project...`)
-      BashScripts.installBoilerplate('react', flags.root)
+    Console.info(`Creating React.js project...`)
+    BashScripts.installBoilerplate('react', flags.root)
   }
 }
 

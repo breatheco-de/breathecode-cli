@@ -6,7 +6,7 @@ class FluxFolders extends Command {
     const {flags} = this.parse(FluxFolders)
     Console.info(`Generating flux folders: ...`)
     FluxCommands.createHierarchy()
-    if(flags.withSamples)
+    if (flags.withSamples)
     {
       FluxCommands.generate('store')
       FluxCommands.generate('action')

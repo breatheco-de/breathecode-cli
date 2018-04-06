@@ -13,6 +13,24 @@
     },
     "wordpress": { 
         "url": "git@github.com:4GeeksAcademy/wordpress-hello.git", 
+        "folder": "wordpress-hello" 
+    }
+}
+{
+    "react": {
+        "url": "git@github.com:4GeeksAcademy/react-hello.git",
+        "folder": "react-hello"
+    },
+    "flux": { 
+        "url": "git@github.com:4GeeksAcademy/react-hello-flux.git", 
+        "folder": "react-hello-flux" 
+    },
+    "django-rest": { 
+        "url": "git@github.com:4GeeksAcademy/django-rest-hello.git", 
+        "folder": "django-rest-hello" 
+    },
+    "wordpress": { 
+        "url": "git@github.com:4GeeksAcademy/wordpress-hello.git", 
         "folder": "wordpress" 
     }
 }

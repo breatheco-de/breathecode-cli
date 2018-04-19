@@ -1,4 +1,8 @@
 {
+    "vanillajs": {
+        "url": "https://github.com/4GeeksAcademy/vanillajs-hello.git",
+        "folder": "vanillajs-hello"
+    },
     "react": {
         "url": "https://github.com/4GeeksAcademy/react-hello.git",
         "folder": "react-hello"

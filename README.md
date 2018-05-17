@@ -27,7 +27,7 @@ Make sure you have node 8+
 $ node -v
 ```
 
-with yarn:
+The install with yarn:
 ```
 $ yarn global add @breathecode/breathecode-cli
 ```

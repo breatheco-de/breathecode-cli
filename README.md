@@ -22,6 +22,11 @@ Command Line Interface for BreatheCode students:
 <!-- install -->
 # Install
 
+Make sure you have node 8+
+```
+$ node -v
+```
+
 with yarn:
 ```
 $ yarn global add @breathecode/breathecode-cli

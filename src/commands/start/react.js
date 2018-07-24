@@ -6,12 +6,18 @@ class SingleCommand extends Command {
     const {flags} = this.parse(SingleCommand)
     
     Console.info(`Creating React.js project...`)
-    BashScripts.installBoilerplate('react', flags.root)
+    BashScripts.execute('creat-react-app', flags)
+        .then(() => {
+            BashScripts.installBoilerplate('react', flags)
+        })
+        .catch((error) => Console.error(error))
   }
 }
 
 SingleCommand.description = 'Start a new react project'
 SingleCommand.flags = {
- root: flags.boolean({char:'r', description: 'install on the root directory'})
+ root: flags.boolean({char:'r', description: 'install on the root directory'}),
+ branch: flags.string({char:'b', description: 'install a particular branch or version'}),
+ name: flags.string({char:'n', description: 'app name', default: 'hello-rigo'})
 }
 module.exports = SingleCommand

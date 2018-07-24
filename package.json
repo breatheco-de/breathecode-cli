@@ -1,13 +1,14 @@
 {
   "name": "@breathecode/breathecode-cli",
   "description": "Command Line Interface for BreatheCode students",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": "Alejandro Sanchez",
   "bin": {
     "breathecode": "./bin/run"
   },
   "bugs": "https://github.com/breatheco-de/breathecode-cli/issues",
   "dependencies": {
+    "8": "0.0.1",
     "@oclif/command": "^1.4.2",
     "@oclif/config": "^1.3.59",
     "@oclif/errors": "^1.0.2",

@@ -17,7 +17,7 @@ class SingleCommand extends Command {
 SingleCommand.description = 'Start a new react project'
 SingleCommand.flags = {
  root: flags.boolean({char:'r', description: 'install on the root directory'}),
- branch: flags.string({char:'b', description: 'install a particular branch or version'}),
+ mode: flags.string({char:'m', description: 'install a particular branch or version for the boilerplate'}),
  name: flags.string({char:'n', description: 'app name', default: 'hello-rigo'})
 }
 module.exports = SingleCommand

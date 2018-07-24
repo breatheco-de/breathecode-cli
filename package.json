@@ -1,7 +1,7 @@
 {
-  "name": "@breathecode/breathecode-cli",
+  "name": "breathecode-cli",
   "description": "Command Line Interface for BreatheCode students",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "author": "Alejandro Sanchez",
   "bin": {
     "breathecode": "./bin/run"

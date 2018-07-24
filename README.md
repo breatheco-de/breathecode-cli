@@ -41,11 +41,11 @@ $ npm install -g @breathecode/breathecode-cli
 # Usage
 
 ```sh-session
-$ npm install -g @breathecode/breathecode-cli
+$ npm install -g breathecode-cli
 $ breathecode COMMAND
 running command...
 $ breathecode (-v|--version|version)
-@breathecode/breathecode-cli/1.0.2 linux-x64 node-v8.11.3
+breathecode-cli/1.0.3 linux-x64 node-v8.11.3
 $ breathecode --help [COMMAND]
 USAGE
   $ breathecode COMMAND
@@ -83,7 +83,7 @@ USAGE
   $ breathecode c9:all
 ```
 
-_See code: [src/commands/c9/all.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.0.2/src/commands/c9/all.js)_
+_See code: [src/commands/c9/all.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.0.3/src/commands/c9/all.js)_
 
 ## c9:mysql
 
@@ -99,7 +99,7 @@ OPTIONS
   --stop     stop MySQL
 ```
 
-_See code: [src/commands/c9/mysql.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.0.2/src/commands/c9/mysql.js)_
+_See code: [src/commands/c9/mysql.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.0.3/src/commands/c9/mysql.js)_
 
 ## c9:node
 
@@ -113,7 +113,7 @@ OPTIONS
   --upgrade  upgrade node to v8
 ```
 
-_See code: [src/commands/c9/node.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.0.2/src/commands/c9/node.js)_
+_See code: [src/commands/c9/node.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.0.3/src/commands/c9/node.js)_
 
 ## c9:phpmyadmin
 
@@ -127,7 +127,7 @@ OPTIONS
   --install  install phpmyadmin
 ```
 
-_See code: [src/commands/c9/phpmyadmin.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.0.2/src/commands/c9/phpmyadmin.js)_
+_See code: [src/commands/c9/phpmyadmin.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.0.3/src/commands/c9/phpmyadmin.js)_
 
 ## code:all
 
@@ -138,7 +138,7 @@ USAGE
   $ breathecode code:all
 ```
 
-_See code: [src/commands/code/all.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.0.2/src/commands/code/all.js)_
+_See code: [src/commands/code/all.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.0.3/src/commands/code/all.js)_
 
 ## code:get-todos
 
@@ -153,7 +153,7 @@ OPTIONS
   -t, --type=js|jsx|scss|css|md|html|py  [default: js] file extensions to look for
 ```
 
-_See code: [src/commands/code/get-todos.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.0.2/src/commands/code/get-todos.js)_
+_See code: [src/commands/code/get-todos.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.0.3/src/commands/code/get-todos.js)_
 
 ## generate:all
 
@@ -164,7 +164,7 @@ USAGE
   $ breathecode generate:all
 ```
 
-_See code: [src/commands/generate/all.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.0.2/src/commands/generate/all.js)_
+_See code: [src/commands/generate/all.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.0.3/src/commands/generate/all.js)_
 
 ## generate:flux-action
 
@@ -178,7 +178,7 @@ OPTIONS
   -n, --name=name  the action name (optional)
 ```
 
-_See code: [src/commands/generate/flux-action.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.0.2/src/commands/generate/flux-action.js)_
+_See code: [src/commands/generate/flux-action.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.0.3/src/commands/generate/flux-action.js)_
 
 ## generate:flux-folders
 
@@ -192,7 +192,7 @@ OPTIONS
   -w, --withSamples  include a sample Action, View and Store
 ```
 
-_See code: [src/commands/generate/flux-folders.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.0.2/src/commands/generate/flux-folders.js)_
+_See code: [src/commands/generate/flux-folders.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.0.3/src/commands/generate/flux-folders.js)_
 
 ## generate:flux-store
 
@@ -206,7 +206,7 @@ OPTIONS
   -n, --name=name  the store name (optional)
 ```
 
-_See code: [src/commands/generate/flux-store.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.0.2/src/commands/generate/flux-store.js)_
+_See code: [src/commands/generate/flux-store.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.0.3/src/commands/generate/flux-store.js)_
 
 ## generate:flux-view
 
@@ -220,7 +220,7 @@ OPTIONS
   -n, --name=name  the view name (optional)
 ```
 
-_See code: [src/commands/generate/flux-view.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.0.2/src/commands/generate/flux-view.js)_
+_See code: [src/commands/generate/flux-view.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.0.3/src/commands/generate/flux-view.js)_
 
 ## generate:react-component
 
@@ -234,7 +234,7 @@ OPTIONS
   -n, --name=name  the component name (optional)
 ```
 
-_See code: [src/commands/generate/react-component.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.0.2/src/commands/generate/react-component.js)_
+_See code: [src/commands/generate/react-component.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.0.3/src/commands/generate/react-component.js)_
 
 ## help [COMMAND]
 
@@ -262,7 +262,7 @@ USAGE
   $ breathecode start:all
 ```
 
-_See code: [src/commands/start/all.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.0.2/src/commands/start/all.js)_
+_See code: [src/commands/start/all.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.0.3/src/commands/start/all.js)_
 
 ## start:django-rest
 
@@ -273,7 +273,7 @@ USAGE
   $ breathecode start:django-rest
 ```
 
-_See code: [src/commands/start/django-rest.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.0.2/src/commands/start/django-rest.js)_
+_See code: [src/commands/start/django-rest.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.0.3/src/commands/start/django-rest.js)_
 
 ## start:flux
 
@@ -284,12 +284,12 @@ USAGE
   $ breathecode start:flux
 
 OPTIONS
-  -b, --branch=branch  install a particular branch or version
-  -n, --name=name      [default: hello-rigo] app name
-  -r, --root           install on the root directory
+  -m, --mode=mode  install a particular branch or version for the boilerplate
+  -n, --name=name  [default: hello-rigo] app name
+  -r, --root       install on the root directory
 ```
 
-_See code: [src/commands/start/flux.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.0.2/src/commands/start/flux.js)_
+_See code: [src/commands/start/flux.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.0.3/src/commands/start/flux.js)_
 
 ## start:react
 
@@ -300,12 +300,12 @@ USAGE
   $ breathecode start:react
 
 OPTIONS
-  -b, --branch=branch  install a particular branch or version
-  -n, --name=name      [default: hello-rigo] app name
-  -r, --root           install on the root directory
+  -m, --mode=mode  install a particular branch or version for the boilerplate
+  -n, --name=name  [default: hello-rigo] app name
+  -r, --root       install on the root directory
 ```
 
-_See code: [src/commands/start/react.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.0.2/src/commands/start/react.js)_
+_See code: [src/commands/start/react.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.0.3/src/commands/start/react.js)_
 
 ## start:vanillajs
 
@@ -316,12 +316,12 @@ USAGE
   $ breathecode start:vanillajs
 
 OPTIONS
-  -b, --branch=branch  install a particular branch or version
-  -n, --name=name      [default: hello-rigo] app name
-  -r, --root           install on the root directory
+  -m, --mode=mode  install a particular branch or version for the boilerplate
+  -n, --name=name  [default: hello-rigo] app name
+  -r, --root       install on the root directory
 ```
 
-_See code: [src/commands/start/vanillajs.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.0.2/src/commands/start/vanillajs.js)_
+_See code: [src/commands/start/vanillajs.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.0.3/src/commands/start/vanillajs.js)_
 
 ## start:wordpress
 
@@ -332,10 +332,10 @@ USAGE
   $ breathecode start:wordpress
 
 OPTIONS
-  -b, --branch=branch  install a particular branch or version
-  -n, --name=name      [default: hello-rigo] app name
-  -r, --root           install on the root directory
+  -m, --mode=mode  install a particular branch or version for the boilerplate
+  -n, --name=name  [default: hello-rigo] app name
+  -r, --root       install on the root directory
 ```
 
-_See code: [src/commands/start/wordpress.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.0.2/src/commands/start/wordpress.js)_
+_See code: [src/commands/start/wordpress.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.0.3/src/commands/start/wordpress.js)_
 <!-- commandsstop -->

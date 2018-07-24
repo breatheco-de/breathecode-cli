@@ -47,8 +47,8 @@ module.exports = {
         }
         
         Console.log('Cloning from '+this.boilerplates[projectType].url)
-        if(flags && flags.branch){
-            if (shell.exec(`git clone -b ${flags.branch} ${this.boilerplates[projectType].url}`).code !== 0) {
+        if(flags && flags.mode){
+            if (shell.exec(`git clone -b ${flags.mode} ${this.boilerplates[projectType].url}`).code !== 0) {
               Console.fatal('Error: Installation failed')
               shell.exit(1)
             }

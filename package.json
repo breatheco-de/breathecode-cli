@@ -4,7 +4,8 @@
   "version": "1.0.3",
   "author": "Alejandro Sanchez",
   "bin": {
-    "breathecode": "./bin/run"
+    "breathecode": "./bin/run",
+    "bc": "./bin/run"
   },
   "bugs": "https://github.com/breatheco-de/breathecode-cli/issues",
   "dependencies": {

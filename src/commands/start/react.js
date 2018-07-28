@@ -6,11 +6,7 @@ class SingleCommand extends Command {
     const {flags} = this.parse(SingleCommand)
     
     Console.info(`Creating React.js project...`)
-    BashScripts.execute('creat-react-app', flags)
-        .then(() => {
-            BashScripts.installBoilerplate('react', flags)
-        })
-        .catch((error) => Console.error(error))
+    BashScripts.installBoilerplate('react', flags)
   }
 }
 

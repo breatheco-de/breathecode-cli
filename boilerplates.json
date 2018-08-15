@@ -9,7 +9,7 @@
     },
     "react-exercises": {
         "url": "https://github.com/4GeeksAcademy/react-exercises.git",
-        "folder": "react-hello"
+        "folder": "react-exercises"
     },
     "flux": { 
         "url": "https://github.com/4GeeksAcademy/react-hello-flux.git", 

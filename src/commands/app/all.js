@@ -2,9 +2,9 @@ const {Command} = require('@oclif/command')
 const Console = require('../../utils/console')
 class All extends Command {
   async run() {
-    Console.log(`You cannot analyze all at once, pleas specify one of the options. Help: $ breathecode code help`)
+    Console.log(`Please specify one of the app. Help: $ breathecode app help`)
     // TODO: add new command for eslint
   }
 }
-All.description = 'Analyze your code for best practices and find TODOs'
+All.description = 'Small apps to help developers'
 module.exports = All

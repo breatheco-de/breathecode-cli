@@ -29,12 +29,12 @@ $ node -v
 
 The install with yarn:
 ```
-$ yarn global add @breathecode/breathecode-cli
+$ yarn global add breathecode-cli
 ```
 
 or with npm:
 ```
-$ npm install -g @breathecode/breathecode-cli
+$ npm install -g breathecode-cli
 ```
 <!-- installstop -->
 <!-- usage -->

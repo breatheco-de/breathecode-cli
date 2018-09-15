@@ -26,16 +26,15 @@ Make sure you have node 8+
 ```
 $ node -v
 ```
-
-The install with yarn:
+With npm:
+```
+$ npm install -g breathecode-cli
+```
+OR with yarn:
 ```
 $ yarn global add breathecode-cli
 ```
 
-or with npm:
-```
-$ npm install -g breathecode-cli
-```
 <!-- installstop -->
 <!-- usage -->
 # Usage

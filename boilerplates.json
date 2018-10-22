@@ -22,5 +22,9 @@
     "wordpress": { 
         "url": "https://github.com/4GeeksAcademy/wordpress-hello.git", 
         "folder": "wordpress-hello" 
+    },
+    "react-webapp": {
+        "url": "https://github.com/4GeeksAcademy/react-hello-webapp.git",
+        "folder": "react-hello-webapp"
     }
 }

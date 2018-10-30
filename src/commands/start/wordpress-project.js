@@ -10,7 +10,7 @@ class SingleCommand extends Command {
   }
 }
 
-SingleCommand.description = 'Start a new react project'
+SingleCommand.description = 'Start a new wordpress project'
 SingleCommand.flags = {
  root: flags.boolean({char:'r', description: 'install on the root directory'}),
  mode: flags.string({char:'m', description: 'install a particular branch or version for the boilerplate'}),

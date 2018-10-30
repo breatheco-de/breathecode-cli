@@ -77,6 +77,7 @@ USAGE
 * [breathecode start:react](#startreact)
 * [breathecode start:react-exercises](#startreact-exercises)
 * [breathecode start:react-project](#startreact-project)
+* [breathecode start:react-webapp](#startreact-webapp)
 * [breathecode start:vanillajs](#startvanillajs)
 * [breathecode start:vanillajs-project](#startvanillajs-project)
 * [breathecode start:wordpress](#startwordpress)
@@ -455,6 +456,22 @@ OPTIONS
 ```
 
 _See code: [src/commands/start/react-project.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.31/src/commands/start/react-project.js)_
+
+## start:react-webapp
+
+Start a new react project
+
+```
+USAGE
+  $ breathecode start:react-webapp
+
+OPTIONS
+  -m, --mode=mode  install a particular branch or version for the boilerplate
+  -n, --name=name  [default: hello-rigo] app name
+  -r, --root       install on the root directory
+```
+
+_See code: [src/commands/start/react-webapp.js](https://github.com/breatheco-de/breathecode-cli/blob/master/src/commands/start/react-webapp.js)_
 
 ## start:vanillajs
 

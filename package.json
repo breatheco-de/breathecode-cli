@@ -17,6 +17,7 @@
     "colors": "^1.2.1",
     "globby": "^8.0.1",
     "node-fetch": "^2.1.1",
+    "readline-sync": "^1.4.9",
     "regex": "^0.1.1",
     "shelljs": "^0.8.1",
     "sleep": "^5.1.1"

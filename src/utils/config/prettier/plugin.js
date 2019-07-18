@@ -1,6 +1,13 @@
 const prettier = require("prettier");
 const fs = require("fs");
 const path = require("path");
+const parsers = {
+  js: "babel",
+  jsx: "babel",
+  css: "css",
+  sass: "sass",
+  html: "html",
+}
 
 const DEFAULT_EXTENSIONS = prettier.getSupportInfo
   ? prettier
@@ -15,6 +22,7 @@ const DEFAULT_EXTENSIONS = prettier.getSupportInfo
       ".css",
       ".less",
       ".scss",
+      ".html",
       ".sass",
       ".graphql",
       ".json"
@@ -37,7 +45,7 @@ module.exports = class PrettierPlugin {
     delete options.extensions;
 
     // Ignore particular files
-    this.exclude = options.exclude || null;
+    this.exclude = options.exclude || [];
     delete options.exclude;
 
     // Utilize this config file for options
@@ -57,13 +65,18 @@ module.exports = class PrettierPlugin {
       const promises = [];
       compilation.fileDependencies.forEach(filepath => {
 
-        if (this.extensions.indexOf(path.extname(filepath)) === -1 || this.exclude.find(reg => RegExp(reg).test(filepath))) {
+        let fileExtension = path.extname(filepath);
+        if (this.extensions.indexOf(fileExtension) === -1 || this.exclude.find(reg => RegExp(reg).test(filepath))) {
           return;
         }
+        fileExtension = fileExtension.substr(1);
 
         if (/node_modules/.exec(filepath)) {
           return;
         }
+
+        if(typeof parsers[fileExtension] === 'undefined') throw Error('Uknown extension .'+fileExtension);
+
         promises.push(new Promise((resolve, reject) => {
           fs.readFile(filepath, this.encoding, (err, source) => {
             if (err) {
@@ -71,7 +84,7 @@ module.exports = class PrettierPlugin {
             }
 
             try{
-              const prettierSource = prettier.format(source, Object.assign({}, this.prettierOptions, { filepath }));
+              const prettierSource = prettier.format(source, Object.assign({ parser: parsers[fileExtension] }, this.prettierOptions, { filepath }));
               if (prettierSource !== source) {
                 fs.writeFile(filepath, prettierSource, this.encoding, err => {
                   if (err) {

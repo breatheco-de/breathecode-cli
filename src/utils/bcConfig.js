@@ -15,7 +15,7 @@ module.exports = (filePath) => {
     const bcContent = fs.readFileSync('./bc.json');
     let config = JSON.parse(bcContent);
 
-    Console.info(`Compiler: ${config.compiler} for ${config.exercises.length} exercises`);
+    Console.info(`Compiler: ${config.compiler} for ${Array.isArray(config.exercises) ? config.exercises.length : 0} exercises found`);
 
     return {
         getConfig: () => config,
@@ -77,7 +77,7 @@ module.exports = (filePath) => {
             });
 
             return {
-                write: (callback) => fs.writeFile(filePath+'bc.json', JSON.stringify(config), callback)
+                write: (callback) => fs.writeFile(filePath+'bc.json', JSON.stringify(config, null, 4), callback)
             };
         }
     };

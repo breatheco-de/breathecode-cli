@@ -58,7 +58,7 @@ class InstructionsCommand extends Command {
 
     const textBodyParser = bodyParser.text();
     app.put('/exercise/:slug/file/:fileName', textBodyParser, function(req, res) {
-        exercises.saveFile(req.params.slug, req.params.fileName, req.body);
+        const result = exercises.saveFile(req.params.slug, req.params.fileName, req.body);
         res.end();
     });
 

@@ -1,8 +1,7 @@
 const webpack = require('webpack');
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const highlight = require('rehype-highlight');
-
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const prettyConfig = require('../prettier/vanillajs.config.js');
 const PrettierPlugin = require("../prettier/plugin.js");
 
@@ -59,16 +58,23 @@ module.exports = {
           ]
         },
         {
-          test: /\.(css|scss)$/, use: [{
-              loader: "style-loader" // creates style nodes from JS strings
-          }, {
+          test: /\.(css|scss)$/, use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
+          },
+          {
               loader: "css-loader" // translates CSS into CommonJS
+          }, {
+              loader: "postcss-loader", //for the window error
+              options: {
+                plugins: () => [require(nodeModulesPath+'/autoprefixer')]
+              }
           }, {
               loader: "sass-loader" // compiles Sass to CSS
           }]
         }, //css only files
         {
-          test: /\.(png|svg|jpg|jpeg|gif)$/, use: {
+          test: /\.(png|svg|jpg|jpeg|gif|html)$/, use: {
             loader: 'file-loader',
             options: { name: '[name].[ext]' }
           }
@@ -97,6 +103,12 @@ module.exports = {
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
+    new MiniCssExtractPlugin({
+      // Options similar to the same options in webpackOptions.output
+      // both options are optional
+      filename: 'styles.css',
+      chunkFilename: 'styles.css',
+    }),
     new PrettierPlugin(prettyConfig)
   ]
 };

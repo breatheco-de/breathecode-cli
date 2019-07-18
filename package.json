@@ -1,7 +1,7 @@
 {
   "name": "breathecode-cli",
   "description": "Command Line Interface for BreatheCode students",
-  "version": "1.1.32",
+  "version": "1.1.33",
   "author": "Alejandro Sanchez",
   "bin": {
     "breathecode": "./bin/run",
@@ -41,7 +41,6 @@
     "jsdom": "^11.12.0",
     "jsx-to-string": "^1.4.0",
     "lodash": "^4.17.10",
-    "mocha": "^5.2.0",
     "node-fetch": "^2.1.1",
     "node-sass": "^4.5.3",
     "prettier": "^1.14.3",

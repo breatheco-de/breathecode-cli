@@ -1,0 +1,34 @@
+{
+	"parser": "babel-eslint",
+	"plugins": [
+		"react"
+	],
+	"env": {
+		"browser": true
+	},
+	"rules": {
+		"strict": 0,
+		"no-unused-vars": 0,
+		"no-console": 1,
+		"semi": ["error", "always"],
+		"allowImportExportEverywhere": false,
+		"comma-dangle": [1, {
+			"arrays": "never",
+			"objects": "never",
+			"imports": "never",
+			"exports": "never",
+			"functions": "ignore"
+		}],
+		"react/jsx-indent": [0],
+		"react/style-prop-object": [2],
+		"react/prop-types": [2],
+		"node/no-unsupported-features": 0,
+		"unicorn/filename-case": 0
+	},
+	"settings": {
+		"react": {
+			"version": "16.4.1"
+		}
+	},
+	"extends": ["eslint:recommended", "plugin:react/recommended"]
+}

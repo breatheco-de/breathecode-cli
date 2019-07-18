@@ -1,0 +1,23 @@
+{
+	"parser": "babel-eslint",
+	"env": {
+		"browser": true
+	},
+	"rules": {
+		"strict": 0,
+		"no-unused-vars": 0,
+		"no-console": 1,
+		"semi": ["error", "always"],
+		"allowImportExportEverywhere": false,
+		"comma-dangle": [1, {
+			"arrays": "never",
+			"objects": "never",
+			"imports": "never",
+			"exports": "never",
+			"functions": "ignore"
+		}],
+		"node/no-unsupported-features": 0,
+		"unicorn/filename-case": 0
+	},
+	"extends": ["eslint:recommended"]
+}

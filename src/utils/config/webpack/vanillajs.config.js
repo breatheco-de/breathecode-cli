@@ -10,7 +10,7 @@ const nodeModulesPath = path.resolve(__dirname, '../../../../node_modules');
 module.exports = {
   mode: "development",
   output: {
-    filename: '[name].js',
+    filename: 'bundle.js',
     publicPath: '/'
   },
   module: {

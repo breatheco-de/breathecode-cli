@@ -14,12 +14,34 @@ class StartExercisesComand extends Command {
         return;
       } 
 
-      const webpackConfigPath = path.resolve(__dirname,`../utils/config/webpack/${flags.compiler}.config.js`);
+      const webpackConfigPath = path.resolve(__dirname,`../../utils/config/webpack/${flags.compiler}.config.js`);
       if (!fs.existsSync(webpackConfigPath)){
-        Console.error(`Uknown compiler: '${__dirname,`../utils/config/webpack/${flags.compiler}.config.js`}'`);
+        Console.error(`Uknown compiler: ${flags.compiler}`);
         return;
       }
 
+      fs.readdir('./', function(err, files) {
+          if (err) {
+            Console.error(`The directory must be empty to start creating the exercises`);
+          } else {
+            if (!files.length) {
+                fs.writeFileSync('./bc.json', JSON.stringify({
+                  compiler: flags.compiler
+                }, null, 2));
+
+                if (!fs.existsSync('./exercises')){
+                    fs.mkdirSync('./exercises');
+                }
+
+                if (!fs.existsSync('./exercises/01-hello-world')){
+                    fs.mkdirSync('./exercises/01-hello-world');
+                }
+
+                fs.writeFileSync('./exercises/01-hello-world/README.md', "# Hello World \n \n Type here your exercise instructions");
+            }
+            else Console.error(`The directory must be empty in order to start creating the exercises`);
+          }
+      });
   }
 }
 

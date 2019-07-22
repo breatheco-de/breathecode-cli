@@ -203,7 +203,7 @@ USAGE
   $ breathecode start:exercises
 
 OPTIONS
-  -c, --compiler  specify what compiler you want: [react, vanilajs]
+  -c, --compiler=compiler  specify what compiler you want: [react, vanilajs]
 ```
 
 _See code: [src/commands/start/exercises.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.38/src/commands/start/exercises.js)_

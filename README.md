@@ -56,18 +56,13 @@ USAGE
 
 * [breathecode app:all](#appall)
 * [breathecode app:get-todos](#appget-todos)
-* [breathecode generate:all](#generateall)
-* [breathecode generate:flux-action](#generateflux-action)
-* [breathecode generate:flux-folders](#generateflux-folders)
-* [breathecode generate:flux-store](#generateflux-store)
-* [breathecode generate:flux-view](#generateflux-view)
-* [breathecode generate:react-component](#generatereact-component)
 * [breathecode help [COMMAND]](#help-command)
 * [breathecode run:exercises](#runexercises)
 * [breathecode run:server](#runserver)
 * [breathecode start:all](#startall)
 * [breathecode start:django](#startdjango)
 * [breathecode start:django-project](#startdjango-project)
+* [breathecode start:exercises](#startexercises)
 * [breathecode start:flux](#startflux)
 * [breathecode start:flux-project](#startflux-project)
 * [breathecode start:react](#startreact)
@@ -104,87 +99,6 @@ OPTIONS
 ```
 
 _See code: [src/commands/app/get-todos.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.38/src/commands/app/get-todos.js)_
-
-## generate:all
-
-Generate template code and other boring stuff!
-
-```
-USAGE
-  $ breathecode generate:all
-```
-
-_See code: [src/commands/generate/all.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.38/src/commands/generate/all.js)_
-
-## generate:flux-action
-
-Generate a new Flux.Action
-
-```
-USAGE
-  $ breathecode generate:flux-action
-
-OPTIONS
-  -n, --name=name  the action name (optional)
-```
-
-_See code: [src/commands/generate/flux-action.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.38/src/commands/generate/flux-action.js)_
-
-## generate:flux-folders
-
-Generate Flux standard directories
-
-```
-USAGE
-  $ breathecode generate:flux-folders
-
-OPTIONS
-  -w, --withSamples  include a sample Action, View and Store
-```
-
-_See code: [src/commands/generate/flux-folders.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.38/src/commands/generate/flux-folders.js)_
-
-## generate:flux-store
-
-Generate a new flux store
-
-```
-USAGE
-  $ breathecode generate:flux-store
-
-OPTIONS
-  -n, --name=name  the store name (optional)
-```
-
-_See code: [src/commands/generate/flux-store.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.38/src/commands/generate/flux-store.js)_
-
-## generate:flux-view
-
-Generate a new Flux.View
-
-```
-USAGE
-  $ breathecode generate:flux-view
-
-OPTIONS
-  -n, --name=name  the view name (optional)
-```
-
-_See code: [src/commands/generate/flux-view.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.38/src/commands/generate/flux-view.js)_
-
-## generate:react-component
-
-Generate a new React.Component
-
-```
-USAGE
-  $ breathecode generate:react-component
-
-OPTIONS
-  -n, --name=name  the component name (optional)
-```
-
-_See code: [src/commands/generate/react-component.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.38/src/commands/generate/react-component.js)_
 
 ## help [COMMAND]
 
@@ -279,6 +193,20 @@ USAGE
 ```
 
 _See code: [src/commands/start/django-project.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.38/src/commands/start/django-project.js)_
+
+## start:exercises
+
+Initialize the boilerplate for creating exercises
+
+```
+USAGE
+  $ breathecode start:exercises
+
+OPTIONS
+  -c, --compiler  specify what compiler you want: [react, vanilajs]
+```
+
+_See code: [src/commands/start/exercises.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.38/src/commands/start/exercises.js)_
 
 ## start:flux
 

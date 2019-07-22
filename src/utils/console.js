@@ -14,7 +14,7 @@ class Console {
     }
     log(msg){ return this.__print(msg); }
     success(msg=''){ return this.__print(`${'\u{0020}\u{263a} Success '.bgGreen.white.bold} ${msg.green}`) }
-    info(msg){ return this.__print(`${'\u{0020}i info:'.bgBlue.white.bold} ${msg.blue}`) }
+    info(msg){ return this.__print(`${'\u{0020}i:'.bgBlue.white.bold} ${msg.blue}`) }
     warning(msg){ return this.__print(`${'\u{0020}⚠ warning:'.bgYellow.white.bold} ${msg.yellow}`) }
     error(msg){ return this.__print(`${'\u{0020}\u{2794}'.red} ${msg.red}`) }
     help(msg){ return this.__print(`${'\u{0020}⚠ help:'.bgGreen.white.bold} ${msg.white}`) }

@@ -14,6 +14,11 @@ class InstructionsCommand extends Command {
     var server = require('http').Server(app);
     var io = require('socket.io')(server);
 
+    const download = require('../../utils/bcDownloader.js');
+    await download('https://raw.githubusercontent.com/breatheco-de/breathecode-ide/master/dist/app.tar.gz', './_app/app.tar.gz');
+
+
+
     Console.info("Loading the configuration for the exercises.");
     var exercises = bcConfig('./');
     Console.info("Building the exercise index...");

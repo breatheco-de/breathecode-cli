@@ -61,6 +61,7 @@
     "sleep": "^5.1.1",
     "socket.io": "^2.1.1",
     "style-loader": "^0.19.0",
+    "targz": "^1.0.1",
     "typography": "^0.16.17",
     "typography-theme-alton": "^0.15.10",
     "webpack": "^4.16.5",

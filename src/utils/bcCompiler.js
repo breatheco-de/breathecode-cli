@@ -1,10 +1,12 @@
 const webpack = require('webpack');
 const path = require('path');
 const fs = require('fs');
+const prettier = require("prettier");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 let Console = require('./console');
+const prettyConfigPath = require.resolve('./config/jest/babelTransform.js');
 
-module.exports = function({ config, entry, port, address, socket, publicPath }){
+module.exports = function({ files, config, entry, port, address, socket, publicPath }){
 
     const webpackConfigPath = path.resolve(__dirname,`./config/webpack/${config.compiler}.config.js`);
     if (!fs.existsSync(webpackConfigPath)){
@@ -20,8 +22,9 @@ module.exports = function({ config, entry, port, address, socket, publicPath }){
         chunks: false,
         modules: false
     };
+
     webpackConfig.entry = [
-      entry,
+      ...entry,
       `webpack-dev-server/client?http://${address}:${port}`
     ];
     if(typeof config.template !== 'undefined'){
@@ -37,6 +40,17 @@ module.exports = function({ config, entry, port, address, socket, publicPath }){
         }
     }
     if(typeof publicPath != 'undefined') webpackConfig.output.publicPath = publicPath;
+
+    if(config.compiler === "vanillajs"){
+      prettier.resolveConfig(prettyConfigPath).then(options => {
+        files.filter(f => f.path.indexOf(".html") > -1).forEach((file)=>{
+          const content = fs.readFileSync(file.path, "utf8");
+          const prettyConfig = require.resolve('./config/prettier/vanillajs.config.js');
+          const formatted = prettier.format(content, { parser: "html", ...prettyConfig });
+          fs.writeFileSync(file.path, formatted);
+        });
+      });
+    }
 
     const compiler = webpack(webpackConfig);
 

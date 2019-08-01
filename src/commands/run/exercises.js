@@ -1,6 +1,7 @@
 const {Command, flags} = require('@oclif/command');
 let Console = require('../../utils/console');
 var express = require('express');
+const fs = require('fs');
 const bcConfig = require('../../utils/bcConfig.js');
 const bcCompiler = require('../../utils/bcCompiler.js');
 const bcPrettier = require('../../utils/bcPrettier.js');
@@ -16,8 +17,6 @@ class InstructionsCommand extends Command {
 
     const download = require('../../utils/bcDownloader.js');
     await download('https://raw.githubusercontent.com/breatheco-de/breathecode-ide/master/dist/app.tar.gz', './_app/app.tar.gz');
-
-
 
     Console.info("Loading the configuration for the exercises.");
     var exercises = bcConfig('./');
@@ -84,15 +83,22 @@ class InstructionsCommand extends Command {
           return;
         }
         const entryURL = './exercises/'+data.exerciseSlug;
+        let entries = [entryURL+'/index.js'];
+        if(fs.existsSync(entryURL+'/styles.css')) entries.push(entryURL+'/styles.css');
+        else if(fs.existsSync(entryURL+'/style.css')) entries.push(entryURL+'/style.css');
+
+        const testsPath = (fs.existsSync(entryURL+'/test.js')) ? entryURL+'/test.js' : entryURL+'/tests.js';
+
         socket.emit('compiler',{ action: 'clean', status: 'pending', logs: ['Working...'] });
 
         switch(action){
           case "build":
-            socket.emit('compiler', { action: 'log', status: 'compiling', logs: ['Compiling exercise '+data.exerciseSlug, 'Entry '+entryURL+'/index.js'] });
+            socket.emit('compiler', { action: 'log', status: 'compiling', logs: ['Compiling exercise '+data.exerciseSlug, 'Entry: '+entries.join(",")] });
             bcCompiler({
+              files: exercises.getExerciseDetails(data.exerciseSlug),
               socket: socket,
               config: config,
-              entry: entryURL+'/index.js',
+              entry: entries,
               publicPath: '/preview',
               address: process.env.BREATHECODE_IP || "localhost",
               port: process.env.BREATHECODE_PORT || 8080
@@ -101,10 +107,10 @@ class InstructionsCommand extends Command {
           case "test":
             socket.emit('compiler', { action: 'log', status: 'testing', logs: ['Testing your code output'] });
             bcTest({
-              socket: socket,
-              config: config,
+              testsPath,
+              socket,
+              config,
               excercise: data.exerciseSlug,
-              testsPath: entryURL+'/tests.js'
             });
           break;
           case "prettify":

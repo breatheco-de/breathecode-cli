@@ -1,16 +1,16 @@
 const webpack = require('webpack');
 const path = require('path');
-const highlight = require('rehype-highlight');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const prettyConfig = require('../prettier/vanillajs.config.js');
 const PrettierPlugin = require("../prettier/plugin.js");
+const CopyPlugin = require('copy-webpack-plugin');
 
 const nodeModulesPath = path.resolve(__dirname, '../../../../node_modules');
 
 module.exports = {
   mode: "development",
   output: {
-    filename: 'bundle.js',
+    filename: 'index.js',
     publicPath: '/'
   },
   module: {
@@ -35,25 +35,6 @@ module.exports = {
                 options: {
                   configFile: path.resolve(__dirname,'../eslint/vanillajs.lint.json')
                 }
-            }
-          ]
-        },
-        { test: /\.md$/, use: [
-            {
-              loader: 'babel-loader',
-              options: {
-                presets: [
-                  nodeModulesPath+'/babel-preset-env',
-                ]
-              }
-            },
-            {
-              loader: '@hugmanrique/react-markdown-loader',
-              options: {
-                rehypePlugins: [
-                  highlight
-                ]
-              }
             }
           ]
         },
@@ -109,6 +90,9 @@ module.exports = {
       filename: 'styles.css',
       chunkFilename: 'styles.css',
     }),
+    new CopyPlugin([
+      { from: './exercises/*/*.html', to: './[name].html' }
+    ]),
     new PrettierPlugin(prettyConfig)
   ]
 };

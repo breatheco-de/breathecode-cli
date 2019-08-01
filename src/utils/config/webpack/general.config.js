@@ -5,7 +5,9 @@ const highlight = require('rehype-highlight');
 const externalLinks = require('remark-external-links');
 const nodeModulesPath = path.resolve(__dirname, '../../../../node_modules');
 const c9 = require(path.resolve(__dirname, '../../c9'));
-module.exports = {
+
+
+module.exports = (exerciseSlug) => ({
   mode: "development",
   entry: './index.js',
   output: {filename: 'bundle.js'},
@@ -62,10 +64,10 @@ module.exports = {
               loader: "sass-loader" // compiles Sass to CSS
           }]
         }, //css only files
-        { 
+        {
           test: /\.(png|svg|jpg|gif)$/, use: {
             loader: 'file-loader',
-            options: { name: '[name].[ext]' } 
+            options: { name: '[name].[ext]' }
           }
         }, //for images
         { test: /\.woff($|\?)|\.woff2($|\?)|\.ttf($|\?)|\.eot($|\?)|\.svg($|\?)/, use: ['file-loader'] } //for fonts
@@ -93,11 +95,11 @@ module.exports = {
         favicon: path.resolve(__dirname,'../../favicon.png'),
         template: path.resolve(__dirname,'../../template.html')
     }),
-    new webpack.DefinePlugin({ 
+    new webpack.DefinePlugin({
       'C9_PUBLIC_URL': JSON.stringify(c9.workspace.serverUrl),
       'C9_USER': JSON.stringify(c9.workspace.owner),
       'C9_IDE_URL': JSON.stringify(c9.workspace.ideUrl),
       'C9_PROJECT': JSON.stringify(c9.workspace.name)
     })
   ]
-};
+});

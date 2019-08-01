@@ -7,7 +7,7 @@ const CopyPlugin = require('copy-webpack-plugin');
 
 const nodeModulesPath = path.resolve(__dirname, '../../../../node_modules');
 
-module.exports = {
+module.exports = (files) => ({
   mode: "development",
   output: {
     filename: 'index.js',
@@ -90,9 +90,7 @@ module.exports = {
       filename: 'styles.css',
       chunkFilename: 'styles.css',
     }),
-    new CopyPlugin([
-      { from: './exercises/*/*.html', to: './[name].html' }
-    ]),
+    new CopyPlugin(files.filter(f => f.path.indexOf('.html') > -1).map(f => ({ from: f.path, to: `./[name].html` }))),
     new PrettierPlugin(prettyConfig)
   ]
-};
+});

@@ -3,7 +3,8 @@ const path = require('path');
 const highlight = require('rehype-highlight');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const nodeModulesPath = path.resolve(__dirname, '../../../../node_modules');
-module.exports = {
+
+module.exports = (exerciseSlug) => ({
   mode: "development",
   output: {
     filename: '[name].js',
@@ -58,10 +59,10 @@ module.exports = {
               loader: "sass-loader" // compiles Sass to CSS
           }]
         }, //css only files
-        { 
+        {
           test: /\.(png|svg|jpg|gif)$/, use: {
             loader: 'file-loader',
-            options: { name: '[name].[ext]' } 
+            options: { name: '[name].[ext]' }
           }
         }, //for images
         { test: /\.woff($|\?)|\.woff2($|\?)|\.ttf($|\?)|\.eot($|\?)|\.svg($|\?)/, use: ['file-loader'] } //for fonts
@@ -93,4 +94,4 @@ module.exports = {
         template: path.resolve(__dirname,'../../template.html')
     })
   ]
-};
+});

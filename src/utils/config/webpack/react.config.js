@@ -8,7 +8,7 @@ const PrettierPlugin = require("../prettier/plugin.js");
 
 const nodeModulesPath = path.resolve(__dirname, '../../../../node_modules');
 
-module.exports = {
+module.exports = (exerciseSlug) => ({
   mode: "development",
   output: {
     filename: '[name].js',
@@ -105,4 +105,4 @@ module.exports = {
     }),
     new PrettierPlugin(prettyConfig),
   ]
-};
+});

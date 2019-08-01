@@ -7,6 +7,7 @@ const bcCompiler = require('../../utils/bcCompiler.js');
 const bcPrettier = require('../../utils/bcPrettier.js');
 const bcTest = require('../../utils/bcTest.js');
 var bodyParser = require('body-parser');
+
 class InstructionsCommand extends Command {
   async run() {
     const {flags} = this.parse(InstructionsCommand);

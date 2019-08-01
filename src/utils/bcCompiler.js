@@ -15,7 +15,7 @@ module.exports = function({ files, config, entry, port, address, socket, publicP
       return;
     }
 
-    const webpackConfig = require(webpackConfigPath);
+    const webpackConfig = require(webpackConfigPath)(files);
     webpackConfig.stats = {
         cached: false,
         cachedAssets: false,

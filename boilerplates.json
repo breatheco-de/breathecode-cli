@@ -11,9 +11,21 @@
         "url": "https://github.com/4GeeksAcademy/react-exercises.git",
         "folder": "react-exercises"
     },
-    "flux": { 
-        "url": "https://github.com/4GeeksAcademy/react-hello-flux.git", 
-        "folder": "react-hello-flux" 
+    "dom-exercises": {
+        "url": "https://github.com/4GeeksAcademy/dom-exercises.git",
+        "folder": "dom-exercises"
+    },
+    "html-exercises": {
+        "url": "https://github.com/4GeeksAcademy/html-exercises.git",
+        "folder": "html-exercises"
+    },
+    "css-exercises": {
+        "url": "https://github.com/4GeeksAcademy/css-exercises.git",
+        "folder": "css-exercises"
+    },
+    "flask": { 
+        "url": "https://github.com/4GeeksAcademy/flask-rest-hello.git", 
+        "folder": "flask-hello" 
     },
     "django-rest": { 
         "url": "https://github.com/4GeeksAcademy/django-rest-hello.git", 

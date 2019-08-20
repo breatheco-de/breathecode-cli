@@ -1,7 +1,7 @@
 let shell = require('shelljs');
 const path = require('path');
 const fs = require('fs');
-const nodeModulesPath = path.resolve(__dirname, '../../../../node_modules');
+const nodeModulesPath = path.resolve(__dirname, '../../../../../node_modules');
 const babelTransformPath = require.resolve('./babelTransform.js');
 
 module.exports = (files) => ({
@@ -14,18 +14,11 @@ module.exports = (files) => ({
       }
   },
   validate: ()=>{
-    if (!fs.existsSync(nodeModulesPath+'/prettier')){
-      console.error(`Uknown prettier path`);
-      return;
-    }
-    else console.log('Using prettier from '+nodeModulesPath+'/prettier');
+    if (!fs.existsSync(nodeModulesPath+'/prettier')) throw new Error(`Uknown prettier path`);
 
     if (!shell.which('jest')) {
       const packageName = "jest@24.8.0";
-      Console.fatal(`You need to have ${packageName} installed to run test the exercises`);
-      Console.help(`Please run $ npm i ${packageName} -g`);
-      socket.emit('compiler', { action: 'log', status: 'internal-error', logs: [`You need to have jest installed to run test the exercises, please run on your terminal $ npm i ${packageName} -g`] });
-      return;
+      throw Error(`You need to have ${packageName} installed to run test the exercises, run $ npm i ${packageName} -g`);
     }
   },
   getEntryPath: () => {
@@ -36,7 +29,7 @@ module.exports = (files) => ({
     return testsPath;
   },
   getCommand: function(){
-    return `jest --config '${JSON.stringify({ ...this.config, testRegex: this.getEntryPath() )}' --colors`
+    return `jest --config '${JSON.stringify({ ...this.config, testRegex: this.getEntryPath() })}' --colors`
   }
 
 });

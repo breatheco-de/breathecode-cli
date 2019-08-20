@@ -13,8 +13,10 @@ module.exports = function({ socket, files, config }){
     }
 
     try{
+      const config = require(configPath)(files);
+      config.validate();
       Console.info('Running tests...');
-      const { stderr, code } = shell.exec(this.getCommand());
+      const { stderr, code } = shell.exec(config.getCommand());
 
       if(code != 0) socket.emit('compiler',{ status: 'testing-error', action: 'log', logs: [ stderr ] });
       else socket.emit('compiler',{ status: 'testing-success', action: 'log', logs: [ stderr ] });

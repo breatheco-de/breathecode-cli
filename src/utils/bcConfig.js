@@ -19,6 +19,10 @@ const _defaults = {
   "python3": {
     builder: "python3",
     tester: "pytest"
+  },
+  "node": {
+    builder: "node",
+    tester: "jest"
   }
 }
 

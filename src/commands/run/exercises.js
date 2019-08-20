@@ -3,7 +3,6 @@ let Console = require('../../utils/console');
 var express = require('express');
 const fs = require('fs');
 const bcConfig = require('../../utils/bcConfig.js');
-const bcCompiler = require('../../utils/bcCompiler.js');
 const bcPrettier = require('../../utils/bcPrettier.js');
 const bcTest = require('../../utils/bcTest.js');
 var bodyParser = require('body-parser');
@@ -33,7 +32,6 @@ class InstructionsCommand extends Command {
     });
 
     app.get('/exercise', function (req, res) {
-        var config = exercises.getConfig();
         res.json(config.exercises);
     });
 
@@ -83,23 +81,17 @@ class InstructionsCommand extends Command {
           Console.error("No exercise slug especified");
           return;
         }
-        const entryURL = './exercises/'+data.exerciseSlug;
-        let entries = [entryURL+'/index.js'];
-        if(fs.existsSync(entryURL+'/styles.css')) entries.push(entryURL+'/styles.css');
-        else if(fs.existsSync(entryURL+'/style.css')) entries.push(entryURL+'/style.css');
-
-        const testsPath = (fs.existsSync(entryURL+'/test.js')) ? entryURL+'/test.js' : entryURL+'/tests.js';
 
         socket.emit('compiler',{ action: 'clean', status: 'pending', logs: ['Working...'] });
 
         switch(action){
           case "build":
-            socket.emit('compiler', { action: 'log', status: 'compiling', logs: ['Compiling exercise '+data.exerciseSlug, 'Entry: '+entries.join(",")] });
-            bcCompiler({
+            const builder = require('../../utils/config/builder/'+config.builder+'.js');
+            socket.emit('compiler', { action: 'log', status: 'compiling', logs: ['Compiling exercise '+data.exerciseSlug] });
+            builder({
               files: exercises.getExerciseDetails(data.exerciseSlug),
               socket: socket,
               config: config,
-              entry: entries,
               publicPath: '/preview',
               address: process.env.BREATHECODE_IP || "localhost",
               port: process.env.BREATHECODE_PORT || 8080
@@ -108,10 +100,9 @@ class InstructionsCommand extends Command {
           case "test":
             socket.emit('compiler', { action: 'log', status: 'testing', logs: ['Testing your code output'] });
             bcTest({
-              testsPath,
+              files: exercises.getExerciseTests(data.exerciseSlug),
               socket,
-              config,
-              excercise: data.exerciseSlug,
+              config
             });
           break;
           case "prettify":

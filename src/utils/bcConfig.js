@@ -7,6 +7,21 @@ const validateExerciseDirectoryName = (str) => {
     return regex.test(str);
 };
 
+const _defaults = {
+  "vanillajs": {
+    builder: "webpack",
+    tester: "jest"
+  },
+  "react": {
+    builder: "webpack",
+    tester: "jest"
+  },
+  "python3": {
+    builder: "python3",
+    tester: "pytest"
+  }
+}
+
 module.exports = (filePath) => {
 
     if (!fs.existsSync(filePath+'bc.json')) throw Error('Imposible to load bc.json, make sure you have a ./bc.json file on your current path');
@@ -14,6 +29,9 @@ module.exports = (filePath) => {
 
     const bcContent = fs.readFileSync('./bc.json');
     let config = JSON.parse(bcContent);
+    let defaults = _defaults[config.compiler];
+    config = { ...config, ...defaults };
+    if(!config) throw Error('Invalid bc.json syntax: Unable to parse.');
 
     Console.info(`Compiler: ${config.compiler} for ${Array.isArray(config.exercises) ? config.exercises.length : 0} exercises found`);
 
@@ -73,6 +91,17 @@ module.exports = (filePath) => {
                                                     };
                                                     return score[f1.name] < score[f2.name] ? -1 : 1;
                                                 });
+            return getFiles(basePath);
+        },
+        getExerciseTests: (slug) => {
+            const exercise = config.exercises.find(ex => ex.slug == slug);
+            if (!exercise) throw Error('Exercise not found: '+slug);
+            const basePath = exercise.path;
+            const isDirectory = source => fs.lstatSync(source).isDirectory();
+            const getFiles = source => fs.readdirSync(source)
+                                        .map(file => ({ path: source+'/'+file, name: file}))
+                                            // TODO: we could implement some way for teachers to hide files from the developer, like putting on the name index.hidden.js
+                                            .filter(file => (file.name.indexOf('tests.') > -1 )); // hide directories, readmes and tests
             return getFiles(basePath);
         },
         buildIndex: () => {

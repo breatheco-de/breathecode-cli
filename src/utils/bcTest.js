@@ -3,29 +3,33 @@ let shell = require('shelljs');
 const fs = require('fs');
 let Console = require('./console');
 
-module.exports = function({ socket, testsPath, excercise, config }){
+module.exports = function({ socket, files, config }){
+
+    let testsPath = files.map(f => f.path).find(f => f.indexOf('test.js') > -1 || f.indexOf('tests.js') > -1);
 
     if (!shell.which('jest')) {
-      Console.fatal('You need to have jest v24.8.0 installed to run test the exercises');
-      Console.help('Please run $ npm i jest@24.8.0 -g');
-      socket.emit('compiler', { action: 'log', status: 'internal-error', logs: [`You need to have jest installed to run test the exercises, please run on your terminal $ npm i jest -g`] });
+      const packageName = "jest@24.8.0";
+      Console.fatal(`You need to have ${packageName} installed to run test the exercises`);
+      Console.help(`Please run $ npm i ${packageName} -g`);
+      socket.emit('compiler', { action: 'log', status: 'internal-error', logs: [`You need to have jest installed to run test the exercises, please run on your terminal $ npm i ${packageName} -g`] });
       return;
     }
 
     if (!fs.existsSync(testsPath)){
+      console.log(files);
       Console.error(`Test script does not exists: '${testsPath}'`);
       socket.emit('compiler', { action: 'log', status: 'internal-error', logs: [`Test script does not exists: '${testsPath}'`] });
       return;
     }
 
-    const webpackConfigPath = path.resolve(__dirname,`./config/jest/${config.compiler}.config.js`);
-    if (!fs.existsSync(webpackConfigPath)){
-      Console.error(`Uknown compiler: '${config.compiler}' found on bc.json`);
-      socket.emit('compiler', { action: 'log', status: 'internal-error', logs: [`Uknown compiler: '${config.compiler}' found on bc.json`] });
+    const configPath = path.resolve(__dirname,`./config/tester/${config.tester}/${config.compiler}.config.js`);
+    if (!fs.existsSync(configPath)){
+      Console.error(`No testing engine has been found for: '${config.compiler}'`);
+      socket.emit('compiler', { action: 'log', status: 'internal-error', logs: [`Uknown testing engine for compiler: '${config.compiler}'`] });
       return;
     }
 
-    var jestConfig = require(webpackConfigPath);
+    var jestConfig = require(configPath);
     jestConfig.testRegex = testsPath; //path to the tests
 
     //var spawn = require('child_process').spawn;

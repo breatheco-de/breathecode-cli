@@ -3,12 +3,14 @@ const path = require('path');
 const fs = require('fs');
 const prettier = require("prettier");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-let Console = require('./console');
-const prettyConfigPath = require.resolve('./config/jest/babelTransform.js');
+let Console = require('../../console');
+const prettyConfigPath = require.resolve('../../config/tester/jest/babelTransform.js');
 
-module.exports = function({ files, config, entry, port, address, socket, publicPath }){
+module.exports = function({ files, config, port, address, socket, publicPath }){
 
-    const webpackConfigPath = path.resolve(__dirname,`./config/webpack/${config.compiler}.config.js`);
+    let entry = files.filter(f => f.path.indexOf('index.js') > -1 || f.path.indexOf('styles.css') > -1).map(f => './'+f.path);
+
+    const webpackConfigPath = path.resolve(__dirname,`../../config/webpack/${config.compiler}.config.js`);
     if (!fs.existsSync(webpackConfigPath)){
       Console.error(`Uknown compiler: '${config.compiler}'`);
       socket.emit('compiler', { action: 'log', status: 'internal-error', logs: [`Uknown compiler: '${config.compiler}'`] });
@@ -45,13 +47,14 @@ module.exports = function({ files, config, entry, port, address, socket, publicP
       prettier.resolveConfig(prettyConfigPath).then(options => {
         files.filter(f => f.path.indexOf(".html") > -1).forEach((file)=>{
           const content = fs.readFileSync(file.path, "utf8");
-          const prettyConfig = require.resolve('./config/prettier/vanillajs.config.js');
+          const prettyConfig = require.resolve(__dirname,'../../config/prettier/vanillajs.config.js');
           const formatted = prettier.format(content, { parser: "html", ...prettyConfig });
           fs.writeFileSync(file.path, formatted);
         });
       });
     }
 
+    console.log(webpackConfig);
     const compiler = webpack(webpackConfig);
 
     socket.emit('compiler',{ action: 'log', log: ['Compiling...'], status: 'compiling' });

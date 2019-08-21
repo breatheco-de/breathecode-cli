@@ -81,7 +81,7 @@ module.exports = (filePath) => {
             const getFiles = source => fs.readdirSync(source)
                                         .map(file => ({ path: source+'/'+file, name: file}))
                                             // TODO: we could implement some way for teachers to hide files from the developer, like putting on the name index.hidden.js
-                                            .filter(file => (file.name != 'tests.js' && file.name != 'README.md' && !isDirectory(file.path))) // hide directories, readmes and tests
+                                            .filter(file => (file.name.indexOf('test.') == -1 && file.name.indexOf('tests.') == -1 && file.name != 'README.md' && !isDirectory(file.path))) // hide directories, readmes and tests
                                                 .sort((f1, f2) => {
                                                     const score = { //sorting priority
                                                       "index.html": 1,

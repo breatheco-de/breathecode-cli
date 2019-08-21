@@ -13,7 +13,6 @@
     "@babel/core": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
     "@babel/preset-react": "^7.0.0",
-    "@hugmanrique/react-markdown-loader": "0.0.2",
     "@oclif/command": "^1.4.36",
     "@oclif/config": "^1.6.33",
     "@oclif/errors": "^1.0.2",

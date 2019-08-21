@@ -16,13 +16,14 @@ module.exports = function({ socket, files, config }){
       const config = require(configPath)(files);
       config.validate();
       Console.info('Running tests...');
-      const { stderr, code } = shell.exec(config.getCommand());
+      const { stdout, stderr, code } = shell.exec(config.getCommand());
 
-      if(code != 0) socket.emit('compiler',{ status: 'testing-error', action: 'log', logs: [ stderr ] });
-      else socket.emit('compiler',{ status: 'testing-success', action: 'log', logs: [ stderr ] });
+      if(code != 0) socket.emit('compiler',{ status: 'testing-error', action: 'log', logs: [ stderr, stdout ] });
+      else socket.emit('compiler',{ status: 'testing-success', action: 'log', logs: [ stderr, stdout ] });
     }
     catch(err){
       socket.emit('compiler',{ status: 'internal-error', action: 'log', logs: [ err.message, err.toString() ] });
+      Console.error(err.message, err.toString());
     }
 
 };

@@ -36,7 +36,7 @@ module.exports = function(url, dest) {
 
         // close() is async, call cb after close completes
         file.on('finish', () => {
-          Console.info("Download finished, proceeding to decompress the _app ");
+          Console.info("Download finished, proceeding to decompress "+dest);
           decompress(dest, directoryPath).then(resolve).catch(reject);
         });
 
@@ -49,8 +49,10 @@ const decompress = (sourcePath, destinationPath) => new Promise((resolve, reject
         dest: destinationPath
     }, function(err){
         if(err) {
+            Console.error("Error when trying to decompress");
             reject(err);
         } else {
+            Console.info("Decompression finished successfully");
             resolve();
         }
     });

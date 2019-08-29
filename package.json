@@ -37,6 +37,7 @@
     "file-loader": "^1.1.5",
     "globby": "^8.0.1",
     "html-loader": "^0.5.5",
+    "html-validator": "^4.1.1",
     "html-webpack-plugin": "^3.2.0",
     "jest": "^24.8.0",
     "jest-cli": "^24.8.0",

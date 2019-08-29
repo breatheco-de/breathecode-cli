@@ -4,24 +4,22 @@ const prettier = require("prettier");
 let Console = require('../../console');
 const { node } = require('compile-run');
 
-module.exports = function({ files, config, port, address, socket, publicPath }){
+module.exports = function({ files, socket }){
 
     let entryPath = files.map(f => './'+f.path).find(f => f.indexOf('app.js') > -1);
 
-    socket.emit('compiler',{ action: 'log', log: ['Compiling...'], status: 'compiling' });
+    socket.log('compiling',['Compiling...']);
     const resultPromise = node.runFile(entryPath, { stdin:'3\n2 ' })
         .then(result => {
-            console.log("Success",result);//result object
-            var status = 'compiler-success';
-            if(result.stderr) socket.emit('compiler',{ status: 'compiler-error', action: 'log', logs: [ result.stdout, result.stderr ] });
-            else if(result.stdout) socket.emit('compiler',{ status: 'compiler-success', next: { test: true }, action: 'log', logs: [ result.stdout ] });
-
+            socket.clean();
+            Console.success("Compiled without errors");
+            if(result.stderr) socket.log('compiler-error',[ result.stdout, result.stderr ]);
+            else if(result.stdout) socket.log('compiler-success',[ result.stdout ]);
             // else if(stats.hasWarnings()) status = 'compiler-warning';
-
         })
         .catch(err => {
-            console.error("Error",err);
-            socket.emit('compiler',{ status: 'compiler-error', action: 'log', logs: [ err.stderr ] });
+            Console.error(err);
+            socket.log('compiler-error',[ err.stderr ]);
             return;
         });
 };

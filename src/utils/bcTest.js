@@ -8,7 +8,7 @@ module.exports = function({ socket, files, config }){
     const configPath = path.resolve(__dirname,`./config/tester/${config.tester}/${config.compiler}.config.js`);
     if (!fs.existsSync(configPath)){
       Console.error(`No testing engine has been found for: '${config.compiler}'`);
-      socket.emit('compiler', { action: 'log', status: 'internal-error', logs: [`Uknown testing engine for compiler: '${config.compiler}'`] });
+      socket.log('internal-error', [`Uknown testing engine for compiler: '${config.compiler}'`]);
       return;
     }
 
@@ -18,11 +18,11 @@ module.exports = function({ socket, files, config }){
       Console.info('Running tests...');
       const { stdout, stderr, code } = shell.exec(config.getCommand());
 
-      if(code != 0) socket.emit('compiler',{ status: 'testing-error', action: 'log', logs: [ stderr, stdout ] });
-      else socket.emit('compiler',{ status: 'testing-success', action: 'log', logs: [ stderr, stdout ] });
+      if(code != 0) socket.log('testing-error',[ stderr, stdout ]);
+      else socket.log('testing-success',[ stderr, stdout ]);
     }
     catch(err){
-      socket.emit('compiler',{ status: 'internal-error', action: 'log', logs: [ err.message, err.toString() ] });
+      socket.log('internal-error',[ err.message, err.toString() ]);
       Console.error(err.message, err.toString());
     }
 

@@ -3,6 +3,7 @@ let Console = require('../../utils/console');
 var express = require('express');
 const fs = require('fs');
 const bcConfig = require('../../utils/bcConfig.js');
+const socket = require('../../utils/bcSocket.js');
 const bcPrettier = require('../../utils/bcPrettier.js');
 const bcTest = require('../../utils/bcTest.js');
 var bodyParser = require('body-parser');
@@ -13,7 +14,6 @@ class InstructionsCommand extends Command {
 
     var app = express();
     var server = require('http').Server(app);
-    var io = require('socket.io')(server);
 
     const download = require('../../utils/bcDownloader.js');
     await download('https://raw.githubusercontent.com/breatheco-de/breathecode-ide/master/dist/app.tar.gz', './_app/app.tar.gz');
@@ -68,58 +68,49 @@ class InstructionsCommand extends Command {
     app.use('/preview',express.static('dist'));
     app.use('/',express.static('_app'));
 
-    server.listen( flags.port, function () {
-        Console.success("To start solving the exercises go to the following link: "+flags.host+":"+flags.port);
+    server.listen( flags.port, function () {});
+
+    socket.start(config.compiler, server);
+    socket.on("build", (data) => {
+        const builder = require('../../utils/config/builder/'+config.builder+'.js');
+        socket.log('compiling',['Building exercise '+data.exerciseSlug]);
+        builder({
+          files: exercises.getExerciseDetails(data.exerciseSlug),
+          socket: socket,
+          config: config,
+          publicPath: '/preview',
+          address: process.env.BREATHECODE_IP || "localhost",
+          port: process.env.BREATHECODE_PORT || 8080
+        });
     });
 
-    io.on('connection', function (socket) {
-      Console.info("Conection with client successfully established");
-      socket.emit('compiler', { action: 'log', status: 'ready', logs: ['Ready to compile...'] });
-      socket.on('compiler', function ({action, data}) {
-        if(typeof data.exerciseSlug == 'undefined'){
-          socket.emit('compiler', { action: 'log', status: 'internal-error', logs: ['No exercise slug specified'] });
-          Console.error("No exercise slug especified");
-          return;
-        }
-
-        socket.emit('compiler',{ action: 'clean', status: 'pending', logs: ['Working...'] });
-
-        switch(action){
-          case "build":
-            const builder = require('../../utils/config/builder/'+config.builder+'.js');
-            socket.emit('compiler', { action: 'log', status: 'compiling', logs: ['Compiling exercise '+data.exerciseSlug] });
-            builder({
-              files: exercises.getExerciseDetails(data.exerciseSlug),
-              socket: socket,
-              config: config,
-              publicPath: '/preview',
-              address: process.env.BREATHECODE_IP || "localhost",
-              port: process.env.BREATHECODE_PORT || 8080
-            });
-          break;
-          case "test":
-            socket.emit('compiler', { action: 'log', status: 'testing', logs: ['Testing your code output'] });
-            bcTest({
-              files: exercises.getExerciseTests(data.exerciseSlug),
-              socket,
-              config
-            });
-          break;
-          case "prettify":
-            socket.emit('compiler', { action: 'log', status: 'prettifying', logs: ['Making your code prettier'] });
-            bcPrettier({
-              socket,
-              exerciseSlug: data.exerciseSlug,
-              fileName: data.fileName
-            });
-          break;
-          default:
-            socket.emit('compiler', { action: 'log', status: 'internal-error', logs: ['Uknown action'] });
-          break;
-        }
-      });
-
+    socket.on("run", (data) => {
+        const builder = require('../../utils/config/builder/'+config.builder+'.js');
+        socket.log('compiling',['Compiling exercise '+data.exerciseSlug]);
+        builder({
+          files: exercises.getExerciseDetails(data.exerciseSlug),
+          socket: socket,
+        });
     });
+
+    socket.on("test", (data) => {
+        socket.log('testing',['Testing your code output']);
+        bcTest({
+          files: exercises.getExerciseTests(data.exerciseSlug),
+          socket,
+          config
+        });
+    });
+
+    socket.on("prettify", (data) => {
+        socket.log('prettifying',['Making your code prettier']);
+        bcPrettier({
+          socket,
+          exerciseSlug: data.exerciseSlug,
+          fileName: data.fileName
+        });
+    });
+
   }
 }
 

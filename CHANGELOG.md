@@ -24,5 +24,5 @@ Previous an upcoming changes to the BreatheCode CLI.
 - [ ] Learn Javascript Object Oriented Programing.
 - [ ] Learn Fetch API in Javascript.
 - [ ] Learn PHP Object Oriented Programing.
-- [ ] Learn [React.js](https://github.com/4GeeksAcademy/react-exercises) by [@alesanchezr](github.com/alesanchezr)
+- [x] Learn [React.js](https://github.com/4GeeksAcademy/react-exercises) by [@alesanchezr](github.com/alesanchezr)
 

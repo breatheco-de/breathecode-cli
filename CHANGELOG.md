@@ -15,8 +15,9 @@ Previous an upcoming changes to the BreatheCode CLI.
 - [ ] Learn Layouts
 - [ ] Learn [Bootstrap](https://github.com/4GeeksAcademy/bootstrap-exercises) (by [@plucodev](github.com/plucodev))
 - [ ] Learn [The DOM & Events](https://github.com/4GeeksAcademy/dom-exercises) by [@ljavierrodriguez](github.com/ljavierrodriguez)
-- [ ] Learn Arrays in JS
+- [ ] Learn [Arrays in JS](https://github.com/4GeeksAcademy/javascript-arrays-exercises) by Julio Londoño
 - [ ] Learn [Lists and Tuples in Python](https://github.com/4GeeksAcademy/python-lists-exercises) by [@espvtes](github.com/espvtes)
+- [ ] Learn Python Functions
 - [ ] Learn [Python for Beginners](https://github.com/4GeeksAcademy/begin-python-exercises) by [@haydavid23](github.com/haydavid23)
 - [ ] Learn [Javascript for Beginners](https://github.com/4GeeksAcademy/javascript-beginner-exercises)
 - [ ] Learn Javascript functions

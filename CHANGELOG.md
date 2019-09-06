@@ -9,9 +9,9 @@ Previous an upcoming changes to the BreatheCode CLI.
 
 ### Exercises being developed
 
-- [ ] Learn [HTML](https://github.com/4GeeksAcademy/html-exercises) by [@haydavid23](github.com/haydavid23)
+- [x] Learn [HTML](https://github.com/4GeeksAcademy/html-exercises) by [@haydavid23](github.com/haydavid23)
 - [ ] Learn HTML Forms
-- [ ] Learn [CSS](https://github.com/4GeeksAcademy/css-exercises) by [@plucodev](github.com/plucodev)
+- [x] Learn [CSS](https://github.com/4GeeksAcademy/css-exercises) by [@plucodev](github.com/plucodev)
 - [ ] Learn Layouts
 - [ ] Learn [Bootstrap](https://github.com/4GeeksAcademy/bootstrap-exercises) (by [@plucodev](github.com/plucodev))
 - [ ] Learn [The DOM & Events](https://github.com/4GeeksAcademy/dom-exercises) by [@ljavierrodriguez](github.com/ljavierrodriguez)

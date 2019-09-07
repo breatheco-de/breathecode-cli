@@ -20,7 +20,7 @@ Previous an upcoming changes to the BreatheCode CLI.
 - [ ] Learn Python Functions
 - [ ] Learn [Python for Beginners](https://github.com/4GeeksAcademy/begin-python-exercises) by [@haydavid23](github.com/haydavid23)
 - [ ] Learn [Javascript for Beginners](https://github.com/4GeeksAcademy/javascript-beginner-exercises)
-- [ ] Learn Javascript functions
+- [ ] Learn [Javascript functions](https://github.com/4GeeksAcademy/javascript-functions-exercises)
 - [ ] Learn Javascript Object Oriented Programing.
 - [ ] Learn Fetch API in Javascript.
 - [ ] Learn PHP Object Oriented Programing.

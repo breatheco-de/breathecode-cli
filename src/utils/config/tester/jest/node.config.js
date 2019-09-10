@@ -1,14 +1,11 @@
 let shell = require('shelljs');
 const path = require('path');
 const fs = require('fs');
-const nodeModulesPath = path.resolve(__dirname, '../../../../../node_modules');
-const babelTransformPath = require.resolve('./babelTransform.js');
+const babelTransformPath = require.resolve('./babelTransform.node.js');
 
 module.exports = (files) => ({
   config: {
       verbose: true,
-      moduleDirectories: [nodeModulesPath],
-      prettierPath: nodeModulesPath+'/prettier',
       transform: {
         "^.+\\.js?$": babelTransformPath
       }
@@ -29,6 +26,7 @@ module.exports = (files) => ({
     return testsPath;
   },
   getCommand: function(){
+    console.log(`jest --config '${JSON.stringify({ ...this.config, testRegex: this.getEntryPath() })}' --colors`);
     return `jest --config '${JSON.stringify({ ...this.config, testRegex: this.getEntryPath() })}' --colors`
   }
 

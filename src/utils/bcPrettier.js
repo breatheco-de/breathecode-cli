@@ -4,10 +4,10 @@ let Console = require('./console');
 const prettier = require("prettier");
 const bcConfig = require('./bcConfig.js');
 //const nodeModulesPath = path.resolve(__dirname, '../../node_modules');
-const prettyConfigPath = require.resolve('./config/tester/jest/babelTransform.js');
 
-module.exports = function({ socket, exerciseSlug, fileName }){
+module.exports = function({ socket, exerciseSlug, fileName, config }){
 
+    const prettyConfigPath = require.resolve(`./config/tester/jest/babelTransform.${config.compiler}.js`);
     return new Promise((resolve, reject) => {
       prettier.resolveConfig(prettyConfigPath).then(options => {
         Console.info("Formatting files.");

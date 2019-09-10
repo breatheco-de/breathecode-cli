@@ -4,8 +4,7 @@ const fs = require('fs');
 const prettier = require("prettier");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 let Console = require('../../console');
-const htmlValidate = require('html-validator');
-const prettyConfigPath = require.resolve('../../config/tester/jest/babelTransform.js');
+//const htmlValidate = require('html-validator');
 
 module.exports = async function({ files, config, port, address, socket, publicPath }){
 
@@ -47,6 +46,7 @@ module.exports = async function({ files, config, port, address, socket, publicPa
     if(typeof publicPath != 'undefined') webpackConfig.output.publicPath = publicPath;
 
     if(config.compiler === "vanillajs"){
+        const prettyConfigPath = require.resolve(`../../config/tester/jest/babelTransform.${config.compiler}.js`);
         const options = await prettier.resolveConfig(prettyConfigPath);
         let htmlErrors = files.filter(f => f.path.indexOf(".html") > -1).map((file)=>{
           const prettyConfig = require(path.resolve(__dirname,`../../config/prettier/${config.compiler}.config.js`));

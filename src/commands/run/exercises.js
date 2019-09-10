@@ -68,7 +68,9 @@ class InstructionsCommand extends Command {
     app.use('/preview',express.static('dist'));
     app.use('/',express.static('_app'));
 
-    server.listen( flags.port, function () {});
+    server.listen( flags.port, function () {
+      Console.success("Exercises are running 😃 Open your browser to start practicing!")
+    });
 
     socket.start(config.compiler, server);
     socket.on("build", (data) => {
@@ -90,6 +92,7 @@ class InstructionsCommand extends Command {
         builder({
           files: exercises.getExerciseDetails(data.exerciseSlug),
           socket: socket,
+          config
         });
     });
 
@@ -105,6 +108,7 @@ class InstructionsCommand extends Command {
     socket.on("prettify", (data) => {
         socket.log('prettifying',['Making your code prettier']);
         bcPrettier({
+          config,
           socket,
           exerciseSlug: data.exerciseSlug,
           fileName: data.fileName

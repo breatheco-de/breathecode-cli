@@ -1,6 +1,7 @@
 let shell = require('shelljs');
 const path = require('path');
 const fs = require('fs');
+const nodeModulesPath = path.resolve(__dirname, '../../../../../node_modules');
 const babelTransformPath = require.resolve('./babelTransform.node.js');
 
 module.exports = (files) => ({

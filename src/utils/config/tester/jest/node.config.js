@@ -7,6 +7,7 @@ const babelTransformPath = require.resolve('./babelTransform.node.js');
 module.exports = (files) => ({
   config: {
       verbose: true,
+      moduleDirectories: [nodeModulesPath],
       transform: {
         "^.+\\.js?$": babelTransformPath
       }

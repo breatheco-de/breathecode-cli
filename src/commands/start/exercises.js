@@ -12,10 +12,10 @@ class StartExercisesComand extends Command {
       if(!flags.compiler){
         Console.error(`Please specify a compiler using the -c flag: $ bc start:exercises -c=react`);
         return;
-      } 
+      }
 
-      const webpackConfigPath = path.resolve(__dirname,`../../utils/config/webpack/${flags.compiler}.config.js`);
-      if (!fs.existsSync(webpackConfigPath)){
+      const builderPath = path.resolve(__dirname,`../../utils/config/builder/${flags.compiler}.js`);
+      if (!fs.existsSync(builderPath)){
         Console.error(`Uknown compiler: ${flags.compiler}`);
         return;
       }

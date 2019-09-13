@@ -6,7 +6,7 @@ const { getInputs, cleanStdout } = require('../../builder/_utils.js');
 
 module.exports = (files) => ({
   config: {
-    capture: "fd",
+    capture: "sys",
     color: "yes",
   },
   validate: function(){
@@ -22,12 +22,12 @@ module.exports = (files) => ({
 
     //i have to create this conftest.py configuration for pytest, to allow passing the inputs as a parameter
     fs.writeFileSync("./conftest.py", `def pytest_addoption(parser):
-    parser.addoption("--inputs", action="append", default=[],
-        help="list of inputs to pass to test functions")
+    parser.addoption("--stdin", action="append", default=[],
+        help="json with the stdin to pass to test functions")
 
 def pytest_generate_tests(metafunc):
-    if 'inputs' in metafunc.fixturenames:
-        metafunc.parametrize("inputs",metafunc.config.getoption('inputs'))
+    if 'stdin' in metafunc.fixturenames:
+        metafunc.parametrize("stdin",metafunc.config.getoption('stdin'))
 `)
 
 
@@ -47,7 +47,7 @@ def pytest_generate_tests(metafunc):
     const count = getInputs(/input\((?:["'`]{1}(.*)["'`]{1})?\)/gm, content);
     let answers = (count.length == 0) ? [] : await socket.ask(count);
 
-    return `pytest ${this.getEntryPath()} --testdox --capture=${this.config.capture} --color=${this.config.color} --inputs="${answers.join(',')}"`
+    return `pytest ${this.getEntryPath()} --testdox --capture=${this.config.capture} --color=${this.config.color} --stdin='${JSON.stringify(answers)}'`
   }
 
 });

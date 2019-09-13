@@ -20,8 +20,9 @@ module.exports = async function({ files, socket }){
         .then(result => {
             socket.clean();
             Console.success("Compiled without errors");
+
             if(result.stderr) socket.log('compiler-error',[ cleanStdout(result.stdout, count), result.stderr ]);
-            else if(result.stdout) socket.log('compiler-success',[ cleanStdout(result.stdout, count) ]);
+            else socket.log('compiler-success',[ cleanStdout(result.stdout, count) ]);
             // else if(stats.hasWarnings()) status = 'compiler-warning';
         })
         .catch(err => {

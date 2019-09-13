@@ -19,6 +19,7 @@ module.exports = function({ socket, files, config }){
 
       config.getCommand(socket)
         .then(command => {
+
             const { stdout, stderr, code } = shell.exec(command);
 
             if(code != 0) socket.log('testing-error',[ stderr, stdout ]);

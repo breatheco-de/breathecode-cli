@@ -36,7 +36,7 @@ module.exports = (files) => ({
     const count = getInputs(/prompt\((?:["'`]{1}(.*)["'`]{1})?\)/gm, content);
     let answers = (count.length == 0) ? [] : await socket.ask(count);
 
-    return `jest --config '${JSON.stringify({ ...this.config, globals: { _inputs: answers }, testRegex: this.getEntryPath() })}' --colors`
+    return `jest --config '${JSON.stringify({ ...this.config, globals: { __stdin: answers }, testRegex: this.getEntryPath() })}' --colors`
   }
 
 });

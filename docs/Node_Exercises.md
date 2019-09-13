@@ -26,6 +26,17 @@
 ![Testing Stdout in Python](https://ucarecdn.com/f585299b-edc6-4418-8826-d796a7d733aa/testing_stdout_node.png)
 
 ### Testing Stdin (prompt) in Node
+
+```js
+//mock the prompt function
+const stdin = [].concat(__stdin);
+//this mock will pass one by one all the inputs
+global.prompt = jest.fn(() => __stdin.shift());
+
+// we can test the prompt function received an input "hello"
+expect(global.prompt).toHaveBeenCalledWith("Hello");
+```
+
 ![Testing Stdin in Node](https://ucarecdn.com/1da6ad7f-0cfd-41af-a6c3-ae8aa50f48e8/testing_stdin_with_prompt.jpg)
 
 

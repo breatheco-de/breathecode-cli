@@ -1,6 +1,5 @@
 const webpack = require('webpack');
 const path = require('path');
-const highlight = require('rehype-highlight');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const nodeModulesPath = path.resolve(__dirname, '../../../../node_modules');
 
@@ -37,14 +36,6 @@ module.exports = (exerciseSlug) => ({
                 presets: [
                   nodeModulesPath+'/babel-preset-env',
                   nodeModulesPath+'/babel-preset-react'
-                ]
-              }
-            },
-            {
-              loader: '@hugmanrique/react-markdown-loader',
-              options: {
-                rehypePlugins: [
-                  highlight
                 ]
               }
             }

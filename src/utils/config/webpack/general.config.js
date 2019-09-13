@@ -1,8 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const highlight = require('rehype-highlight');
-const externalLinks = require('remark-external-links');
 const nodeModulesPath = path.resolve(__dirname, '../../../../node_modules');
 const c9 = require(path.resolve(__dirname, '../../c9'));
 
@@ -38,18 +36,6 @@ module.exports = (exerciseSlug) => ({
                 presets: [
                   nodeModulesPath+'/babel-preset-env',
                   nodeModulesPath+'/babel-preset-react'
-                ]
-              }
-            },
-            {
-              loader: '@hugmanrique/react-markdown-loader',
-              options: {
-                rehypePlugins: [
-                  highlight,
-                  [
-                    externalLinks,
-                    { target: '_blank', rel: ['nofollow'] }
-                  ]
                 ]
               }
             }

@@ -99,7 +99,7 @@ class InstructionsCommand extends Command {
     socket.on("test", (data) => {
         socket.log('testing',['Testing your code output']);
         bcTest({
-          files: exercises.getExerciseTests(data.exerciseSlug),
+          files: exercises.getAllFiles(data.exerciseSlug),
           socket,
           config
         });

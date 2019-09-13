@@ -1,12 +1,15 @@
 const fs = require('fs');
 let shell = require('shelljs');
+const indentString = require('indent-string');
+const path = require('path');
+const { getInputs, cleanStdout } = require('../../builder/_utils.js');
 
 module.exports = (files) => ({
   config: {
-    capture: "sys",
+    capture: "fd",
     color: "yes",
   },
-  validate: ()=>{
+  validate: function(){
     if (!shell.which('python3')) {
       const packageName = "python3";
       throw Error(`🚫 You need to have ${packageName} installed to run test the exercises`);
@@ -14,18 +17,37 @@ module.exports = (files) => ({
 
     if (!shell.which('pytest')) {
       const packageName = "pytest";
-      throw Error(`🚫 You need to have ${packageName} installed to run test the exercises, run $ pip3 install pytest-testdox ${packageName}`);
+      throw Error(`🚫 You need to have ${packageName} installed to run test the exercises, run $ pip3 install pytest-testdox mock ${packageName}`);
     }
+
+    //i have to create this conftest.py configuration for pytest, to allow passing the inputs as a parameter
+    fs.writeFileSync("./conftest.py", `def pytest_addoption(parser):
+    parser.addoption("--inputs", action="append", default=[],
+        help="list of inputs to pass to test functions")
+
+def pytest_generate_tests(metafunc):
+    if 'inputs' in metafunc.fixturenames:
+        metafunc.parametrize("inputs",metafunc.config.getoption('inputs'))
+`)
+
+
   },
   getEntryPath: () => {
 
     let entryPath = files.map(f => './'+f.path).find(f => f.indexOf('test.py') > -1 || f.indexOf('tests.py') > -1);
-    if (!fs.existsSync(entryPath))  throw new Error(`🚫 No tests.py script found on the exercise files`);
+    if (!fs.existsSync(entryPath)) throw new Error(`🚫 No tests.py script found on the exercise files`);
 
     return entryPath;
   },
-  getCommand: function(){
-    return `pytest ${this.getEntryPath()} --testdox --capture=${this.config.capture} --color=${this.config.color}`
+  getCommand: async function(socket){
+
+    const appPath = files.map(f => './'+f.path).find(f => f.indexOf('app.py') > -1);
+
+    const content = fs.readFileSync(appPath, "utf8");
+    const count = getInputs(/input\((?:["'`]{1}(.*)["'`]{1})?\)/gm, content);
+    let answers = (count.length == 0) ? [] : await socket.ask(count);
+
+    return `pytest ${this.getEntryPath()} --testdox --capture=${this.config.capture} --color=${this.config.color} --inputs="${answers.join(',')}"`
   }
 
 });

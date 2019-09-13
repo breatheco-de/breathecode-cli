@@ -28,7 +28,7 @@ module.exports = (files) => ({
 
     return testsPath;
   },
-  getCommand: function(){
+  getCommand: async function(socket){
     return `jest --config '${JSON.stringify({ ...this.config, testRegex: this.getEntryPath() })}' --colors`
   }
 

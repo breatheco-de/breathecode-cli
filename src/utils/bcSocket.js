@@ -43,7 +43,7 @@ module.exports = {
             }
 
             if(typeof this.actionCallBacks[action] == 'function') this.actionCallBacks[action](data);
-            else this.log('internal-error',['Uknown action']);
+            else this.log('internal-error',['Uknown action '+action]);
 
           });
         });
@@ -54,10 +54,17 @@ module.exports = {
     clean: function(status='pending', logs=[]){
       this.emit('clean','pending',logs);
     },
+    ask: function(questions=[]){
+
+      return new Promise((resolve, reject) => {
+        this.emit('ask','pending', ["Waiting for input..."], questions);
+        this.on('input', ({ inputs }) => resolve(inputs));
+      })
+    },
     log: function(status, messages=[]){
       this.emit('log',status,messages);
     },
-    emit: function(action, status, logs){
-        this.socket.emit('compiler', { action, status, logs, allowed: this.allowed[this.lang] });
+    emit: function(action, status, logs, inputs=[]){
+        this.socket.emit('compiler', { action, status, logs, allowed: this.allowed[this.lang], inputs });
     }
 };

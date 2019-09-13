@@ -81,7 +81,7 @@ module.exports = (filePath) => {
             const getFiles = source => fs.readdirSync(source)
                                         .map(file => ({ path: source+'/'+file, name: file}))
                                             // TODO: we could implement some way for teachers to hide files from the developer, like putting on the name index.hidden.js
-                                            .filter(file => (file.name.indexOf('test.') == -1 && file.name.indexOf('tests.') == -1 && file.name != 'README.md' && !isDirectory(file.path))) // hide directories, readmes and tests
+                                            .filter(file => (file.name.indexOf('test.') == -1 && file.name.indexOf('tests.') == -1 && file.name != 'README.md' && !isDirectory(file.path) && file.name.indexOf('_') != 0)) // hide directories, readmes and tests
                                                 .sort((f1, f2) => {
                                                     const score = { //sorting priority
                                                       "index.html": 1,
@@ -97,15 +97,15 @@ module.exports = (filePath) => {
                                                 });
             return getFiles(basePath);
         },
-        getExerciseTests: (slug) => {
+        getAllFiles: (slug) => {
             const exercise = config.exercises.find(ex => ex.slug == slug);
             if (!exercise) throw Error('Exercise not found: '+slug);
             const basePath = exercise.path;
             const isDirectory = source => fs.lstatSync(source).isDirectory();
             const getFiles = source => fs.readdirSync(source)
-                                        .map(file => ({ path: source+'/'+file, name: file}))
+                                        .map(file => ({ path: source+'/'+file, name: file}));
                                             // TODO: we could implement some way for teachers to hide files from the developer, like putting on the name index.hidden.js
-                                            .filter(file => (file.name.indexOf('tests.') > -1 || file.name.indexOf('test.') > -1 )); // hide directories, readmes and tests
+                                            //.filter(file => (file.name.indexOf('tests.') > -1 || file.name.indexOf('test.') > -1 )); // hide directories, readmes and tests
             return getFiles(basePath);
         },
         buildIndex: () => {

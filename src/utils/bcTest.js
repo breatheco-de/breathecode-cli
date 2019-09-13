@@ -16,10 +16,14 @@ module.exports = function({ socket, files, config }){
       const config = require(configPath)(files);
       config.validate();
       Console.info('Running tests...');
-      const { stdout, stderr, code } = shell.exec(config.getCommand());
 
-      if(code != 0) socket.log('testing-error',[ stderr, stdout ]);
-      else socket.log('testing-success',[ stderr, stdout ]);
+      config.getCommand(socket)
+        .then(command => {
+            const { stdout, stderr, code } = shell.exec(command);
+
+            if(code != 0) socket.log('testing-error',[ stderr, stdout ]);
+            else socket.log('testing-success',[ stderr, stdout ]);
+        });
     }
     catch(err){
       socket.log('internal-error',[ err.message, err.toString() ]);

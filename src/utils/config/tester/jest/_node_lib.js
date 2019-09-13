@@ -1,4 +1,4 @@
-import '@babel/polyfill';
+const poly = require('@babel/polyfill');
 
 module.exports = async (something) => {
 

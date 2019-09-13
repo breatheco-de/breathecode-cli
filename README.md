@@ -44,7 +44,7 @@ $ npm install -g breathecode-cli
 $ breathecode COMMAND
 running command...
 $ breathecode (-v|--version|version)
-breathecode-cli/1.1.54 linux-x64 node-v10.15.3
+breathecode-cli/1.1.6 linux-x64 node-v10.15.3
 $ breathecode --help [COMMAND]
 USAGE
   $ breathecode COMMAND
@@ -83,7 +83,7 @@ USAGE
   $ breathecode app:all
 ```
 
-_See code: [src/commands/app/all.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.54/src/commands/app/all.js)_
+_See code: [src/commands/app/all.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.6/src/commands/app/all.js)_
 
 ## app:get-todos
 
@@ -98,7 +98,7 @@ OPTIONS
   -t, --type=js|jsx|scss|css|md|html|py  [default: js] file extensions to look for
 ```
 
-_See code: [src/commands/app/get-todos.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.54/src/commands/app/get-todos.js)_
+_See code: [src/commands/app/get-todos.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.6/src/commands/app/get-todos.js)_
 
 ## help [COMMAND]
 
@@ -131,7 +131,7 @@ OPTIONS
   -p, --port=port  [default: 8080] server port
 ```
 
-_See code: [src/commands/run/exercises.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.54/src/commands/run/exercises.js)_
+_See code: [src/commands/run/exercises.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.6/src/commands/run/exercises.js)_
 
 ## run:server
 
@@ -148,7 +148,7 @@ OPTIONS
   -p, --port=port          [default: 8080] server port
 ```
 
-_See code: [src/commands/run/server.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.54/src/commands/run/server.js)_
+_See code: [src/commands/run/server.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.6/src/commands/run/server.js)_
 
 ## start:all
 
@@ -159,7 +159,7 @@ USAGE
   $ breathecode start:all
 ```
 
-_See code: [src/commands/start/all.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.54/src/commands/start/all.js)_
+_See code: [src/commands/start/all.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.6/src/commands/start/all.js)_
 
 ## start:django
 
@@ -170,7 +170,7 @@ USAGE
   $ breathecode start:django
 ```
 
-_See code: [src/commands/start/django.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.54/src/commands/start/django.js)_
+_See code: [src/commands/start/django.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.6/src/commands/start/django.js)_
 
 ### start:django-project
 
@@ -181,7 +181,7 @@ USAGE
   $ breathecode start:django-project
 ```
 
-_See code: [src/commands/start/django-project.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.54/src/commands/start/django-project.js)_
+_See code: [src/commands/start/django-project.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.6/src/commands/start/django-project.js)_
 
 ## start:django-project
 
@@ -192,7 +192,7 @@ USAGE
   $ breathecode start:django-project
 ```
 
-_See code: [src/commands/start/django-project.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.54/src/commands/start/django-project.js)_
+_See code: [src/commands/start/django-project.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.6/src/commands/start/django-project.js)_
 
 ## start:exercises
 
@@ -206,7 +206,7 @@ OPTIONS
   -c, --compiler=compiler  specify what compiler you want: [react, vanilajs]
 ```
 
-_See code: [src/commands/start/exercises.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.54/src/commands/start/exercises.js)_
+_See code: [src/commands/start/exercises.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.6/src/commands/start/exercises.js)_
 
 ## start:flux
 
@@ -217,7 +217,7 @@ USAGE
   $ breathecode start:flux
 ```
 
-_See code: [src/commands/start/flux.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.54/src/commands/start/flux.js)_
+_See code: [src/commands/start/flux.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.6/src/commands/start/flux.js)_
 
 ### start:flux-project
 
@@ -233,7 +233,7 @@ OPTIONS
   -r, --root       install on the root directory
 ```
 
-_See code: [src/commands/start/flux-project.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.54/src/commands/start/flux-project.js)_
+_See code: [src/commands/start/flux-project.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.6/src/commands/start/flux-project.js)_
 
 ## start:flux-project
 
@@ -249,7 +249,7 @@ OPTIONS
   -r, --root       install on the root directory
 ```
 
-_See code: [src/commands/start/flux-project.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.54/src/commands/start/flux-project.js)_
+_See code: [src/commands/start/flux-project.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.6/src/commands/start/flux-project.js)_
 
 ## start:react
 
@@ -260,7 +260,7 @@ USAGE
   $ breathecode start:react
 ```
 
-_See code: [src/commands/start/react.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.54/src/commands/start/react.js)_
+_See code: [src/commands/start/react.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.6/src/commands/start/react.js)_
 
 ### start:react-exercises
 
@@ -276,7 +276,7 @@ OPTIONS
   -r, --root       install on the root directory
 ```
 
-_See code: [src/commands/start/react-exercises.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.54/src/commands/start/react-exercises.js)_
+_See code: [src/commands/start/react-exercises.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.6/src/commands/start/react-exercises.js)_
 
 ### start:react-project
 
@@ -292,7 +292,7 @@ OPTIONS
   -r, --root       install on the root directory
 ```
 
-_See code: [src/commands/start/react-project.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.54/src/commands/start/react-project.js)_
+_See code: [src/commands/start/react-project.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.6/src/commands/start/react-project.js)_
 
 ### start:react-webapp
 
@@ -308,7 +308,7 @@ OPTIONS
   -r, --root       install on the root directory
 ```
 
-_See code: [src/commands/start/react-webapp.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.54/src/commands/start/react-webapp.js)_
+_See code: [src/commands/start/react-webapp.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.6/src/commands/start/react-webapp.js)_
 
 ## start:react-exercises
 
@@ -324,7 +324,7 @@ OPTIONS
   -r, --root       install on the root directory
 ```
 
-_See code: [src/commands/start/react-exercises.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.54/src/commands/start/react-exercises.js)_
+_See code: [src/commands/start/react-exercises.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.6/src/commands/start/react-exercises.js)_
 
 ## start:react-project
 
@@ -340,7 +340,7 @@ OPTIONS
   -r, --root       install on the root directory
 ```
 
-_See code: [src/commands/start/react-project.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.54/src/commands/start/react-project.js)_
+_See code: [src/commands/start/react-project.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.6/src/commands/start/react-project.js)_
 
 ## start:react-webapp
 
@@ -356,7 +356,7 @@ OPTIONS
   -r, --root       install on the root directory
 ```
 
-_See code: [src/commands/start/react-webapp.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.54/src/commands/start/react-webapp.js)_
+_See code: [src/commands/start/react-webapp.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.6/src/commands/start/react-webapp.js)_
 
 ## start:vanillajs
 
@@ -367,7 +367,7 @@ USAGE
   $ breathecode start:vanillajs
 ```
 
-_See code: [src/commands/start/vanillajs.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.54/src/commands/start/vanillajs.js)_
+_See code: [src/commands/start/vanillajs.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.6/src/commands/start/vanillajs.js)_
 
 ### start:vanillajs-project
 
@@ -383,7 +383,7 @@ OPTIONS
   -r, --root       install on the root directory
 ```
 
-_See code: [src/commands/start/vanillajs-project.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.54/src/commands/start/vanillajs-project.js)_
+_See code: [src/commands/start/vanillajs-project.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.6/src/commands/start/vanillajs-project.js)_
 
 ## start:vanillajs-project
 
@@ -399,7 +399,7 @@ OPTIONS
   -r, --root       install on the root directory
 ```
 
-_See code: [src/commands/start/vanillajs-project.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.54/src/commands/start/vanillajs-project.js)_
+_See code: [src/commands/start/vanillajs-project.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.6/src/commands/start/vanillajs-project.js)_
 
 ## start:wordpress
 
@@ -410,7 +410,7 @@ USAGE
   $ breathecode start:wordpress
 ```
 
-_See code: [src/commands/start/wordpress.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.54/src/commands/start/wordpress.js)_
+_See code: [src/commands/start/wordpress.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.6/src/commands/start/wordpress.js)_
 
 ### start:wordpress-project
 
@@ -426,7 +426,7 @@ OPTIONS
   -r, --root       install on the root directory
 ```
 
-_See code: [src/commands/start/wordpress-project.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.54/src/commands/start/wordpress-project.js)_
+_See code: [src/commands/start/wordpress-project.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.6/src/commands/start/wordpress-project.js)_
 
 ## start:wordpress-project
 
@@ -442,7 +442,7 @@ OPTIONS
   -r, --root       install on the root directory
 ```
 
-_See code: [src/commands/start/wordpress-project.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.54/src/commands/start/wordpress-project.js)_
+_See code: [src/commands/start/wordpress-project.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.6/src/commands/start/wordpress-project.js)_
 
 ## test:exercise
 
@@ -456,5 +456,5 @@ OPTIONS
   -n, --number=number  number of the exercise
 ```
 
-_See code: [src/commands/test/exercise.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.54/src/commands/test/exercise.js)_
+_See code: [src/commands/test/exercise.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.6/src/commands/test/exercise.js)_
 <!-- commandsstop -->

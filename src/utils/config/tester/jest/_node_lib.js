@@ -11,7 +11,8 @@ module.exports = async (something) => {
     if(config && config.globals){
       const stdin = [].concat(config.globals.__stdin);
       global.window = {};
-      global.prompt = window.prompt = () => stdin.shift();
+      global.prompt = () => stdin.shift();
+      window.prompt = () => stdin.shift();
     }
 
   }

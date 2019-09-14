@@ -1,21 +1,45 @@
 const Console = require('./console');
 const shell = require('shelljs')
-const fetch = require('fetch');
+const fetch = require('node-fetch');
+const readlineSync = require('readline-sync');
 
 module.exports = {
     token: null,
     email: null,
+    isActive: function(){
+      if(this.token && this.email) return true;
+      else return false;
+    },
     login: async function(status, messages=[]){
+
+        var email = readlineSync.question('Your email: ');
+        var password = readlineSync.question('Password: ',{
+          hideEchoBack: true // The typed text on screen is hidden by `*` (default).
+        });
+
         let url = 'https://assets.breatheco.de/apis/credentials/auth';
-        return fetch(url+'/auth', {
-          body: JSON.parse({ username, password }),
-          method: 'post'
-        }).then(resp => resp.json())
-        .then(data => this.start({ token: data.assets_token, email: data.email }))
-        .catch(err => {
+
+        try{
+          const resp = await fetch(url+'/auth', {
+            body: JSON.parse({ email, password }),
+            method: 'post'
+          });
+          const data = await resp.json();
+          this.start({ token: data.assets_token, email: data.email });
+        }
+        catch(err){
           Console.error(err.message);
           console.error(err);
+        }
+
+    },
+    sync: function(){
+      if(process.env.BC_ASSETS_TOKEN && BC_STUDENT_EMAIL){
+        session.start({
+          token: process.env.BC_ASSETS_TOKEN,
+          email: BC_STUDENT_EMAIL
         });
+      }
     },
     start: function({ token, email}){
       if(!token && !email) throw new Error("A token and email is needed to start a session");

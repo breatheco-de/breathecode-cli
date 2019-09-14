@@ -1,11 +1,15 @@
 const {Command, flags} = require('@oclif/command');
 let Console = require('../utils/console')
+let session = require('../utils/bcSession')
 class SingleCommand extends Command {
   async run() {
     const { flags } = this.parse(SingleCommand);
 
-    if(process.env.BC_ASSETS_TOKEN && process.env.BC_STUDENT_EMAIL){
+    if(session.isActive()){
       Console.success(`You are already logged in with ${process.env.BC_STUDENT_EMAIL}`);
+    }
+    else{
+      session.login();
     }
 
   }

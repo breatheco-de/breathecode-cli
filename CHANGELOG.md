@@ -18,7 +18,7 @@ Previous an upcoming changes to the BreatheCode CLI.
 - [ ] Learn [Arrays in JS](https://github.com/4GeeksAcademy/javascript-arrays-exercises) by Julio Londoño
 - [ ] Learn [Lists and Tuples in Python](https://github.com/4GeeksAcademy/python-lists-exercises) by [@espvtes](github.com/espvtes)
 - [ ] Learn Python Functions by [Luis846](https://github.com/Luis846)
-- [ ] Learn [Python for Beginners](https://github.com/4GeeksAcademy/begin-python-exercises) by [@haydavid23](github.com/haydavid23)
+- [ ] Learn [Python for Beginners](https://github.com/4GeeksAcademy/begin-python-exercises) by [@alesanchezr](github.com/haydavid23)
 - [ ] Learn [Javascript for Beginners](https://github.com/4GeeksAcademy/javascript-beginner-exercises)
 - [ ] Learn [Javascript functions](https://github.com/4GeeksAcademy/javascript-functions-exercises)
 - [ ] Learn Javascript Object Oriented Programing.

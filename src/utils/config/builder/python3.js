@@ -4,6 +4,7 @@ const prettier = require("prettier");
 let Console = require('../../console');
 const { python } = require('compile-run');
 const { getInputs, cleanStdout } = require('./_utils.js');
+const bcActivity = require('../../bcActivity.js');
 
 module.exports = async function({ files, socket }){
     socket.log('compiling',['Compiling...']);
@@ -19,7 +20,18 @@ module.exports = async function({ files, socket }){
             socket.clean();
             Console.success("Compiled without errors");
 
-            if(result.stderr) socket.log('compiler-error', [ cleanStdout(result.stdout, count), result.stderr ]);
+            if(result.stderr){
+              socket.log('compiler-error', [ cleanStdout(result.stdout, count), result.stderr ]);
+              bcActivity.error('exercise_error', {
+                details: result.stderr,
+                framework: null,
+                language: 'python3',
+                message: null,
+                name: null,
+                builder: 'breathecode-cli'
+              });
+
+            }
             else if(result.stdout) socket.log('compiler-success', [ cleanStdout(result.stdout, count) ]);
         })
         .catch(err => {

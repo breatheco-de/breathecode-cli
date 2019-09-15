@@ -10,8 +10,8 @@ class SingleCommand extends Command {
         Console.help(`For example: $ bc start:project -t=react`);
       }
       else{
-        Console.info(`Creating new ${flags.technology} project...`)
-        BashScripts.installBoilerplate('django-rest')
+        Console.info(`Creating new ${flags.technology} project...`);
+        BashScripts.installBoilerplate(flags.technology);
       }
   }
 }

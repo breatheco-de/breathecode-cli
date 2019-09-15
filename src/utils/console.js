@@ -1,7 +1,9 @@
-const color = require('colors')
+const color = require('colors');
+
 class Console {
-    constructor(){
-        this.loading = null
+    constructor({ debug=false }){
+        this.loading = null;
+        this._debug = debug;
     }
     log(msg){
         if (typeof(msg) ==='string') return this.__print(`\u{0020}\u{2794} ${msg}`)
@@ -57,5 +59,8 @@ class Console {
     stopLoading(){
         if (this.loading) clearInterval(this.loading)
     }
+    debug(...args){
+        this._debug && console.log(args);
+    }
 }
-module.exports = new Console()
+module.exports = new Console({ debug: true })

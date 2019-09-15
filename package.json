@@ -47,6 +47,7 @@
     "jsx-to-string": "^1.4.0",
     "lodash": "^4.17.15",
     "mini-css-extract-plugin": "^0.8.0",
+    "moment": "^2.24.0",
     "node-fetch": "^2.6.0",
     "node-sass": "^4.5.3",
     "postcss-loader": "^3.0.0",
@@ -67,6 +68,7 @@
     "style-loader": "^0.19.0",
     "targz": "^1.0.1",
     "user": "0.0.0",
+    "validator": "^11.1.0",
     "webpack": "^4.16.5",
     "webpack-dev-server": "^3.1.5"
   },

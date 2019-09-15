@@ -20,10 +20,9 @@ module.exports = async function({ files, socket }){
     const resultPromise = node.runSource(`${lib} ${content}`, { stdin: inputs.join('\n') })
         .then(result => {
             socket.clean();
-
             if(result.stderr){
               socket.log('compiler-error',[ cleanStdout(result.stdout, count), result.stderr ]);
-              bcStats.error('exercise_error', {
+              bcActivity.error('exercise_error', {
                 details: result.stderr,
                 framework: null,
                 language: 'javascript',

@@ -18,7 +18,6 @@ module.exports = async function({ files, socket }){
     const resultPromise = python.runFile(entryPath, { stdin: inputs.join('\n'), executionPath: 'python3' })
         .then(result => {
             socket.clean();
-            Console.success("Compiled without errors");
 
             if(result.stderr){
               socket.log('compiler-error', [ cleanStdout(result.stdout, count), result.stderr ]);
@@ -26,13 +25,17 @@ module.exports = async function({ files, socket }){
                 details: result.stderr,
                 framework: null,
                 language: 'python3',
-                message: null,
-                name: null,
+                message: result.stderr,
+                name: bcActivity.getPythonError(result.stderr),
+                data: entryPath,
                 builder: 'breathecode-cli'
               });
 
             }
-            else if(result.stdout) socket.log('compiler-success', [ cleanStdout(result.stdout, count) ]);
+            else{
+              Console.success("Compiled without errors");
+              socket.log('compiler-success', [ cleanStdout(result.stdout, count) ]);
+            }
         })
         .catch(err => {
             Console.error(err.message || err);

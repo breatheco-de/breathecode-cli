@@ -16,7 +16,7 @@ module.exports = {
             method: 'post'
           });
 
-          if(resp.status !== 200) Console.debug(`Error ${resp.status}: `, await resp.text());
+          if(resp.status != 200) Console.debug(`Error ${resp.status}: `, await resp.text());
         }
         catch(err){
           Console.error(err.message);
@@ -24,15 +24,14 @@ module.exports = {
         }
 
     },
-    error: async function({ details, framework, language, message, name, builder }){
-        const s = session.get();
+    error: async function(slug, { details, framework, language, message, name, builder, data }){
+        const s = await session.get();
         if(!s) return;
 
         try{
           let url = 'https://assets.breatheco.de/apis/activity';
 
-          const resp = await fetch(url+'/core_error', {
-            body: JSON.stringify({
+          const body = {
               slug,
               username: s.email,
               severity: 0,
@@ -42,19 +41,32 @@ module.exports = {
               language,
               message,
               name,
+              data,
               user_agent: 'bc/cli',
               cohort: s.currentCohort.slug,
               day: s.currentCohort.current_day
-            }),
-            headers: { "Authorization": "JSW "+s.token },
+            };
+          Console.debug("body: ", body);
+          const resp = await fetch(url+'/coding_error', {
+            body: JSON.stringify(body),
+            headers: { "Authorization": "JSW "+s.token,  "Content-Type": "Application/JSON" },
             method: 'post'
           });
 
-          if(resp.status !== 200) Console.debug(`Error ${resp.status}: `, await resp.text());
+          if(resp.status != 200) Console.debug(`Error ${resp.status}: `, await resp.text());
         }
         catch(err){
           Console.error(err.message);
-          console.debug(err);
+          Console.debug(err);
         }
+    },
+    getPythonError(trace){
+      const regex = /\^\\n(.*Error:\s.*)\\/gm;
+      const matches = regex.exec(trace.toString());
+      if(!matches){
+        //Console.debug("Uknown error reported");
+        return "Uknown Error";
+      }
+      return `${matches[1]}: ${matches[2]}`;
     }
 };

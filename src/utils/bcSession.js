@@ -10,19 +10,28 @@ module.exports = {
     token: null,
     email: null,
     currentCohort: { slug: null, current_day: null },
-    payload: null,
+    setPayload(value){
+      const payload = Buffer.from(JSON.stringify(value)).toString('base64');
+      shell.env["BC_PAYLOAD"] = payload;
+      return true;
+    },
+    getPayload(){
+      if(shell.env["BC_PAYLOAD"]) return JSON.parse(Buffer.from(shell.env["BC_PAYLOAD"], 'base64').toString('ascii'));
+      else return null;
+    },
     isActive: function(){
       if(this.token && this.email) return true;
       else return false;
     },
-    get: function(){
+    get: async function(){
+      await this.sync();
       if(!this.isActive()) return null;
       return {
         token: this.token,
         email: this.email,
         currentCohort: this.currentCohort,
-        payload: this.payload
-      }
+        payload: this.getPayload()
+      };
     },
     login: async function(){
 
@@ -35,7 +44,6 @@ module.exports = {
           });
 
           let url = 'https://assets.breatheco.de/apis/credentials';
-
           const resp = await fetch(url+'/auth', {
             body: JSON.stringify({ username: email, password, user_agent: 'bc/cli' }),
             method: 'post'
@@ -46,51 +54,68 @@ module.exports = {
             const currentCohorts = data.full_cohorts.filter(c => {
                 return moment().isBetween(c['kickoff_date'], c['ending_date']);
             });
-            const current = currentCohorts.length === 1 ? currentCohorts[0] : currentCohorts.length > 1 ? currentCohorts.pop() : null;
-            this.start({ token: data.assets_token, email: data.email, currentCohort: current, payload: data });
+
+            this.currentCohort = currentCohorts.length === 1 ? currentCohorts[0] : currentCohorts.length > 1 ? currentCohorts.pop() : null;
+
+            this.start({ token: data.assets_token, email: data.email, payload: data });
+          }
+          else if(resp.status === 400){
+            const error = await resp.json();
+            Console.info(error.msg);
+          }
+          else Console.debug(`Error ${resp.status}: `, await resp.json().msg);
+        }
+        catch(err){
+          Console.error(err.message);
+          Console.debug(err);
+        }
+
+    },
+    sync: async function(){
+      if(shell.env["BC_ASSETS_TOKEN"] && shell.env["BC_STUDENT_EMAIL"]){
+        this.start({ token: shell.env["BC_ASSETS_TOKEN"], email: shell.env["BC_STUDENT_EMAIL"] });
+        if(!this.getPayload()){
+
+          let url = 'https://assets.breatheco.de/apis/credentials';
+          const resp = await fetch(url+`/me?access_token=${this.token}`);
+          if(resp.status === 200){
+            const data = await resp.json();
+
+            const currentCohorts = data.full_cohorts.filter(c => {
+                return moment().isBetween(c['kickoff_date'], c['ending_date']);
+            });
+            this.currentCohort = currentCohorts.length === 1 ? currentCohorts[0] : currentCohorts.length > 1 ? currentCohorts.pop() : null;
+            this.setPayload(data);
           }
           else if(resp.status === 400){
             const error = await resp.json();
             Console.info(error.msg);
           }
           else Console.debug(`Error ${resp.status}: `, await resp.text());
-        }
-        catch(err){
-          Console.error(err.message);
-          console.debug(err);
-        }
 
-    },
-    sync: function(){
-      if(process.env.BC_ASSETS_TOKEN && BC_STUDENT_EMAIL){
-        session.start({
-          token: process.env.BC_ASSETS_TOKEN,
-          email: BC_STUDENT_EMAIL
-        });
+        }
       }
     },
-    start: function({ token, email, payload }){
+    start: function({ token, email, payload=null }){
       if(!token && !email) throw new Error("A token and email is needed to start a session");
 
-      if (shell.exec(`export BC_ASSETS_TOKEN="${token}" && export BC_STUDENT_EMAIL="${email}"`).code !== 0){
-        Console.error("There was an error starting the session");
-        shell.exit(1)
-      }
-      else{
-        this.token = token;
-        this.email = email;
-        this.payload = payload || null;
-        Console.success(`Hello ${this.email} you have successfully logged in.`);
-      }
+      shell.env["BC_ASSETS_TOKEN"] = token;
+      shell.env["BC_STUDENT_EMAIL"] = email;
+      this.token = token;
+      this.email = email;
+      if(payload) this.setPayload(payload);
+
+      Console.success(`Hello ${this.email} you have successfully logged in.`);
     },
     destroy: function(){
-      if (shell.exec(`unset BC_ASSETS_TOKEN && unset BC_STUDENT_EMAIL`).code !== 0){
+      if (shell.exec(`unset BC_ASSETS_TOKEN && unset BC_STUDENT_EMAIL && unset BC_PAYLOAD`).code !== 0){
         Console.error("There was an error destroying the session");
         shell.exit(1)
       }
       else{
         this.token = token;
         this.email = email;
+        this.currentCohort = { slug: null, current_day: null };
       }
     }
 };

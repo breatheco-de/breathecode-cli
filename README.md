@@ -44,7 +44,7 @@ $ npm install -g breathecode-cli
 $ breathecode COMMAND
 running command...
 $ breathecode (-v|--version|version)
-breathecode-cli/1.1.62 linux-x64 node-v10.15.3
+breathecode-cli/1.1.63 linux-x64 node-v10.15.3
 $ breathecode --help [COMMAND]
 USAGE
   $ breathecode COMMAND
@@ -54,52 +54,13 @@ USAGE
 <!-- commands -->
 # Commands
 
-* [breathecode app:all](#appall)
-* [breathecode app:get-todos](#appget-todos)
 * [breathecode help [COMMAND]](#help-command)
+* [breathecode login](#login)
 * [breathecode run:exercises](#runexercises)
 * [breathecode run:server](#runserver)
-* [breathecode start:all](#startall)
-* [breathecode start:django](#startdjango)
-* [breathecode start:django-project](#startdjango-project)
 * [breathecode start:exercises](#startexercises)
-* [breathecode start:flux](#startflux)
-* [breathecode start:flux-project](#startflux-project)
-* [breathecode start:react](#startreact)
-* [breathecode start:react-exercises](#startreact-exercises)
-* [breathecode start:react-project](#startreact-project)
-* [breathecode start:react-webapp](#startreact-webapp)
-* [breathecode start:vanillajs](#startvanillajs)
-* [breathecode start:vanillajs-project](#startvanillajs-project)
-* [breathecode start:wordpress](#startwordpress)
-* [breathecode start:wordpress-project](#startwordpress-project)
-* [breathecode test:exercise](#testexercise)
-## app:all
-
-Small apps to help developers
-
-```
-USAGE
-  $ breathecode app:all
-```
-
-_See code: [src/commands/app/all.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.62/src/commands/app/all.js)_
-
-## app:get-todos
-
-Reads your code looking for //TODO: comments
-
-```
-USAGE
-  $ breathecode app:get-todos
-
-OPTIONS
-  -l, --log                              log scaned files on the console
-  -t, --type=js|jsx|scss|css|md|html|py  [default: js] file extensions to look for
-```
-
-_See code: [src/commands/app/get-todos.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.62/src/commands/app/get-todos.js)_
-
+* [breathecode start:project](#startproject)
+* [breathecode utils:todo](#utilstodo)
 ## help [COMMAND]
 
 display help for breathecode
@@ -117,6 +78,21 @@ OPTIONS
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v1.1.6/src/commands/help.ts)_
 
+## login
+
+Login to breathecode
+
+```
+USAGE
+  $ breathecode login
+
+OPTIONS
+  -l, --log                              log scaned files on the console
+  -t, --type=js|jsx|scss|css|md|html|py  [default: js] file extensions to look for
+```
+
+_See code: [src/commands/login.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.63/src/commands/login.js)_
+
 ## run:exercises
 
 Runs a small server with all the exercise instructions
@@ -126,12 +102,13 @@ USAGE
   $ breathecode run:exercises
 
 OPTIONS
+  -d, --debug      debugger mode fro more verbage
   -h, --host=host  [default: localhost] server host
   -o, --output     show build output on console
   -p, --port=port  [default: 8080] server port
 ```
 
-_See code: [src/commands/run/exercises.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.62/src/commands/run/exercises.js)_
+_See code: [src/commands/run/exercises.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.63/src/commands/run/exercises.js)_
 
 ## run:server
 
@@ -148,51 +125,7 @@ OPTIONS
   -p, --port=port          [default: 8080] server port
 ```
 
-_See code: [src/commands/run/server.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.62/src/commands/run/server.js)_
-
-## start:all
-
-A collection of boilerplates to start new projects
-
-```
-USAGE
-  $ breathecode start:all
-```
-
-_See code: [src/commands/start/all.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.62/src/commands/start/all.js)_
-
-## start:django
-
-Start a new django project or exercise
-
-```
-USAGE
-  $ breathecode start:django
-```
-
-_See code: [src/commands/start/django.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.62/src/commands/start/django.js)_
-
-### start:django-project
-
-Start a new Django+REST project
-
-```
-USAGE
-  $ breathecode start:django-project
-```
-
-_See code: [src/commands/start/django-project.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.62/src/commands/start/django-project.js)_
-
-## start:django-project
-
-Start a new Django+REST project
-
-```
-USAGE
-  $ breathecode start:django-project
-```
-
-_See code: [src/commands/start/django-project.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.62/src/commands/start/django-project.js)_
+_See code: [src/commands/run/server.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.63/src/commands/run/server.js)_
 
 ## start:exercises
 
@@ -206,255 +139,37 @@ OPTIONS
   -c, --compiler=compiler  specify what compiler you want: [react, vanilajs]
 ```
 
-_See code: [src/commands/start/exercises.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.62/src/commands/start/exercises.js)_
+_See code: [src/commands/start/exercises.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.63/src/commands/start/exercises.js)_
 
-## start:flux
+## start:project
 
-Start a new flux project or exercise
-
-```
-USAGE
-  $ breathecode start:flux
-```
-
-_See code: [src/commands/start/flux.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.62/src/commands/start/flux.js)_
-
-### start:flux-project
-
-Start a new React+Flux project
+Start a new project using a boilerplate
 
 ```
 USAGE
-  $ breathecode start:flux-project
+  $ breathecode start:project
 
 OPTIONS
-  -m, --mode=mode  install a particular branch or version for the boilerplate
-  -n, --name=name  [default: hello-rigo] app name
-  -r, --root       install on the root directory
+  -m, --mode=mode              install a particular branch or version for the boilerplate
+  -n, --name=name              [default: hello-rigo] app folder name
+  -r, --root                   install on the root directory
+  -t, --technology=technology  technology, e.g: [flask,django,react,flux,vanillajs,wordpress,etc].
 ```
 
-_See code: [src/commands/start/flux-project.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.62/src/commands/start/flux-project.js)_
+_See code: [src/commands/start/project.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.63/src/commands/start/project.js)_
 
-## start:flux-project
+## utils:todo
 
-Start a new React+Flux project
+Reads your code looking for //TODO: comments
 
 ```
 USAGE
-  $ breathecode start:flux-project
+  $ breathecode utils:todo
 
 OPTIONS
-  -m, --mode=mode  install a particular branch or version for the boilerplate
-  -n, --name=name  [default: hello-rigo] app name
-  -r, --root       install on the root directory
+  -l, --log                              log scaned files on the console
+  -t, --type=js|jsx|scss|css|md|html|py  [default: js] file extensions to look for
 ```
 
-_See code: [src/commands/start/flux-project.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.62/src/commands/start/flux-project.js)_
-
-## start:react
-
-Start a new react project or exercise
-
-```
-USAGE
-  $ breathecode start:react
-```
-
-_See code: [src/commands/start/react.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.62/src/commands/start/react.js)_
-
-### start:react-exercises
-
-Start a new react project
-
-```
-USAGE
-  $ breathecode start:react-exercises
-
-OPTIONS
-  -m, --mode=mode  install a particular branch or version for the boilerplate
-  -n, --name=name  [default: hello-rigo] app name
-  -r, --root       install on the root directory
-```
-
-_See code: [src/commands/start/react-exercises.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.62/src/commands/start/react-exercises.js)_
-
-### start:react-project
-
-Start a new react project
-
-```
-USAGE
-  $ breathecode start:react-project
-
-OPTIONS
-  -m, --mode=mode  install a particular branch or version for the boilerplate
-  -n, --name=name  [default: hello-rigo] app name
-  -r, --root       install on the root directory
-```
-
-_See code: [src/commands/start/react-project.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.62/src/commands/start/react-project.js)_
-
-### start:react-webapp
-
-Start a new react project
-
-```
-USAGE
-  $ breathecode start:react-webapp
-
-OPTIONS
-  -m, --mode=mode  install a particular branch or version for the boilerplate
-  -n, --name=name  [default: hello-rigo] app name
-  -r, --root       install on the root directory
-```
-
-_See code: [src/commands/start/react-webapp.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.62/src/commands/start/react-webapp.js)_
-
-## start:react-exercises
-
-Start a new react project
-
-```
-USAGE
-  $ breathecode start:react-exercises
-
-OPTIONS
-  -m, --mode=mode  install a particular branch or version for the boilerplate
-  -n, --name=name  [default: hello-rigo] app name
-  -r, --root       install on the root directory
-```
-
-_See code: [src/commands/start/react-exercises.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.62/src/commands/start/react-exercises.js)_
-
-## start:react-project
-
-Start a new react project
-
-```
-USAGE
-  $ breathecode start:react-project
-
-OPTIONS
-  -m, --mode=mode  install a particular branch or version for the boilerplate
-  -n, --name=name  [default: hello-rigo] app name
-  -r, --root       install on the root directory
-```
-
-_See code: [src/commands/start/react-project.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.62/src/commands/start/react-project.js)_
-
-## start:react-webapp
-
-Start a new react project
-
-```
-USAGE
-  $ breathecode start:react-webapp
-
-OPTIONS
-  -m, --mode=mode  install a particular branch or version for the boilerplate
-  -n, --name=name  [default: hello-rigo] app name
-  -r, --root       install on the root directory
-```
-
-_See code: [src/commands/start/react-webapp.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.62/src/commands/start/react-webapp.js)_
-
-## start:vanillajs
-
-Start a new vanillajs project or exercise
-
-```
-USAGE
-  $ breathecode start:vanillajs
-```
-
-_See code: [src/commands/start/vanillajs.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.62/src/commands/start/vanillajs.js)_
-
-### start:vanillajs-project
-
-Start a new Vanilla.js project
-
-```
-USAGE
-  $ breathecode start:vanillajs-project
-
-OPTIONS
-  -m, --mode=mode  install a particular branch or version for the boilerplate
-  -n, --name=name  [default: hello-rigo] app name
-  -r, --root       install on the root directory
-```
-
-_See code: [src/commands/start/vanillajs-project.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.62/src/commands/start/vanillajs-project.js)_
-
-## start:vanillajs-project
-
-Start a new Vanilla.js project
-
-```
-USAGE
-  $ breathecode start:vanillajs-project
-
-OPTIONS
-  -m, --mode=mode  install a particular branch or version for the boilerplate
-  -n, --name=name  [default: hello-rigo] app name
-  -r, --root       install on the root directory
-```
-
-_See code: [src/commands/start/vanillajs-project.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.62/src/commands/start/vanillajs-project.js)_
-
-## start:wordpress
-
-Start a new wordpress project or exercise
-
-```
-USAGE
-  $ breathecode start:wordpress
-```
-
-_See code: [src/commands/start/wordpress.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.62/src/commands/start/wordpress.js)_
-
-### start:wordpress-project
-
-Start a new wordpress project
-
-```
-USAGE
-  $ breathecode start:wordpress-project
-
-OPTIONS
-  -m, --mode=mode  install a particular branch or version for the boilerplate
-  -n, --name=name  [default: hello-rigo] app name
-  -r, --root       install on the root directory
-```
-
-_See code: [src/commands/start/wordpress-project.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.62/src/commands/start/wordpress-project.js)_
-
-## start:wordpress-project
-
-Start a new wordpress project
-
-```
-USAGE
-  $ breathecode start:wordpress-project
-
-OPTIONS
-  -m, --mode=mode  install a particular branch or version for the boilerplate
-  -n, --name=name  [default: hello-rigo] app name
-  -r, --root       install on the root directory
-```
-
-_See code: [src/commands/start/wordpress-project.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.62/src/commands/start/wordpress-project.js)_
-
-## test:exercise
-
-Run a particular exercise in the browser
-
-```
-USAGE
-  $ breathecode test:exercise
-
-OPTIONS
-  -n, --number=number  number of the exercise
-```
-
-_See code: [src/commands/test/exercise.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.62/src/commands/test/exercise.js)_
+_See code: [src/commands/utils/todo.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.63/src/commands/utils/todo.js)_
 <!-- commandsstop -->

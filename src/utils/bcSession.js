@@ -18,7 +18,13 @@ module.exports = {
       return true;
     },
     getPayload: async function(){
-      const payload = await storage.getItem('bc-payload');
+      let payload = null;
+      try{
+         payload = await storage.getItem('bc-payload');
+      }
+      catch(err){
+        Console.debug("Error retriving session payload");
+      }
       return payload;
     },
     isActive: function(){

@@ -11,7 +11,7 @@ class SingleCommand extends Command {
       }
       else{
         Console.info(`Creating new ${flags.technology} project...`);
-        BashScripts.installBoilerplate(flags.technology);
+        BashScripts.downloadAndInstall('projects',flags.technology);
       }
   }
 }

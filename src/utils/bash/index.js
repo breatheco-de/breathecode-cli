@@ -7,26 +7,29 @@ var readlineSync = require('readline-sync')
 
 module.exports = {
     basePath: __dirname+`/scripts/`,
-    boilerplates: null,
+    boilerplates: {
+      projects: null,
+      exercises: null
+    },
     scripts: [],
     isValidScript(scriptName){
         if (this.scripts.find(s => s === (scriptName+'.js'))) return true
         else return false
     },
-    installBoilerplate(type, flags=null){
-        Console.log('Fetching boilerplates...')
-        fetch("https://breatheco-de.github.io/breathecode-cli/boilerplates.json")
+    downloadAndInstall(type, name, flags=null){
+        Console.debug('Fetching boilerplates...')
+        fetch(`https://breatheco-de.github.io/breathecode-cli/src/commands/start/${type}.json`)
         .then(response => {
             response.json().then(boilerplates => {
-                if (typeof(boilerplates[type]) === 'undefined') throw new Error('Invalid boilerplate: '+type)
+                if (typeof(boilerplates[name]) === 'undefined') throw new Error('Invalid project: '+name)
 
-                this.boilerplates = boilerplates
-                this.install(type, flags)
+                this.boilerplates[type] = boilerplates
+                this.install(type, name, flags)
 
             })
         })
         .catch(error => {
-            Console.error('There was a problem fetching from https://breatheco-de.github.io/breathecode-cli/boilerplates.json')
+            Console.error(`There was a problem fetching from https://breatheco-de.github.io/breathecode-cli/src/commands/start/${type}.json`)
             Console.fatal(error)
         })
 
@@ -38,7 +41,7 @@ module.exports = {
             })
         })
     },
-    install(projectType, flags=null){
+    install(type, name, flags=null){
 
         Console.startLoading()
         Console.log('Verifing git installation')
@@ -47,22 +50,22 @@ module.exports = {
           shell.exit(1)
         }
 
-        Console.log('Cloning from '+this.boilerplates[projectType].url)
+        Console.log('Cloning from '+this.boilerplates[type][name].url)
         if(flags && flags.mode){
-            if (shell.exec(`git clone -b ${flags.mode} ${this.boilerplates[projectType].url}`).code !== 0) {
+            if (shell.exec(`git clone -b ${flags.mode} ${this.boilerplates[type][name].url}`).code !== 0) {
               Console.fatal('Error: Installation failed')
               shell.exit(1)
             }
         }
         else{
-            if (shell.exec(`git clone ${this.boilerplates[projectType].url}`).code !== 0) {
+            if (shell.exec(`git clone ${this.boilerplates[type][name].url}`).code !== 0) {
               Console.fatal('Error: Installation failed')
               shell.exit(1)
             }
         }
 
         Console.log('Cleaning installation')
-        if (shell.exec(`rm -R -f ./${this.boilerplates[projectType].folder}/.git`).code !== 0) {
+        if (shell.exec(`rm -R -f ./${this.boilerplates[type][name].folder}/.git`).code !== 0) {
           Console.fatal('Error: removing .git directory')
           shell.exit(1)
         }
@@ -72,14 +75,14 @@ module.exports = {
         {
             Console.log('Moving to root')
 
-            const commands = [`mv ${this.boilerplates[projectType].folder}/* ./`,`mv ${this.boilerplates[projectType].folder}/.* ./`,`rmdir ${this.boilerplates[projectType].folder}/`]
+            const commands = [`mv ${this.boilerplates[type][name].folder}/* ./`,`mv ${this.boilerplates[type][name].folder}/.* ./`,`rmdir ${this.boilerplates[type][name].folder}/`]
 
             var cleanDir = readlineSync.question('This option will clear the entire folder. Continue? (y/n) ');
             cleanDir = cleanDir.toUpperCase();
 
             if(cleanDir === 'Y'){
 
-                shell.rm('-r', `!(${this.boilerplates[projectType].folder})`);
+                shell.rm('-r', `!(${this.boilerplates[type][name].folder})`);
 
                 commands.forEach((cmd) => {
                     if (shell.exec(cmd).code !== 0) warning = true
@@ -96,16 +99,16 @@ module.exports = {
             }
             else if (cleanDir === 'N'){
                 console.log(`Please clear this folder if you would like to use the -r option or create another empty directory. Cleaning files and exiting`);
-                shell.rm('-r', `${this.boilerplates[projectType].folder}`);
+                shell.rm('-r', `${this.boilerplates[type][name].folder}`);
             }
             else{
                 console.log(`${cleanDir} is not a valid option. Cleaning files and exiting.`);
-                shell.rm('-r', `${this.boilerplates[projectType].folder}`);
+                shell.rm('-r', `${this.boilerplates[type][name].folder}`);
             }
         }
         else{
             if(flags && flags.name){
-                const from = this.boilerplates[projectType].folder;
+                const from = this.boilerplates[type][name].folder;
                 const to = flags.name;
                 if (!shell.test('-d', flags.name)){
                     shell.mkdir('-p', flags.name)
@@ -117,7 +120,7 @@ module.exports = {
                 })
             }
         }
-        if (warning) Console.warning(`There seems to be and error when moving the files, make sure there is no ${this.boilerplates[projectType].folder} directory anymore`)
+        if (warning) Console.warning(`There seems to be and error when moving the files, make sure there is no ${this.boilerplates[type][name].folder} directory anymore`)
 
         Console.stopLoading()
         Console.success('Done')

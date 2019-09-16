@@ -1,0 +1,18 @@
+{
+    "react": {
+        "url": "https://github.com/4GeeksAcademy/react-exercises.git",
+        "folder": "react-exercises"
+    },
+    "dom": {
+        "url": "https://github.com/4GeeksAcademy/dom-exercises.git",
+        "folder": "dom-exercises"
+    },
+    "html": {
+        "url": "https://github.com/4GeeksAcademy/html-exercises.git",
+        "folder": "html-exercises"
+    },
+    "css": {
+        "url": "https://github.com/4GeeksAcademy/css-exercises.git",
+        "folder": "css-exercises"
+    }
+}

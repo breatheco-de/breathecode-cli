@@ -12,7 +12,7 @@ module.exports = async function({ files, config, port, address, socket, publicPa
 
     let entry = files.filter(f => f.path.indexOf('index.js') > -1 || f.path.indexOf('styles.css') > -1).map(f => './'+f.path);
 
-    const webpackConfigPath = path.resolve(__dirname,`../../config/webpack/${config.compiler}.config.js`);
+    const webpackConfigPath = path.resolve(__dirname,`../../config/builder/${config.compiler}.js`);
     if (!fs.existsSync(webpackConfigPath)){
       Console.error(`Uknown compiler: '${config.compiler}'`);
       socket.log('internal-error',[`Uknown compiler: '${config.compiler}'`]);

@@ -4,6 +4,7 @@ let session = require('../utils/bcSession')
 class SingleCommand extends Command {
   async run() {
     const { flags } = this.parse(SingleCommand);
+    Console.debugging(flags.debug);
 
     if(session.isActive()){
       Console.success(`You are already logged in with ${process.env.BC_STUDENT_EMAIL}`);
@@ -17,6 +18,7 @@ class SingleCommand extends Command {
 SingleCommand.description = 'Login to breathecode'
 SingleCommand.flags = {
  log: flags.boolean({char:'l', default:false, description: 'log scaned files on the console'}),
- type: flags.string({char:'t', default:'js', description: 'file extensions to look for', options: ['js', 'jsx', 'scss', 'css', 'md', 'html', 'py']})
+ type: flags.string({char:'t', default:'js', description: 'file extensions to look for', options: ['js', 'jsx', 'scss', 'css', 'md', 'html', 'py']}),
+ debug: flags.boolean({char: 'd', description: 'debugger mode fro more verbage', default: false })
 }
 module.exports = SingleCommand

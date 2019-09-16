@@ -18,7 +18,7 @@ class InstructionsCommand extends Command {
     var app = express();
     var server = require('http').Server(app);
 
-    Session.get().then(s => s && Console.info(`Hello ${s.payload.email}.`))
+    Session.get().then(s => s ? Console.info(`Hello ${s.payload.email}.`) : Console.debug("No active session available"));
 
     const download = require('../../utils/bcDownloader.js');
     await download('https://raw.githubusercontent.com/breatheco-de/breathecode-ide/master/dist/app.tar.gz', './_app/app.tar.gz');

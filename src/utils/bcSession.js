@@ -6,18 +6,20 @@ const v = require('validator');
 const { ValidationError } = require('./errors');
 const moment = require('moment');
 
+const storage = require('node-persist');
+storage.init();
+
 module.exports = {
     token: null,
     currentCohort: { slug: null, current_day: null },
-    setPayload(value){
-      const payload = Buffer.from(JSON.stringify(value)).toString('base64');
-      shell.env["BC_PAYLOAD"] = payload;
+    setPayload: async function(value){
+      await storage.setItem('bc-payload', value);
       Console.debug("Payload successfuly found and set for "+value.email);
       return true;
     },
-    getPayload(){
-      if(shell.env["BC_PAYLOAD"]) return JSON.parse(Buffer.from(shell.env["BC_PAYLOAD"], 'base64').toString('ascii'));
-      else return null;
+    getPayload: async function(){
+      const payload = await storage.getItem('bc-payload');
+      return payload;
     },
     isActive: function(){
       if(this.token) return true;
@@ -29,7 +31,7 @@ module.exports = {
       return {
         token: this.token,
         currentCohort: this.currentCohort,
-        payload: this.getPayload()
+        payload: await this.getPayload()
       };
     },
     login: async function(){
@@ -58,9 +60,21 @@ module.exports = {
 
             this.start({ token: data.assets_token, payload: data });
           }
-          else if(resp.status === 400){
+          else if(resp.status >= 400){
             const error = await resp.json();
-            Console.info(error.msg);
+            if(error.msg){
+              let m = /\{"code":(\d{3}),"msg":"(.*)"\}/gm.exec(error.msg);
+              if(m) Console.error(m[2]);
+              else{
+                let m = /"error_description":"(.*)"/gm.exec(error.msg);
+                if(m) Console.error(m[1]);
+                else{
+                  Console.error('Uknown Error');
+                  Console.debug(error.msg);
+                }
+              }
+            }
+            else Console.error(error.error_description || error.message || error);
           }
           else Console.debug(`Error ${resp.status}: `, await resp.json().msg);
         }
@@ -71,9 +85,10 @@ module.exports = {
 
     },
     sync: async function(){
-      if(shell.env["BC_ASSETS_TOKEN"]){
-        this.start({ token: shell.env["BC_ASSETS_TOKEN"] });
-        if(!this.getPayload()){
+      const payload = await this.getPayload();
+      if(payload) this.token = payload.assets_token;
+      else if(shell.env["BC_ASSETS_TOKEN"]){
+          this.token = shell.env["BC_ASSETS_TOKEN"];
           Console.debug("Retriving student information from API...");
           let url = 'https://assets.breatheco.de/apis/credentials';
           const resp = await fetch(url+`/me?access_token=${this.token}`);
@@ -84,27 +99,24 @@ module.exports = {
                 return moment().isBetween(c['kickoff_date'], c['ending_date']);
             });
             this.currentCohort = currentCohorts.length === 1 ? currentCohorts[0] : currentCohorts.length > 1 ? currentCohorts.pop() : null;
-            this.setPayload(data);
+            await this.setPayload(data);
           }
           else if(resp.status === 400){
             const error = await resp.json();
             Console.info(error.msg);
           }
           else Console.debug(`Error ${resp.status}: `, await resp.text());
-
-        }
       }
     },
-    start: function({ token, payload=null }){
-      if(!token && !email) throw new Error("A token and email is needed to start a session");
-
+    start: async function({ token, payload=null }){
+      if(!token) throw new Error("A token and email is needed to start a session");
       shell.env["BC_ASSETS_TOKEN"] = token;
       this.token = token;
-      if(payload) this.setPayload(payload);
+      if(payload) if(await this.setPayload(payload)) Console.success(`Successfully logged in as ${payload.email}`);
     },
-    destroy: function(){
+    destroy: async function(){
         shell.env["BC_ASSETS_TOKEN"] = null;
-        shell.env["BC_PAYLOAD"] = null;
+        await storage.clear();
         this.token = token;
         this.currentCohort = { slug: null, current_day: null };
         Console.success('You have logged out');

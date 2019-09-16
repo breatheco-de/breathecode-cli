@@ -44,7 +44,7 @@ $ npm install -g breathecode-cli
 $ breathecode COMMAND
 running command...
 $ breathecode (-v|--version|version)
-breathecode-cli/1.1.63 linux-x64 node-v10.15.3
+breathecode-cli/1.1.64 linux-x64 node-v10.15.3
 $ breathecode --help [COMMAND]
 USAGE
   $ breathecode COMMAND
@@ -54,6 +54,7 @@ USAGE
 <!-- commands -->
 # Commands
 
+* [breathecode create:exercises](#createexercises)
 * [breathecode help [COMMAND]](#help-command)
 * [breathecode login](#login)
 * [breathecode run:exercises](#runexercises)
@@ -61,6 +62,20 @@ USAGE
 * [breathecode start:exercises](#startexercises)
 * [breathecode start:project](#startproject)
 * [breathecode utils:todo](#utilstodo)
+## create:exercises
+
+Initialize the boilerplate for creating exercises
+
+```
+USAGE
+  $ breathecode create:exercises
+
+OPTIONS
+  -c, --compiler=compiler  specify what compiler you want: [react, vanilajs, node, python]
+```
+
+_See code: [src/commands/create/exercises.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.64/src/commands/create/exercises.js)_
+
 ## help [COMMAND]
 
 display help for breathecode
@@ -87,11 +102,12 @@ USAGE
   $ breathecode login
 
 OPTIONS
+  -d, --debug                            debugger mode fro more verbage
   -l, --log                              log scaned files on the console
   -t, --type=js|jsx|scss|css|md|html|py  [default: js] file extensions to look for
 ```
 
-_See code: [src/commands/login.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.63/src/commands/login.js)_
+_See code: [src/commands/login.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.64/src/commands/login.js)_
 
 ## run:exercises
 
@@ -108,7 +124,7 @@ OPTIONS
   -p, --port=port  [default: 8080] server port
 ```
 
-_See code: [src/commands/run/exercises.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.63/src/commands/run/exercises.js)_
+_See code: [src/commands/run/exercises.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.64/src/commands/run/exercises.js)_
 
 ## run:server
 
@@ -125,21 +141,24 @@ OPTIONS
   -p, --port=port          [default: 8080] server port
 ```
 
-_See code: [src/commands/run/server.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.63/src/commands/run/server.js)_
+_See code: [src/commands/run/server.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.64/src/commands/run/server.js)_
 
 ## start:exercises
 
-Initialize the boilerplate for creating exercises
+Start a new project using a boilerplate
 
 ```
 USAGE
   $ breathecode start:exercises
 
 OPTIONS
-  -c, --compiler=compiler  specify what compiler you want: [react, vanilajs]
+  -m, --mode=mode              install a particular branch or version for the boilerplate
+  -n, --name=name              [default: hello-rigo] app folder name
+  -r, --root                   install on the root directory
+  -t, --technology=technology  technology, e.g: [dom,html,css,react,python-lists,python-beginner,etc].
 ```
 
-_See code: [src/commands/start/exercises.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.63/src/commands/start/exercises.js)_
+_See code: [src/commands/start/exercises.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.64/src/commands/start/exercises.js)_
 
 ## start:project
 
@@ -156,7 +175,7 @@ OPTIONS
   -t, --technology=technology  technology, e.g: [flask,django,react,flux,vanillajs,wordpress,etc].
 ```
 
-_See code: [src/commands/start/project.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.63/src/commands/start/project.js)_
+_See code: [src/commands/start/project.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.64/src/commands/start/project.js)_
 
 ## utils:todo
 
@@ -171,5 +190,5 @@ OPTIONS
   -t, --type=js|jsx|scss|css|md|html|py  [default: js] file extensions to look for
 ```
 
-_See code: [src/commands/utils/todo.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.63/src/commands/utils/todo.js)_
+_See code: [src/commands/utils/todo.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.64/src/commands/utils/todo.js)_
 <!-- commandsstop -->

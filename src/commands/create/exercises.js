@@ -21,13 +21,16 @@ class StartExercisesComand extends Command {
       }
 
       fs.readdir('./', function(err, files) {
+          files = files.filter(f => f !== '.node-persist');
           if (err) {
-            Console.error(`The directory must be empty to start creating the exercises`);
+            Console.error(err.message);
           } else {
             if (!files.length) {
                 fs.writeFileSync('./bc.json', JSON.stringify({
                   compiler: flags.compiler
                 }, null, 2));
+
+                fs.writeFileSync('./.gitignore', fs.readFileSync(path.resolve(__dirname,'./gitignore.txt')));
 
                 if (!fs.existsSync('./exercises')){
                     fs.mkdirSync('./exercises');
@@ -39,7 +42,7 @@ class StartExercisesComand extends Command {
 
                 fs.writeFileSync('./exercises/01-hello-world/README.md', "# Hello World \n \n Type here your exercise instructions");
             }
-            else Console.error(`The directory must be empty in order to start creating the exercises`);
+            else Console.error(`The directory must be empty in order to start creating the exercises: ${files.join(',')}`);
           }
       });
   }

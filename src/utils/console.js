@@ -5,6 +5,10 @@ class Console {
         this.loading = null;
         this._debug = debug;
     }
+    debugging(debug){
+      this._debug = debug;
+      if(debug) this.debug("Debug mode activated");
+    }
     log(msg){
         if (typeof(msg) ==='string') return this.__print(`\u{0020}\u{2794} ${msg}`)
         else if (typeof(msg) === 'object'){
@@ -60,7 +64,7 @@ class Console {
         if (this.loading) clearInterval(this.loading)
     }
     debug(...args){
-        this._debug && console.log(args);
+        this._debug && console.log(`${'\u{0020}⚠ debug:'.bgYellow.white.bold}`, args);
     }
 }
-module.exports = new Console({ debug: true })
+module.exports = new Console({ debug: process.env.DEBUG == 'true' })

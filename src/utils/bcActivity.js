@@ -26,14 +26,14 @@ module.exports = {
     },
     error: async function(slug, { details, framework, language, message, name, builder, data }){
         const s = await session.get();
-        if(!s) return;
+        if(!s || !s.payload) return;
 
         try{
           let url = 'https://assets.breatheco.de/apis/activity';
 
           const body = {
               slug,
-              username: s.email,
+              username: s.payload.email,
               severity: 0,
               details,
               builder,
@@ -46,7 +46,6 @@ module.exports = {
               cohort: s.currentCohort.slug,
               day: s.currentCohort.current_day
             };
-          Console.debug("body: ", body);
           const resp = await fetch(url+'/coding_error', {
             body: JSON.stringify(body),
             headers: { "Authorization": "JSW "+s.token,  "Content-Type": "Application/JSON" },
@@ -54,6 +53,7 @@ module.exports = {
           });
 
           if(resp.status != 200) Console.debug(`Error ${resp.status}: `, await resp.text());
+          else Console.debug(`Saving coding error ${language} -> ${name} for ${s.payload.email}`);
         }
         catch(err){
           Console.error(err.message);

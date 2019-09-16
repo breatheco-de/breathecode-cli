@@ -8,11 +8,11 @@ const moment = require('moment');
 
 module.exports = {
     token: null,
-    email: null,
     currentCohort: { slug: null, current_day: null },
     setPayload(value){
       const payload = Buffer.from(JSON.stringify(value)).toString('base64');
       shell.env["BC_PAYLOAD"] = payload;
+      Console.debug("Payload successfuly found and set for "+value.email);
       return true;
     },
     getPayload(){
@@ -20,7 +20,7 @@ module.exports = {
       else return null;
     },
     isActive: function(){
-      if(this.token && this.email) return true;
+      if(this.token) return true;
       else return false;
     },
     get: async function(){
@@ -28,7 +28,6 @@ module.exports = {
       if(!this.isActive()) return null;
       return {
         token: this.token,
-        email: this.email,
         currentCohort: this.currentCohort,
         payload: this.getPayload()
       };
@@ -57,7 +56,7 @@ module.exports = {
 
             this.currentCohort = currentCohorts.length === 1 ? currentCohorts[0] : currentCohorts.length > 1 ? currentCohorts.pop() : null;
 
-            this.start({ token: data.assets_token, email: data.email, payload: data });
+            this.start({ token: data.assets_token, payload: data });
           }
           else if(resp.status === 400){
             const error = await resp.json();
@@ -72,10 +71,10 @@ module.exports = {
 
     },
     sync: async function(){
-      if(shell.env["BC_ASSETS_TOKEN"] && shell.env["BC_STUDENT_EMAIL"]){
-        this.start({ token: shell.env["BC_ASSETS_TOKEN"], email: shell.env["BC_STUDENT_EMAIL"] });
+      if(shell.env["BC_ASSETS_TOKEN"]){
+        this.start({ token: shell.env["BC_ASSETS_TOKEN"] });
         if(!this.getPayload()){
-
+          Console.debug("Retriving student information from API...");
           let url = 'https://assets.breatheco.de/apis/credentials';
           const resp = await fetch(url+`/me?access_token=${this.token}`);
           if(resp.status === 200){
@@ -96,26 +95,18 @@ module.exports = {
         }
       }
     },
-    start: function({ token, email, payload=null }){
+    start: function({ token, payload=null }){
       if(!token && !email) throw new Error("A token and email is needed to start a session");
 
       shell.env["BC_ASSETS_TOKEN"] = token;
-      shell.env["BC_STUDENT_EMAIL"] = email;
       this.token = token;
-      this.email = email;
       if(payload) this.setPayload(payload);
-
-      Console.success(`Hello ${this.email} you have successfully logged in.`);
     },
     destroy: function(){
-      if (shell.exec(`unset BC_ASSETS_TOKEN && unset BC_STUDENT_EMAIL && unset BC_PAYLOAD`).code !== 0){
-        Console.error("There was an error destroying the session");
-        shell.exit(1)
-      }
-      else{
+        shell.env["BC_ASSETS_TOKEN"] = null;
+        shell.env["BC_PAYLOAD"] = null;
         this.token = token;
-        this.email = email;
         this.currentCohort = { slug: null, current_day: null };
-      }
+        Console.success('You have logged out');
     }
 };

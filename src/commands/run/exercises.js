@@ -6,14 +6,19 @@ const bcConfig = require('../../utils/bcConfig.js');
 const socket = require('../../utils/bcSocket.js');
 const bcPrettier = require('../../utils/bcPrettier.js');
 const bcTest = require('../../utils/bcTest.js');
+const Session = require('../../utils/bcSession.js');
 var bodyParser = require('body-parser');
 
 class InstructionsCommand extends Command {
   async run() {
     const {flags} = this.parse(InstructionsCommand);
 
+    Console.debugging(flags.debug);
+
     var app = express();
     var server = require('http').Server(app);
+
+    Session.get().then(s => s && Console.info(`Hello ${s.payload.email}.`))
 
     const download = require('../../utils/bcDownloader.js');
     await download('https://raw.githubusercontent.com/breatheco-de/breathecode-ide/master/dist/app.tar.gz', './_app/app.tar.gz');
@@ -123,6 +128,7 @@ InstructionsCommand.description = `Runs a small server with all the exercise ins
 InstructionsCommand.flags = {
   port: flags.string({char: 'p', description: 'server port', default: '8080' }),
   host: flags.string({char: 'h', description: 'server host', default: process.env.IP || 'localhost' }),
-  output: flags.boolean({char: 'o', description: 'show build output on console', default: false })
+  output: flags.boolean({char: 'o', description: 'show build output on console', default: false }),
+  debug: flags.boolean({char: 'd', description: 'debugger mode fro more verbage', default: false })
 };
 module.exports = InstructionsCommand;

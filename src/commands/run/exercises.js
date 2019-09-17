@@ -1,12 +1,12 @@
 const {Command, flags} = require('@oclif/command');
 let Console = require('../../utils/console');
 var express = require('express');
-const fs = require('fs');
 const bcConfig = require('../../utils/bcConfig.js');
 const socket = require('../../utils/bcSocket.js');
 const bcPrettier = require('../../utils/bcPrettier.js');
 const bcTest = require('../../utils/bcTest.js');
 const Session = require('../../utils/bcSession.js');
+const Gitpod = require('../../utils/bcGitpod.js');
 var bodyParser = require('body-parser');
 
 class InstructionsCommand extends Command {
@@ -85,6 +85,11 @@ class InstructionsCommand extends Command {
     });
 
     socket.start(config, server);
+    socket.on("gitpod-open", (data) => {
+      Console.debug("Opening these files on gitpod: ", data);
+      Gitpod.openFile(data.files);
+    });
+
     socket.on("build", (data) => {
         const builder = require('../../utils/config/builder/'+config.builder+'.js');
         socket.log('compiling',['Building exercise '+data.exerciseSlug]);

@@ -60,6 +60,12 @@ class Console {
         x &= 3
       }, 250)
     }
+    clean(){
+        var lines = process.stdout.getWindowSize()[1];
+        for(var i = 0; i < lines; i++) {
+            console.log('\r\n');
+        }
+    }
     stopLoading(){
         if (this.loading) clearInterval(this.loading)
     }

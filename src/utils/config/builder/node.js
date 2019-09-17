@@ -30,10 +30,13 @@ module.exports = async function({ files, socket }){
                 name: null,
                 builder: 'breathecode-cli'
               });
+              console.log(cleanStdout(result.stdout, count), result.stderr);
+              Console.error("There was an error");
             }
             else{
-              Console.success("Compiled without errors");
               socket.log('compiler-success',[ cleanStdout(result.stdout, count) ]);
+              Console.clean();
+              console.log(cleanStdout(result.stdout));
             }
             // else if(stats.hasWarnings()) status = 'compiler-warning';
         })

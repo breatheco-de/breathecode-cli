@@ -57,7 +57,7 @@ module.exports = (filePath, { mode, editor }) => {
         },
         getFile: (slug, name) => {
             const exercise = config.exercises.find(ex => ex.slug == slug);
-            if (!exercise) throw Error('Exercise not found');
+            if (!exercise) throw Error(`Exercise ${slug} not found`);
             const basePath = exercise.path;
             if (!fs.existsSync(basePath+'/'+name)) throw Error('File not found: '+basePath+'/'+name);
             else if(fs.lstatSync(basePath+'/'+name).isDirectory()) return 'Error: This is not a file to be read, but a directory: '+basePath+'/'+name;

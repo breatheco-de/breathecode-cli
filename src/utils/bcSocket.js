@@ -29,7 +29,7 @@ module.exports = {
         this.lang = config.compiler;
         this.socket = connect(server);
         this.socket.on('connection', (socket) => {
-          Console.info("Conection with client successfully established");
+          Console.debug("Connection with client successfully established");
           this.log('ready',['Ready to compile...']);
 
           socket.on('compiler', ({action, data}) => {

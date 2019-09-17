@@ -85,14 +85,20 @@ module.exports = async function({ files, config, port, address, socket, publicPa
         });
         if(stats.hasErrors()){
           socket.log('compiler-error',[ output ]);
+          console.log(output);
+          Console.error("There are some errors in your code");
         }
         else if(stats.hasWarnings()){
           socket.addAllowed('preview');
           socket.log('compiler-warning',[ output ]);
+          console.log(output);
+          Console.warning("Your code compiled successfully but with some warnings");
         }
         else{
           socket.addAllowed('preview');
           socket.log('compiler-success',[ output ]);
+          console.log(output);
+          Console.success("Successfully built");
         }
 
     });

@@ -10,7 +10,7 @@ module.exports = async function({ files, socket }){
     socket.log('compiling',['Compiling...']);
 
     let entryPath = files.map(f => './'+f.path).find(f => f.indexOf('app.py') > -1);
-
+    Console.info(`Compiling ${entryPath}...`);
     const content = fs.readFileSync(entryPath, "utf8");
     const count = getInputs(/input\((?:["'`]{1}(.*)["'`]{1})?\)/gm, content);
     let inputs = (count.length == 0) ? [] : await socket.ask(count);
@@ -30,11 +30,13 @@ module.exports = async function({ files, socket }){
                 data: entryPath,
                 builder: 'breathecode-cli'
               });
-
+              console.log(cleanStdout(result.stdout, count), result.stderr);
+              Console.error("There was an error");
             }
             else{
-              Console.success("Compiled without errors");
               socket.log('compiler-success', [ cleanStdout(result.stdout, count) ]);
+              Console.clean();
+              console.log(result.stdout);
             }
         })
         .catch(err => {

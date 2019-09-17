@@ -4,8 +4,13 @@ Previous an upcoming changes to the BreatheCode CLI.
 
 ### Version 1.5
 
-- [ ] The `node` and `python` compilers need to be able to accept user promts from the compand line, we could integrate with [npm prompts](https://www.npmjs.com/package/prompts).
-- [ ] Support Integration with BreatheCode API thru env variable.
+- [x] The `node` and `python` compilers need to be able to accept user promts from the compand line, we could integrate with [npm prompts](https://www.npmjs.com/package/prompts).
+- [x] Support Integration with BreatheCode API thru env variable.
+
+### Version 1.7
+
+- Added support for `input()` (python) or `prompt()` (node) to access inputs on the exercises.
+- Added support for gitpod.io using the -editor=gitpod flag
 
 ### Exercises being developed
 

@@ -25,8 +25,8 @@ module.exports = {
             s.logs = [];
         }
     },
-    start: function(language, server){
-        this.lang = language;
+    start: function(config, server){
+        this.lang = config.compiler;
         this.socket = connect(server);
         this.socket.on('connection', (socket) => {
           Console.info("Conection with client successfully established");

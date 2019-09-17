@@ -15,25 +15,32 @@ class InstructionsCommand extends Command {
 
     Console.debugging(flags.debug);
 
+    Console.info("Loading the configuration for the exercises.");
+    var exercises = bcConfig('./', { mode: flags.mode, editor: flags.editor });
+    Console.info("Building the exercise index...");
+    exercises.buildIndex();
+    var config = exercises.getConfig();
+
+    Console.info(`Compiler: ${config.compiler}, mode: ${config.mode}, editor: ${config.editor}, for ${Array.isArray(config.exercises) ? config.exercises.length : 0} exercises found`);
+
     var app = express();
     var server = require('http').Server(app);
 
     Session.get().then(s => s ? Console.info(`Hello ${s.payload.email}.`) : Console.debug("No active session available"));
 
     const download = require('../../utils/bcDownloader.js');
-    await download('https://raw.githubusercontent.com/breatheco-de/breathecode-ide/master/dist/app.tar.gz', './_app/app.tar.gz');
+    await download('https://raw.githubusercontent.com/breatheco-de/breathecode-ide/master/dist/app.tar.gz', './.breathecode/_app/app.tar.gz');
 
-    Console.info("Loading the configuration for the exercises.");
-    var exercises = bcConfig('./');
-    Console.info("Building the exercise index...");
-    exercises.buildIndex();
-    var config = exercises.getConfig();
 
     app.use(function(req, res, next) {
       res.header("Access-Control-Allow-Origin", "*");
       res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
       res.header("Access-Control-Allow-Methods", "GET,PUT");
       next();
+    });
+
+    app.get('/config', function (req, res) {
+        res.json(config);
     });
 
     app.get('/exercise', function (req, res) {
@@ -71,13 +78,13 @@ class InstructionsCommand extends Command {
     });
 
     app.use('/preview',express.static('dist'));
-    app.use('/',express.static('_app'));
+    app.use('/',express.static('.breathecode/_app'));
 
     server.listen( flags.port, function () {
       Console.success("Exercises are running 😃 Open your browser to start practicing!")
     });
 
-    socket.start(config.compiler, server);
+    socket.start(config, server);
     socket.on("build", (data) => {
         const builder = require('../../utils/config/builder/'+config.builder+'.js');
         socket.log('compiling',['Building exercise '+data.exerciseSlug]);
@@ -129,6 +136,8 @@ InstructionsCommand.flags = {
   port: flags.string({char: 'p', description: 'server port', default: '8080' }),
   host: flags.string({char: 'h', description: 'server host', default: process.env.IP || 'localhost' }),
   output: flags.boolean({char: 'o', description: 'show build output on console', default: false }),
-  debug: flags.boolean({char: 'd', description: 'debugger mode fro more verbage', default: false })
+  debug: flags.boolean({char: 'd', description: 'debugger mode fro more verbage', default: false }),
+  editor: flags.string({ char: 'e', description: '[standalone, gitpod]', options: ['standalone', 'gitpod'], default: 'standalone' }),
+  mode: flags.string({ char: 'm', description: '[exercises, tutorial]', options: ['exercises', 'tutorial'], default: 'exercises' }),
 };
 module.exports = InstructionsCommand;

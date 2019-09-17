@@ -5,19 +5,27 @@ const readlineSync = require('readline-sync');
 const v = require('validator');
 const { ValidationError } = require('./errors');
 const moment = require('moment');
-
 const storage = require('node-persist');
-storage.init();
 
 module.exports = {
+    sessionStarted: false,
     token: null,
     currentCohort: { slug: null, current_day: null },
+    initialize: async function(){
+      if(!this.sessionStarted){
+        await storage.init({ dir: '.breathecode/.session'});
+        this.sessionStarted = true;
+      }
+
+    },
     setPayload: async function(value){
+      await this.initialize();
       await storage.setItem('bc-payload', value);
       Console.debug("Payload successfuly found and set for "+value.email);
       return true;
     },
     getPayload: async function(){
+      await this.initialize();
       let payload = null;
       try{
          payload = await storage.getItem('bc-payload');

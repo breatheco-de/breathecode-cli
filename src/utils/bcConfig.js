@@ -26,18 +26,19 @@ const _defaults = {
   }
 }
 
-module.exports = (filePath) => {
+module.exports = (filePath, { mode, editor }) => {
 
-    if (!fs.existsSync(filePath+'bc.json')) throw Error('Imposible to load bc.json, make sure you have a ./bc.json file on your current path');
-    if (!fs.existsSync(filePath+'exercises')) throw Error('Imposible to exercises folder, make sure you have an exercises folder on your current path');
+    const confPath = (fs.existsSync(filePath+'bc.json')) ? './bc.json' : (fs.existsSync(filePath+'./.bc.json')) ? './.bc.json' : (fs.existsSync(filePath+'.breathecode/.bc.json')) ? '.breathecode/.bc.json' : '.breathecode/bc.json';
+    const exercisesPath = mode === "exercises" ? filePath+'exercises' : filePath+'.breathecode/exercises';
 
-    const bcContent = fs.readFileSync('./bc.json');
+    if (!fs.existsSync(confPath)) throw Error('Imposible to load bc.json, make sure you have a ./bc.json file in the current directory or inside a .breathecode folder on the current directory');
+    if (!fs.existsSync(exercisesPath))  throw Error(`You are running on ${mode} mode, so make sure you have an exercises folder on ${exercisesPath}`);
+
+    const bcContent = fs.readFileSync(confPath);
     let config = JSON.parse(bcContent);
     let defaults = _defaults[config.compiler];
-    config = { ...config, ...defaults };
-    if(!config) throw Error('Invalid bc.json syntax: Unable to parse.');
-
-    Console.info(`Compiler: ${config.compiler} for ${Array.isArray(config.exercises) ? config.exercises.length : 0} exercises found`);
+    config = { ...config, ...defaults, mode, editor, exercisesPath };
+    if(!config) throw Error(`Invalid ${confPath} syntax: Unable to parse.`);
 
     return {
         getConfig: () => config,
@@ -111,9 +112,10 @@ module.exports = (filePath) => {
         buildIndex: () => {
             const isDirectory = source => fs.lstatSync(source).isDirectory();
             const getDirectories = source => fs.readdirSync(source).map(name => path.join(source, name)).filter(isDirectory);
+            if (!fs.existsSync('./.breathecode')) fs.mkdirSync('./.breathecode');
 
             // TODO we could use npm library front-mater to read the title of the exercises from the README.md
-            config.exercises = getDirectories(filePath+'exercises').map(ex => ({ slug: ex.replace('exercises/',''), title: ex.replace('exercises/',''), path: ex}));
+            config.exercises = getDirectories(exercisesPath).map(ex => ({ slug: ex.substring(ex.indexOf('exercises/')+10), title: ex.substring(ex.indexOf('exercises/')+10), path: ex}));
             config.exercises.forEach(d => {
                 if(!validateExerciseDirectoryName(d.slug)){
                     Console.error('Exercise directory "'+d.slug+'" has an invalid name, it has to start with two digits followed by words separated by underscors or hyphen (no white spaces). e.g: 01.12-hello-world');
@@ -123,7 +125,7 @@ module.exports = (filePath) => {
             });
 
             return {
-                write: (callback) => fs.writeFile(filePath+'bc.json', JSON.stringify(config, null, 4), callback)
+                write: (callback) => fs.writeFile(confPath, JSON.stringify(config, null, 4), callback)
             };
         }
     };

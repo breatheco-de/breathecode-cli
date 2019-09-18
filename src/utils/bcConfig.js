@@ -1,32 +1,14 @@
 const path = require('path');
 const fs = require('fs');
 let Console = require('./console');
+let _defaults = require('./config/compiler/_defaults.js');
 /* exercise folder name standard */
 const validateExerciseDirectoryName = (str) => {
     const regex = /^\d{2,2}(?:\.\d{1,2}?)?-[a-zA-z](?:-|_?[a-zA-z]*)*$/;
     return regex.test(str);
 };
 
-const _defaults = {
-  "vanillajs": {
-    builder: "webpack",
-    tester: "jest"
-  },
-  "react": {
-    builder: "webpack",
-    tester: "jest"
-  },
-  "python3": {
-    builder: "python3",
-    tester: "pytest"
-  },
-  "node": {
-    builder: "node",
-    tester: "jest"
-  }
-}
-
-module.exports = (filePath, { mode, editor }) => {
+module.exports = (filePath, { mode, editor, language }) => {
 
     const confPath = (fs.existsSync(filePath+'bc.json')) ? './bc.json' : (fs.existsSync(filePath+'./.bc.json')) ? './.bc.json' : (fs.existsSync(filePath+'.breathecode/.bc.json')) ? '.breathecode/.bc.json' : '.breathecode/bc.json';
     const exercisesPath = mode === "exercises" ? filePath+'exercises' : filePath+'.breathecode/exercises';
@@ -36,8 +18,9 @@ module.exports = (filePath, { mode, editor }) => {
 
     const bcContent = fs.readFileSync(confPath);
     let config = JSON.parse(bcContent);
-    let defaults = _defaults[config.compiler];
+    let defaults = _defaults[config.language || config.compiler];
     config = { ...config, ...defaults, mode, editor, exercisesPath };
+
     if(!config) throw Error(`Invalid ${confPath} syntax: Unable to parse.`);
 
     return {
@@ -82,8 +65,14 @@ module.exports = (filePath, { mode, editor }) => {
             const getFiles = source => fs.readdirSync(source)
                                         .map(file => ({ path: source+'/'+file, name: file}))
                                             // TODO: we could implement some way for teachers to hide files from the developer, like putting on the name index.hidden.js
-                                            .filter(file => (file.name.indexOf('test.') == -1 && file.name.indexOf('tests.') == -1 && file.name != 'README.md' && !isDirectory(file.path) && file.name.indexOf('_') != 0)) // hide directories, readmes and tests
-                                                .sort((f1, f2) => {
+                                            .filter(file =>
+                                                // ignore tests files
+                                                (file.name.indexOf('test.') == -1 && file.name.indexOf('tests.') == -1 &&
+                                                //readmes and directories
+                                                file.name != 'README.md' && !isDirectory(file.path) && file.name.indexOf('_') != 0) &&
+                                                //ignore javascript files when using vanillajs compiler
+                                                (!config.ignoreRegex || !config.ignoreRegex.exec(file.name))
+                                                ).sort((f1, f2) => {
                                                     const score = { //sorting priority
                                                       "index.html": 1,
                                                       "styles.css": 2,

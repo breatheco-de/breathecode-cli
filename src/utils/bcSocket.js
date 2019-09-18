@@ -6,27 +6,22 @@ const allActions = ['build', 'prettify', 'test', 'run'];
 const status = ['prettifying', 'testing', 'compiling'];
 module.exports = {
     socket: null,
-    lang: null,
-    allowed: {
-        python3: ['run', 'test'],
-        python: ['run', 'test'],
-        vanillajs: ['build', 'test'],
-        react: ['build', 'test'],
-        node: ['run', 'test']
-    },
-    addAllowed: function(action){
-        this.allowed[this.lang].push(action);
-    },
-    removeAllowed: function(action){
-        this.allowed[this.lang] = this.allowed[this.lang].filter(a => a !== action);
-    },
+    config: null,
+    allowedActions: null,
     actionCallBacks: {
         clean: (data, s) => {
             s.logs = [];
         }
     },
+    addAllowed: function(action){
+        this.allowedActions.push(action);
+    },
+    removeAllowed: function(action){
+        this.allowedActions = this.allowedActions.filter(a => a !== action);
+    },
     start: function(config, server){
-        this.lang = config.compiler;
+        this.config = config;
+        this.allowedActions = config.actions;
         this.socket = connect(server);
         this.socket.on('connection', (socket) => {
           Console.debug("Connection with client successfully established");
@@ -65,6 +60,13 @@ module.exports = {
       this.emit('log',status,messages);
     },
     emit: function(action, status, logs, inputs=[]){
-        this.socket.emit('compiler', { action, status, logs, allowed: this.allowed[this.lang], inputs });
+
+      if(this.config.compiler === 'webpack'){
+        if(['compiler-success', 'compiler-warning'].includes(status)) this.addAllowed('preview');
+        if(['compiler-error'].includes(status) || action == 'ready') this.removeAllowed('preview');
+      }
+
+
+        this.socket.emit('compiler', { action, status, logs, allowed: this.config.actions, inputs });
     }
 };

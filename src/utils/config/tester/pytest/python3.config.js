@@ -2,7 +2,7 @@ const fs = require('fs');
 let shell = require('shelljs');
 const indentString = require('indent-string');
 const path = require('path');
-const { getInputs, cleanStdout } = require('../../builder/_utils.js');
+const { getInputs, cleanStdout } = require('../../compiler/_utils.js');
 
 module.exports = (files) => ({
   config: {

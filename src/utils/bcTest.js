@@ -5,10 +5,10 @@ let Console = require('./console');
 
 module.exports = function({ socket, files, config }){
 
-    const configPath = path.resolve(__dirname,`./config/tester/${config.tester}/${config.compiler}.config.js`);
+    const configPath = path.resolve(__dirname,`./config/tester/${config.tester}/${config.language}.config.js`);
     if (!fs.existsSync(configPath)){
-      Console.error(`No testing engine has been found for: '${config.compiler}'`);
-      socket.log('internal-error', [`Uknown testing engine for compiler: '${config.compiler}'`]);
+      Console.error(`No testing engine has been found for: '${config.language}'`);
+      socket.log('internal-error', [`Uknown testing engine for compiler: '${config.language}'`]);
       return;
     }
 

@@ -24,7 +24,7 @@ module.exports = {
         }
 
     },
-    error: async function(slug, { details, framework, language, message, name, builder, data }){
+    error: async function(slug, { details, framework, language, message, name, compiler, data }){
         const s = await session.get();
         if(!s || !s.payload) return;
 
@@ -36,7 +36,7 @@ module.exports = {
               username: s.payload.email,
               severity: 0,
               details,
-              builder,
+              builder: compiler,
               framework,
               language,
               message,

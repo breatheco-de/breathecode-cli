@@ -2,17 +2,16 @@ let shell = require('shelljs');
 const path = require('path');
 const fs = require('fs');
 const nodeModulesPath = path.resolve(__dirname, '../../../../../node_modules');
-const babelTransformPath = require.resolve('./babelTransform.node.js');
-const { getInputs, cleanStdout } = require('../../compiler/_utils.js');
+const babelTransformPath = require.resolve('./babelTransform.vanillajs.js');
 
 module.exports = (files) => ({
   config: {
       verbose: true,
       moduleDirectories: [nodeModulesPath],
+      prettierPath: nodeModulesPath+'/prettier',
       transform: {
         "^.+\\.js?$": babelTransformPath
-      },
-      globalSetup: path.resolve(__dirname, './_node_lib.js')
+      }
   },
   validate: ()=>{
     if (!fs.existsSync(nodeModulesPath+'/prettier')) throw new Error(`Uknown prettier path`);
@@ -30,13 +29,7 @@ module.exports = (files) => ({
     return testsPath;
   },
   getCommand: async function(socket){
-
-    const appPath = files.map(f => './'+f.path).find(f => f.indexOf('app.js') > -1);
-    const content = fs.readFileSync(appPath, "utf8");
-    const count = getInputs(/prompt\((?:["'`]{1}(.*)["'`]{1})?\)/gm, content);
-    let answers = (count.length == 0) ? [] : await socket.ask(count);
-
-    return `jest --config '${JSON.stringify({ ...this.config, globals: { __stdin: answers }, testRegex: this.getEntryPath() })}' --colors`
+    return `jest --config '${JSON.stringify({ ...this.config, testRegex: this.getEntryPath() })}' --colors`
   }
 
 });

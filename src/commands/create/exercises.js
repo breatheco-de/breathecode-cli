@@ -2,21 +2,24 @@ const {Command, flags} = require('@oclif/command');
 var fs = require('fs');
 let BashScripts = require('../../utils/bash/index');
 let Console = require('../../utils/console');
+let _defaults = require('../../utils/config/compiler/_defaults.js');
+
 const path = require('path');
 class StartExercisesComand extends Command {
   async run() {
 
-      const { flags } = this.parse(StartExercisesComand);
+      const { language } = this.parse(StartExercisesComand);
+      const config = Object.assign(_defaults[language]);
       Console.info(`Creating exercises boilerplate...`);
 
-      if(!flags.compiler){
-        Console.error(`Please specify a compiler using the -c flag: $ bc start:exercises -c=react`);
+      if(!flags.language){
+        Console.error(`Please specify a compiler using the -l flag: $ bc start:exercises -l=<react|javascript|html|vanillajs>`);
         return;
       }
 
-      const builderPath = path.resolve(__dirname,`../../utils/config/builder/${flags.compiler}.js`);
+      const builderPath = path.resolve(__dirname,`../../utils/config/compiler/${config.compiler}.js`);
       if (!fs.existsSync(builderPath)){
-        Console.error(`Uknown compiler: ${flags.compiler}`);
+        Console.error(`Uknown compiler: ${config.compiler} for language ${flags.language}`);
         return;
       }
 
@@ -27,7 +30,7 @@ class StartExercisesComand extends Command {
           } else {
             if (!files.length) {
                 fs.writeFileSync('./bc.json', JSON.stringify({
-                  compiler: flags.compiler
+                  compiler: config.compiler
                 }, null, 2));
 
                 fs.writeFileSync('./.gitignore', fs.readFileSync(path.resolve(__dirname,'./gitignore.txt')));
@@ -50,6 +53,6 @@ class StartExercisesComand extends Command {
 
 StartExercisesComand.description = 'Initialize the boilerplate for creating exercises'
 StartExercisesComand.flags = {
- compiler: flags.string({char:'c', description: 'specify what compiler you want: [react, vanilajs, node, python]'}),
+ language: flags.string({char:'l', description: 'specify what language you want: [html, css, react, vanilajs, node, python]'}),
 }
 module.exports = StartExercisesComand

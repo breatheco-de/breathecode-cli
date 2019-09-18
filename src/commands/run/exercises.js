@@ -16,7 +16,7 @@ class InstructionsCommand extends Command {
     Console.debugging(flags.debug);
 
     Console.info("Loading the configuration for the exercises.");
-    var exercises = bcConfig('./', { mode: flags.mode, editor: flags.editor });
+    var exercises = bcConfig('./', { mode: flags.mode, editor: flags.editor, language: flags.language });
     Console.info("Building the exercise index...");
     exercises.buildIndex();
     var config = exercises.getConfig();
@@ -89,14 +89,19 @@ class InstructionsCommand extends Command {
       Console.debug("Opening these files on gitpod: ", data);
       Gitpod.openFile(data.files);
     });
+    socket.on("remove-action", (data) => {
+      Console.debug("Removing the following allowed action ", data);
+      socket.removeAllowed(data.slug);
+    });
 
     socket.on("build", (data) => {
-        const builder = require('../../utils/config/builder/'+config.builder+'.js');
+        const compiler = require('../../utils/config/compiler/'+config.compiler+'.js');
         socket.log('compiling',['Building exercise '+data.exerciseSlug]);
-        builder({
-          files: exercises.getExerciseDetails(data.exerciseSlug),
-          socket: socket,
-          config: config,
+        const files = exercises.getExerciseDetails(data.exerciseSlug);
+        compiler({
+          files,
+          socket,
+          config,
           publicPath: '/preview',
           address: process.env.BREATHECODE_IP || "localhost",
           port: process.env.BREATHECODE_PORT || 8080
@@ -104,9 +109,9 @@ class InstructionsCommand extends Command {
     });
 
     socket.on("run", (data) => {
-        const builder = require('../../utils/config/builder/'+config.builder+'.js');
+        const compiler = require('../../utils/config/compiler/'+config.compiler+'.js');
         socket.log('compiling',['Compiling exercise '+data.exerciseSlug]);
-        builder({
+        compiler({
           files: exercises.getExerciseDetails(data.exerciseSlug),
           socket: socket,
           config
@@ -138,9 +143,9 @@ class InstructionsCommand extends Command {
 InstructionsCommand.description = `Runs a small server with all the exercise instructions`;
 
 InstructionsCommand.flags = {
+  language: flags.string({char:'l', description: 'specify what language you want: [html, css, react, vanilajs, node, python]'}),
   port: flags.string({char: 'p', description: 'server port', default: '8080' }),
   host: flags.string({char: 'h', description: 'server host', default: process.env.IP || 'localhost' }),
-  output: flags.boolean({char: 'o', description: 'show build output on console', default: false }),
   debug: flags.boolean({char: 'd', description: 'debugger mode fro more verbage', default: false }),
   editor: flags.string({ char: 'e', description: '[standalone, gitpod]', options: ['standalone', 'gitpod'], default: 'standalone' }),
   mode: flags.string({ char: 'm', description: '[exercises, tutorial]', options: ['exercises', 'tutorial'], default: 'exercises' }),

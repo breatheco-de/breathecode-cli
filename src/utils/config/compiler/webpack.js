@@ -4,18 +4,17 @@ const fs = require('fs');
 const prettier = require("prettier");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 let Console = require('../../console');
-//const htmlValidate = require('html-validator');
+const bcActivity = require('../../bcActivity.js');
 
 module.exports = async function({ files, config, port, address, socket, publicPath }){
 
-    socket.removeAllowed('preview'); //restar allowed actions
+    if(!files) return;
 
     let entry = files.filter(f => f.path.indexOf('index.js') > -1 || f.path.indexOf('styles.css') > -1).map(f => './'+f.path);
-
-    const webpackConfigPath = path.resolve(__dirname,`../../config/builder/${config.compiler}.js`);
+    const webpackConfigPath = path.resolve(__dirname,`../../config/compiler/webpack.config.${config.language}.js`);
     if (!fs.existsSync(webpackConfigPath)){
-      Console.error(`Uknown compiler: '${config.compiler}'`);
-      socket.log('internal-error',[`Uknown compiler: '${config.compiler}'`]);
+      Console.error(`Uknown config for webpack and ${config.language}`);
+      socket.log('internal-error',[`Uknown config for webpack and ${config.language}`]);
       return;
     }
 
@@ -76,6 +75,14 @@ module.exports = async function({ files, config, port, address, socket, publicPa
         if (err) {
             console.error(err);
             socket.log('compiler-error',[ err.message || err ]);
+            bcActivity.error('exercise_error', {
+              details: err.message,
+              framework: config.language,
+              language: config.language,
+              message: result.stderr,
+              data: '',
+              compiler: 'webpack'
+            });
             return;
         }
 
@@ -86,16 +93,22 @@ module.exports = async function({ files, config, port, address, socket, publicPa
         if(stats.hasErrors()){
           socket.log('compiler-error',[ output ]);
           console.log(output);
+          bcActivity.error('exercise_error', {
+            details: output,
+            framework: config.language,
+            language: config.language,
+            message: result.stderr,
+            data: '',
+            compiler: 'webpack'
+          });
           Console.error("There are some errors in your code");
         }
         else if(stats.hasWarnings()){
-          socket.addAllowed('preview');
           socket.log('compiler-warning',[ output ]);
           console.log(output);
           Console.warning("Your code compiled successfully but with some warnings");
         }
         else{
-          socket.addAllowed('preview');
           socket.log('compiler-success',[ output ]);
           console.log(output);
           Console.success("Successfully built");

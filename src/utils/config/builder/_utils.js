@@ -12,7 +12,10 @@ const getInputs = (reg, content) => {
 }
 
 const cleanStdout = (buffer, inputs) => {
-  for(let i = 0; i < inputs.length; i++) if(inputs[i]) buffer = buffer.replace(inputs[i],'');
+  if(Array.isArray(inputs))
+    for(let i = 0; i < inputs.length; i++)
+      if(inputs[i]) buffer = buffer.replace(inputs[i],'');
+
   return buffer;
 }
 

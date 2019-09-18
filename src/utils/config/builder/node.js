@@ -41,7 +41,7 @@ module.exports = async function({ files, socket }){
             // else if(stats.hasWarnings()) status = 'compiler-warning';
         })
         .catch(err => {
-            Console.error(err);
+            Console.error(err.message);
             socket.log('compiler-error',[ err.stderr ]);
             return;
         });

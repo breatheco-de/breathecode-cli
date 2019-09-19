@@ -6,7 +6,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 let Console = require('../../console');
 const bcActivity = require('../../bcActivity.js');
 
-module.exports = async function({ files, config, port, address, socket, publicPath }){
+module.exports = async function({ files, config, socket }){
 
     if(!files) return;
 
@@ -18,6 +18,7 @@ module.exports = async function({ files, config, port, address, socket, publicPa
       return;
     }
 
+    console.log(files);
     const webpackConfig = require(webpackConfigPath)(files);
     webpackConfig.stats = {
         cached: false,
@@ -25,16 +26,23 @@ module.exports = async function({ files, config, port, address, socket, publicPa
         chunks: false,
         modules: false
     };
+    // the url were webpack will publish the preview
+    webpackConfig.devServer.contentBase = config.outputPath;
+    webpackConfig.output.path = process.cwd() + '/' + config.outputPath;
+    //the base directory for the preview, the bundle will be dropped here
+    webpackConfig.output.publicPath = config.publicPath;
 
     webpackConfig.entry = [
       ...entry,
-      `webpack-dev-server/client?http://${address}:${port}`
+      `webpack-dev-server/client?http://${config.address}:${config.port}`
     ];
     if(typeof config.template !== 'undefined'){
         if(fs.existsSync(config.template)){
-            Console.info('Compiling with special template detected and found: '+config.template);
-            const htmlPlug = webpackConfig.plugins.find((plugin) => plugin instanceof HtmlWebpackPlugin);
-            if(htmlPlug) htmlPlug.options.template = config.template;
+            Console.info('Compiling with special template '+config.template);
+            webpackConfig.plugins.push(new HtmlWebpackPlugin({
+              template: config.template,
+              favicon: __dirname + '/favicon.png'
+            }));
         }
         else{
             Console.warning('Template not found '+config.template);
@@ -42,7 +50,6 @@ module.exports = async function({ files, config, port, address, socket, publicPa
 
         }
     }
-    if(typeof publicPath != 'undefined') webpackConfig.output.publicPath = publicPath;
 
     if(config.compiler === "vanillajs"){
         const prettyConfigPath = require.resolve(`../../config/tester/jest/babelTransform.${config.compiler}.js`);
@@ -79,7 +86,7 @@ module.exports = async function({ files, config, port, address, socket, publicPa
               details: err.message,
               framework: config.language,
               language: config.language,
-              message: result.stderr,
+              message: err.message,
               data: '',
               compiler: 'webpack'
             });
@@ -97,7 +104,7 @@ module.exports = async function({ files, config, port, address, socket, publicPa
             details: output,
             framework: config.language,
             language: config.language,
-            message: result.stderr,
+            message: output,
             data: '',
             compiler: 'webpack'
           });

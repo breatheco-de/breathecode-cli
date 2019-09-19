@@ -1,17 +1,15 @@
 const webpack = require('webpack');
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const prettyConfig = require('../prettier/vanillajs.config.js');
+const prettyConfig = require('../prettier/react.config.js');
 const PrettierPlugin = require("../prettier/plugin.js");
-const CopyPlugin = require('copy-webpack-plugin');
 
 const nodeModulesPath = path.resolve(__dirname, '../../../../node_modules');
 
 module.exports = (files) => ({
   mode: "development",
   output: {
-    filename: 'index.js',
-    publicPath: '/'
+    filename: 'index.js'
   },
   module: {
     rules: [
@@ -24,6 +22,7 @@ module.exports = (files) => ({
               options: {
                 presets: [
                   nodeModulesPath+'/@babel/preset-env',
+                  nodeModulesPath+'/@babel/preset-react',
                 ],
                 plugins:[
                   require(nodeModulesPath+'/babel-plugin-syntax-dynamic-import')
@@ -72,7 +71,6 @@ module.exports = (files) => ({
   },
   devtool: "source-map",
   devServer: {
-    contentBase:  './dist',
     quiet: false,
     disableHostCheck: true,
     historyApiFallback: true,
@@ -90,7 +88,6 @@ module.exports = (files) => ({
       filename: 'styles.css',
       chunkFilename: 'styles.css',
     }),
-    new CopyPlugin(files.filter(f => f.path.indexOf('.html') > -1).map(f => ({ from: f.path, to: `./[name].html` }))),
     new PrettierPlugin(prettyConfig)
   ]
 });

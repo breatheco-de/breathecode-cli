@@ -2,16 +2,12 @@ let shell = require('shelljs');
 const path = require('path');
 const fs = require('fs');
 const nodeModulesPath = path.resolve(__dirname, '../../../../../node_modules');
-const babelTransformPath = require.resolve('./babelTransform.vanillajs.js');
 
 module.exports = (files) => ({
   config: {
       verbose: true,
-      moduleDirectories: [nodeModulesPath],
-      prettierPath: nodeModulesPath+'/prettier',
-      transform: {
-        "^.+\\.js?$": babelTransformPath
-      }
+      //moduleDirectories: [nodeModulesPath],
+      prettierPath: nodeModulesPath+'/prettier'
   },
   validate: ()=>{
     if (!fs.existsSync(nodeModulesPath+'/prettier')) throw new Error(`Uknown prettier path`);

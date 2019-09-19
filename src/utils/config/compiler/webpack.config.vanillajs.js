@@ -9,8 +9,7 @@ const nodeModulesPath = path.resolve(__dirname, '../../../../node_modules');
 module.exports = (exerciseSlug) => ({
   mode: "development",
   output: {
-    filename: '[name].js',
-    publicPath: '/'
+    filename: '[name].js'
   },
   module: {
     rules: [
@@ -77,7 +76,6 @@ module.exports = (exerciseSlug) => ({
   },
   devtool: "source-map",
   devServer: {
-    contentBase:  './dist',
     quiet: false,
     disableHostCheck: true,
     historyApiFallback: true,

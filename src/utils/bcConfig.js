@@ -102,6 +102,7 @@ module.exports = (filePath, { mode, editor, language }) => {
             const isDirectory = source => fs.lstatSync(source).isDirectory();
             const getDirectories = source => fs.readdirSync(source).map(name => path.join(source, name)).filter(isDirectory);
             if (!fs.existsSync('./.breathecode')) fs.mkdirSync('./.breathecode');
+            if (config.outputPath && !fs.existsSync(config.outputPath)) fs.mkdirSync(config.outputPath);
 
             // TODO we could use npm library front-mater to read the title of the exercises from the README.md
             config.exercises = getDirectories(exercisesPath).map(ex => ({ slug: ex.substring(ex.indexOf('exercises/')+10), title: ex.substring(ex.indexOf('exercises/')+10), path: ex}));

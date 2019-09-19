@@ -77,10 +77,10 @@ class InstructionsCommand extends Command {
         res.end();
     });
 
-    app.use('/preview',express.static('dist'));
+    app.use('/preview', express.static(config.outputPath));
     app.use('/',express.static('.breathecode/_app'));
 
-    server.listen( flags.port, function () {
+    server.listen( config.port, function () {
       Console.success("Exercises are running 😃 Open your browser to start practicing!")
     });
 
@@ -89,22 +89,21 @@ class InstructionsCommand extends Command {
       Console.debug("Opening these files on gitpod: ", data);
       Gitpod.openFile(data.files);
     });
-    socket.on("remove-action", (data) => {
-      Console.debug("Removing the following allowed action ", data);
-      socket.removeAllowed(data.slug);
+    socket.on("preview", (data) => {
+      Console.debug("Preview triggered, removing the 'preview' action ");
+      socket.removeAllowed("preview");
+      socket.log('ready',['Ready to compile...']);
     });
 
     socket.on("build", (data) => {
         const compiler = require('../../utils/config/compiler/'+config.compiler+'.js');
         socket.log('compiling',['Building exercise '+data.exerciseSlug]);
-        const files = exercises.getExerciseDetails(data.exerciseSlug);
+        const files = exercises.getAllFiles(data.exerciseSlug);
+
         compiler({
           files,
           socket,
-          config,
-          publicPath: '/preview',
-          address: process.env.BREATHECODE_IP || "localhost",
-          port: process.env.BREATHECODE_PORT || 8080
+          config
         });
     });
 
@@ -144,8 +143,8 @@ InstructionsCommand.description = `Runs a small server with all the exercise ins
 
 InstructionsCommand.flags = {
   language: flags.string({char:'l', description: 'specify what language you want: [html, css, react, vanilajs, node, python]'}),
-  port: flags.string({char: 'p', description: 'server port', default: '8080' }),
-  host: flags.string({char: 'h', description: 'server host', default: process.env.IP || 'localhost' }),
+  port: flags.string({char: 'p', description: 'server port' }),
+  host: flags.string({char: 'h', description: 'server host' }),
   debug: flags.boolean({char: 'd', description: 'debugger mode fro more verbage', default: false }),
   editor: flags.string({ char: 'e', description: '[standalone, gitpod]', options: ['standalone', 'gitpod'], default: 'standalone' }),
   mode: flags.string({ char: 'm', description: '[exercises, tutorial]', options: ['exercises', 'tutorial'], default: 'exercises' }),

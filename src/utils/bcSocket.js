@@ -2,8 +2,6 @@
 let connect = require('socket.io');
 let Console = require('./console');
 
-const allActions = ['build', 'prettify', 'test', 'run'];
-const status = ['prettifying', 'testing', 'compiling'];
 module.exports = {
     socket: null,
     config: null,
@@ -59,14 +57,13 @@ module.exports = {
     log: function(status, messages=[]){
       this.emit('log',status,messages);
     },
-    emit: function(action, status, logs, inputs=[]){
+    emit: function(action, status='ready', logs=[], inputs=[]){
 
-      if(this.config.compiler === 'webpack'){
+      if(['webpack', 'html'].includes(this.config.compiler)){
         if(['compiler-success', 'compiler-warning'].includes(status)) this.addAllowed('preview');
         if(['compiler-error'].includes(status) || action == 'ready') this.removeAllowed('preview');
       }
 
-
-        this.socket.emit('compiler', { action, status, logs, allowed: this.config.actions, inputs });
+      this.socket.emit('compiler', { action, status, logs, allowed: this.allowedActions, inputs });
     }
 };

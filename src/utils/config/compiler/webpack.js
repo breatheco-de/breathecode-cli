@@ -18,7 +18,6 @@ module.exports = async function({ files, config, socket }){
       return;
     }
 
-    console.log(files);
     const webpackConfig = require(webpackConfigPath)(files);
     webpackConfig.stats = {
         cached: false,
@@ -51,11 +50,12 @@ module.exports = async function({ files, config, socket }){
         }
     }
 
-    if(config.compiler === "vanillajs"){
-        const prettyConfigPath = require.resolve(`../../config/tester/jest/babelTransform.${config.compiler}.js`);
+    console.log("Compiler",config.compiler);
+    if(config.language !== "react"){
+        const prettyConfigPath = require.resolve(`../../config/tester/jest/babelTransform.vanillajs.js`);
         const options = await prettier.resolveConfig(prettyConfigPath);
         let htmlErrors = files.filter(f => f.path.indexOf(".html") > -1).map((file)=>{
-          const prettyConfig = require(path.resolve(__dirname,`../../config/prettier/${config.compiler}.config.js`));
+          const prettyConfig = require(path.resolve(__dirname,`../../config/prettier/vanillajs.config.js`));
           const content = fs.readFileSync(file.path, "utf8");
 
           // const result = (async () => { return JSON.parse(await htmlValidate({ data: content })) })();
@@ -64,6 +64,7 @@ module.exports = async function({ files, config, socket }){
 
           const formatted = prettier.format(content, { parser: "html", ...prettyConfig });
           fs.writeFileSync(file.path, formatted);
+          fs.writeFileSync(`${config.outputPath}/${file.name}`, formatted);
           return null;
         });
 

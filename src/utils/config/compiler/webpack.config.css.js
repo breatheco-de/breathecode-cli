@@ -2,7 +2,6 @@ const webpack = require('webpack');
 const path = require('path');
 const prettyConfig = require('../prettier/react.config.js');
 const PrettierPlugin = require("../prettier/plugin.js");
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const nodeModulesPath = path.resolve(__dirname, '../../../../node_modules');
 
@@ -21,8 +20,7 @@ module.exports = (exerciseSlug) => ({
               loader: 'babel-loader',
               options: {
                 presets: [
-                  nodeModulesPath+'/@babel/preset-env',
-                  nodeModulesPath+'/@babel/preset-react'
+                  nodeModulesPath+'/@babel/preset-env'
                 ],
                 plugins:[
                   require(nodeModulesPath+'/babel-plugin-syntax-dynamic-import')
@@ -87,10 +85,6 @@ module.exports = (exerciseSlug) => ({
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
-    new HtmlWebpackPlugin({
-        favicon: path.resolve(__dirname,'../../favicon.png'),
-        template: path.resolve(__dirname,'../../template.html')
-    }),
     new PrettierPlugin(prettyConfig),
   ]
 });

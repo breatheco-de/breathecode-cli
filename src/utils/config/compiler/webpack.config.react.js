@@ -54,7 +54,7 @@ module.exports = (files) => ({
           }]
         }, //css only files
         {
-          test: /\.(png|svg|jpg|jpeg|gif|html)$/, use: {
+          test: /\.(png|svg|jpg|jpeg|gif)$/, use: {
             loader: 'file-loader',
             options: { name: '[name].[ext]' }
           }

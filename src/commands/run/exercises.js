@@ -77,7 +77,8 @@ class InstructionsCommand extends Command {
         res.end();
     });
 
-    app.use('/preview', express.static(config.outputPath));
+    if(config.outputPath) app.use('/preview', express.static(config.outputPath));
+
     app.use('/',express.static('.breathecode/_app'));
 
     server.listen( config.port, function () {

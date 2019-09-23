@@ -50,7 +50,6 @@ module.exports = async function({ files, config, socket }){
         }
     }
 
-    console.log("Compiler",config.compiler);
     if(config.language !== "react"){
         const prettyConfigPath = require.resolve(`../../config/tester/jest/babelTransform.vanillajs.js`);
         const options = await prettier.resolveConfig(prettyConfigPath);

@@ -8,7 +8,7 @@ const nodeModulesPath = path.resolve(__dirname, '../../../../node_modules');
 module.exports = (exerciseSlug) => ({
   mode: "development",
   output: {
-    filename: '[name].js'
+    filename: 'index.js'
   },
   module: {
     rules: [

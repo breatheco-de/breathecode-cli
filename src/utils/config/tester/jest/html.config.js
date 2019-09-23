@@ -6,7 +6,7 @@ const nodeModulesPath = path.resolve(__dirname, '../../../../../node_modules');
 module.exports = (files) => ({
   config: {
       verbose: true,
-      //moduleDirectories: [nodeModulesPath],
+      moduleDirectories: [nodeModulesPath],
       prettierPath: nodeModulesPath+'/prettier'
   },
   validate: ()=>{

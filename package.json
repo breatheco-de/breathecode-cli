@@ -1,6 +1,6 @@
 {
   "name": "breathecode-cli",
-  "description": "Command Line Interface for BreatheCode students",
+  "description": "Command Line Interface for improving your coding skills, a part of the BreatheCo.de platform",
   "version": "1.1.81",
   "author": "Alejandro Sanchez",
   "bin": {

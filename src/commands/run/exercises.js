@@ -16,12 +16,12 @@ class InstructionsCommand extends Command {
     Console.debugging(flags.debug);
 
     Console.info("Loading the configuration for the exercises.");
-    var exercises = bcConfig('./', { mode: flags.mode, editor: flags.editor, language: flags.language });
+    var exercises = bcConfig('./', { grading: flags.grading, editor: flags.editor, language: flags.language });
     Console.info("Building the exercise index...");
     exercises.buildIndex();
     var config = exercises.getConfig();
 
-    Console.info(`Compiler: ${config.compiler}, mode: ${config.mode}, editor: ${config.editor}, for ${Array.isArray(config.exercises) ? config.exercises.length : 0} exercises found`);
+    Console.info(`Compiler: ${config.compiler}, grading: ${config.grading}, editor: ${config.editor}, for ${Array.isArray(config.exercises) ? config.exercises.length : 0} exercises found`);
 
     var app = express();
     var server = require('http').Server(app);
@@ -148,6 +148,6 @@ InstructionsCommand.flags = {
   host: flags.string({char: 'h', description: 'server host' }),
   debug: flags.boolean({char: 'd', description: 'debugger mode fro more verbage', default: false }),
   editor: flags.string({ char: 'e', description: '[standalone, gitpod]', options: ['standalone', 'gitpod'], default: 'standalone' }),
-  mode: flags.string({ char: 'm', description: '[exercises, tutorial]', options: ['exercises', 'tutorial'], default: 'exercises' }),
+  grading: flags.string({ char: 'g', description: '[isolated, incremental]', options: ['isolated', 'incremental'], default: 'isolated' }),
 };
 module.exports = InstructionsCommand;

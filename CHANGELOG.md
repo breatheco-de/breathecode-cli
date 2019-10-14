@@ -15,9 +15,9 @@ Previous an upcoming changes to the BreatheCode CLI.
 ### Exercises being developed
 
 - [x] Learn [HTML](https://github.com/4GeeksAcademy/html-exercises) by [@haydavid23](github.com/haydavid23)
-- [ ] Learn HTML Forms
+- [ ] Learn [HTML Forms](https://github.com/4GeeksAcademy/form-exercises)
 - [x] Learn [CSS](https://github.com/4GeeksAcademy/css-exercises) by [@plucodev](github.com/plucodev)
-- [ ] Learn Layouts
+- [ ] Learn Layouts 
 - [x] Learn [Bootstrap](https://github.com/4GeeksAcademy/bootstrap-exercises) (by [@plucodev](github.com/plucodev))
 - [ ] Learn [The DOM & Events](https://github.com/4GeeksAcademy/dom-exercises) by [@ljavierrodriguez](github.com/ljavierrodriguez)
 - [ ] Learn [Arrays in JS](https://github.com/4GeeksAcademy/javascript-arrays-exercises) by Julio Londoño
@@ -30,5 +30,5 @@ Previous an upcoming changes to the BreatheCode CLI.
 - [ ] Learn Python Object Oriented Programing by [@plucodev](github.com/plucodev)
 - [ ] Learn Fetch API in Javascript.
 - [ ] Learn PHP Object Oriented Programing.
-- [x] Learn [React.js](https://github.com/4GeeksAcademy/react-exercises) by [@alesanchezr](github.com/alesanchezr)
+- [ ] Learn [React.js](https://github.com/4GeeksAcademy/react-exercises) v0.2 by [@alesanchezr](github.com/alesanchezr)
 

@@ -8,7 +8,8 @@ module.exports = {
     ignoreRegex: /.*\.js/gm,
     outputPath: './.breathecode/dist',
     publicPath: '/preview',
-    actions: ['build', 'test']
+    actions: ['build', 'test'],
+    grading: 'isolated',
   },
   "css": {
     port: 3000,
@@ -19,7 +20,8 @@ module.exports = {
     outputPath: './.breathecode/dist',
     publicPath: '/preview',
     ignoreRegex: /.*\.js/gm,
-    actions: ['build', 'test']
+    actions: ['build', 'test'],
+    grading: 'isolated',
   },
   "vanillajs": {
     port: 3000,
@@ -30,6 +32,7 @@ module.exports = {
     outputPath: './.breathecode/dist',
     publicPath: '/preview',
     ignoreRegex: null,
+    grading: 'isolated',
     actions: ['build', 'test']
   },
   "react": {
@@ -42,6 +45,7 @@ module.exports = {
     publicPath: '/preview',
     template: __dirname + '/template.html',
     ignoreRegex: null,
+    grading: 'isolated',
     actions: ['build', 'test']
   },
   "python3": {
@@ -51,6 +55,7 @@ module.exports = {
     compiler: "python3",
     tester: "pytest",
     ignoreRegex: null,
+    grading: 'isolated',
     actions: ['run', 'test']
   },
   "node": {
@@ -60,6 +65,7 @@ module.exports = {
     compiler: "node",
     tester: "jest",
     ignoreRegex: null,
+    grading: 'isolated',
     actions: ['run', 'test']
   }
 }

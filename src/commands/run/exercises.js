@@ -16,6 +16,7 @@ class InstructionsCommand extends Command {
     Console.debugging(flags.debug);
 
     Console.info("Loading the configuration for the exercises.");
+    Console.debug("These are your flags: ",flags);
     var exercises = bcConfig('./', { grading: flags.grading, editor: flags.editor, language: flags.language });
     Console.info("Building the exercise index...");
     exercises.buildIndex();
@@ -146,8 +147,8 @@ InstructionsCommand.flags = {
   language: flags.string({char:'l', description: 'specify what language you want: [html, css, react, vanilajs, node, python]'}),
   port: flags.string({char: 'p', description: 'server port' }),
   host: flags.string({char: 'h', description: 'server host' }),
-  debug: flags.boolean({char: 'd', description: 'debugger mode fro more verbage', default: false }),
-  editor: flags.string({ char: 'e', description: '[standalone, gitpod]', options: ['standalone', 'gitpod'], default: 'standalone' }),
-  grading: flags.string({ char: 'g', description: '[isolated, incremental]', options: ['isolated', 'incremental'], default: 'isolated' }),
+  debug: flags.boolean({char: 'd', description: 'debugger mode for more verbage', default: false }),
+  editor: flags.string({ char: 'e', description: '[standalone, gitpod]', options: ['standalone', 'gitpod'] }),
+  grading: flags.string({ char: 'g', description: '[isolated, incremental]', options: ['isolated', 'incremental'] }),
 };
 module.exports = InstructionsCommand;

@@ -8,20 +8,49 @@ const validateExerciseDirectoryName = (str) => {
     return regex.test(str);
 };
 
-module.exports = (filePath, { mode, editor, language }) => {
+const merge = (target, ...sources) =>
+  Object.assign(target, ...sources.map(x =>
+    Object.entries(x)
+      .filter(([key, value]) => typeof value !== 'undefined')
+      .reduce((obj, [key, value]) => (obj[key] = value, obj), {})
+  ));
+
+module.exports = (filePath, { grading, editor, language }) => {
 
     const confPath = (fs.existsSync(filePath+'bc.json')) ? './bc.json' : (fs.existsSync(filePath+'./.bc.json')) ? './.bc.json' : (fs.existsSync(filePath+'.breathecode/.bc.json')) ? '.breathecode/.bc.json' : '.breathecode/bc.json';
-    const exercisesPath = mode === "exercises" ? filePath+'exercises' : filePath+'.breathecode/exercises';
+    const exercisesPath = grading === "isolated" ? filePath+'exercises' : filePath+'.breathecode/exercises';
 
-    if (!fs.existsSync(confPath)) throw Error('Imposible to load bc.json, make sure you have a ./bc.json file in the current directory or inside a .breathecode folder on the current directory');
-    if (!fs.existsSync(exercisesPath))  throw Error(`You are running on ${mode} mode, so make sure you have an exercises folder on ${exercisesPath}`);
+    let config = { language };
+    if (fs.existsSync(confPath)){
+      const bcContent = fs.readFileSync(confPath);
+      const jsonConfig = JSON.parse(bcContent);
+      if(!jsonConfig) throw Error(`Invalid ${confPath} syntax: Unable to parse.`);
+      config = merge(jsonConfig,{ language });
+      Console.debug("This is your configuration file: ",config);
+      if(typeof config.language == 'undefined' && typeof config.compiler == 'undefined'){
+        Console.error("The language has to be specified in the bd.json or as the -l=[language] flag");
+        throw new Error("The language has to be specified in the bd.json or as the -l=[language] flag");
+      }
+    }
+    else{
+      if(typeof config.language == 'undefined' && typeof config.compiler == 'undefined'){
+        Console.error("The language has to be specified in the bd.json or as the -l=[language] flag");
+        throw new Error("The language has to be specified in the bd.json or as the -l=[language] flag");
+      }
 
-    const bcContent = fs.readFileSync(confPath);
-    let config = JSON.parse(bcContent);
+      if (!fs.existsSync('./.breathecode')) fs.mkdirSync('./.breathecode');
+    }
+
     let defaults = _defaults[config.language || config.compiler];
-    config = { ...config, ...defaults, mode, editor, exercisesPath };
+    if(typeof defaults == 'undefined'){
+      Console.error(`Invalid language or compiler: ${config.language || config.compiler}`);
+      throw new Error(`Invalid language or compiler: ${config.language || config.compiler}`);
+    }
 
-    if(!config) throw Error(`Invalid ${confPath} syntax: Unable to parse.`);
+    config = merge(defaults || {}, config, { grading, editor, exercisesPath } );
+
+    Console.debug("These is your configuration: ",config);
+    if (config.grading === 'isolated' && !fs.existsSync(exercisesPath))  throw Error(`You are running with ${config.grading} grading, so make sure you have an exercises folder on ${exercisesPath}`);
 
     return {
         getConfig: () => config,
@@ -66,8 +95,8 @@ module.exports = (filePath, { mode, editor, language }) => {
                                         .map(file => ({ path: source+'/'+file, name: file}))
                                             // TODO: we could implement some way for teachers to hide files from the developer, like putting on the name index.hidden.js
                                             .filter(file =>
-                                                // ignore tests files
-                                                (file.name.indexOf('test.') == -1 && file.name.indexOf('tests.') == -1 &&
+                                                // ignore tests files and files with ".hide" on their name
+                                                (file.name.indexOf('test.') == -1 && file.name.indexOf('tests.') == -1 && file.name.indexOf('.hide.') == -1 &&
                                                 //readmes and directories
                                                 file.name != 'README.md' && !isDirectory(file.path) && file.name.indexOf('_') != 0) &&
                                                 //ignore javascript files when using vanillajs compiler
@@ -98,7 +127,7 @@ module.exports = (filePath, { mode, editor, language }) => {
                                             //.filter(file => (file.name.indexOf('tests.') > -1 || file.name.indexOf('test.') > -1 )); // hide directories, readmes and tests
             return getFiles(basePath);
         },
-        buildIndex: () => {
+        buildIndex: function(){
             const isDirectory = source => fs.lstatSync(source).isDirectory();
             const getDirectories = source => fs.readdirSync(source).map(name => path.join(source, name)).filter(isDirectory);
             if (!fs.existsSync('./.breathecode')) fs.mkdirSync('./.breathecode');
@@ -114,9 +143,10 @@ module.exports = (filePath, { mode, editor, language }) => {
                 }
             });
 
-            return {
-                write: (callback) => fs.writeFile(confPath, JSON.stringify(config, null, 4), callback)
-            };
+            this.save();
+        },
+        save: () => {
+          fs.writeFileSync(confPath, JSON.stringify(config, null, 4))
         }
     };
 };

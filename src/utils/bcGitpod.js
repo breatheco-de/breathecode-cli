@@ -13,6 +13,6 @@ module.exports = {
         };
       });
 
-      socket.log('ready',['Ready to compile...']);
+      socket.log('ready',['Ready to compile or test...']);
     }
 };

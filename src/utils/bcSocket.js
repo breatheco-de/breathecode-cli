@@ -23,7 +23,7 @@ module.exports = {
         this.socket = connect(server);
         this.socket.on('connection', (socket) => {
           Console.debug("Connection with client successfully established");
-          this.log('ready',['Ready to compile...']);
+          this.log('ready',['Ready to compile or test...']);
 
           socket.on('compiler', ({action, data}) => {
 
@@ -63,6 +63,8 @@ module.exports = {
         if(['compiler-success', 'compiler-warning'].includes(status)) this.addAllowed('preview');
         if(['compiler-error'].includes(status) || action == 'ready') this.removeAllowed('preview');
       }
+
+      if(this.config.grading === 'incremental') this.removeAllowed('run');
 
       this.socket.emit('compiler', { action, status, logs, allowed: this.allowedActions, inputs });
     }

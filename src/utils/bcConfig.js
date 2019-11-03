@@ -87,9 +87,11 @@ module.exports = (filePath, { grading, editor, language }) => {
             return fs.writeFileSync(basePath+'/'+name, content, 'utf8');
         },
         getExerciseDetails: (slug) => {
+
             const exercise = config.exercises.find(ex => ex.slug == slug);
             if (!exercise) throw Error('Exercise not found: '+slug);
             const basePath = exercise.path;
+
             const isDirectory = source => fs.lstatSync(source).isDirectory();
             const getFiles = source => fs.readdirSync(source)
                                         .map(file => ({ path: source+'/'+file, name: file}))
@@ -114,7 +116,8 @@ module.exports = (filePath, { grading, editor, language }) => {
                                                     };
                                                     return score[f1.name] < score[f2.name] ? -1 : 1;
                                                 });
-            return getFiles(basePath);
+            if(config.grading === 'incremental') return getFiles('./');
+            else return getFiles(basePath);
         },
         getAllFiles: (slug) => {
             const exercise = config.exercises.find(ex => ex.slug == slug);

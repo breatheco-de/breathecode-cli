@@ -2,7 +2,6 @@ let fs = require('fs')
 let shell = require('shelljs')
 const fetch = require("node-fetch")
 const Console = require('../console')
-var sleep = require('sleep')
 var readlineSync = require('readline-sync')
 
 module.exports = {
@@ -32,7 +31,6 @@ module.exports = {
             Console.error(`There was a problem fetching from https://breatheco-de.github.io/breathecode-cli/src/commands/start/${type}.json`)
             Console.fatal(error)
         })
-
     },
     getScripts(){
         return fs.readdir(this.basePath, (err, files) => {
@@ -44,13 +42,13 @@ module.exports = {
     install(type, name, flags=null){
 
         Console.startLoading()
-        Console.log('Verifing git installation')
+        Console.info('Verifing git installation')
         if (!shell.which('git')) {
           Console.fatal('Sorry, this script requires git')
           shell.exit(1)
         }
 
-        Console.log('Cloning from '+this.boilerplates[type][name].url)
+        Console.info('Cloning from '+this.boilerplates[type][name].url)
         if(flags && flags.mode){
             if (shell.exec(`git clone -b ${flags.mode} ${this.boilerplates[type][name].url}`).code !== 0) {
               Console.fatal('Error: Installation failed')
@@ -64,7 +62,7 @@ module.exports = {
             }
         }
 
-        Console.log('Cleaning installation')
+        Console.info('Cleaning installation')
         if (shell.exec(`rm -R -f ./${this.boilerplates[type][name].folder}/.git`).code !== 0) {
           Console.fatal('Error: removing .git directory')
           shell.exit(1)
@@ -73,7 +71,7 @@ module.exports = {
         let warning = false
         if (flags && flags.root)
         {
-            Console.log('Moving to root')
+            Console.info('Moving to root')
 
             const commands = [`mv ${this.boilerplates[type][name].folder}/* ./`,`mv ${this.boilerplates[type][name].folder}/.* ./`,`rmdir ${this.boilerplates[type][name].folder}/`]
 
@@ -84,25 +82,14 @@ module.exports = {
 
                 shell.rm('-r', `!(${this.boilerplates[type][name].folder})`);
 
-                commands.forEach((cmd) => {
-                    if (shell.exec(cmd).code !== 0) warning = true
-                    sleep.sleep(1)
-                })
-
-                if(flags.name){
-                    const commands = [`mv -f ${flags.name}/* ./`,`mv -f ${flags.name}/.* ./`,`rmdir ${flags.name}/`]
-                    commands.forEach((cmd) => {
-                        if (shell.exec(cmd).code !== 0) warning = true
-                        sleep.sleep(1)
-                    })
-                }
+                Console.error("This functionality was deprecated for security reasons");
             }
             else if (cleanDir === 'N'){
-                console.log(`Please clear this folder if you would like to use the -r option or create another empty directory. Cleaning files and exiting`);
+                Console.info(`Please clear this folder if you would like to use the -r option or create another empty directory. Cleaning files and exiting`);
                 shell.rm('-r', `${this.boilerplates[type][name].folder}`);
             }
             else{
-                console.log(`${cleanDir} is not a valid option. Cleaning files and exiting.`);
+                Console.error(`${cleanDir} is not a valid option. Cleaning files and exiting.`);
                 shell.rm('-r', `${this.boilerplates[type][name].folder}`);
             }
         }

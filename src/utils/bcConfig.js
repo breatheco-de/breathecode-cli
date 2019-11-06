@@ -18,7 +18,6 @@ const merge = (target, ...sources) =>
 module.exports = (filePath, { grading, editor, language }) => {
 
     const confPath = (fs.existsSync(filePath+'bc.json')) ? './bc.json' : (fs.existsSync(filePath+'./.bc.json')) ? './.bc.json' : (fs.existsSync(filePath+'.breathecode/.bc.json')) ? '.breathecode/.bc.json' : '.breathecode/bc.json';
-    const exercisesPath = grading === "isolated" ? filePath+'exercises' : filePath+'.breathecode/exercises';
 
     let config = { language };
     if (fs.existsSync(confPath)){
@@ -47,10 +46,11 @@ module.exports = (filePath, { grading, editor, language }) => {
       throw new Error(`Invalid language or compiler: ${config.language || config.compiler}`);
     }
 
-    config = merge(defaults || {}, config, { grading, editor, exercisesPath } );
+    config = merge(defaults || {}, config, { grading, editor } );
+    config.exercisesPath = config.grading === "isolated" ? filePath+'exercises' : filePath+'.breathecode/exercises';
 
     Console.debug("These is your configuration: ",config);
-    if (config.grading === 'isolated' && !fs.existsSync(exercisesPath))  throw Error(`You are running with ${config.grading} grading, so make sure you have an exercises folder on ${exercisesPath}`);
+    if (config.grading === 'isolated' && !fs.existsSync(config.exercisesPath))  throw Error(`You are running with ${config.grading} grading, so make sure you have an exercises folder on ${config.exercisesPath}`);
 
     return {
         getConfig: () => config,
@@ -98,7 +98,9 @@ module.exports = (filePath, { grading, editor, language }) => {
                                             // TODO: we could implement some way for teachers to hide files from the developer, like putting on the name index.hidden.js
                                             .filter(file =>
                                                 // ignore tests files and files with ".hide" on their name
-                                                (file.name.indexOf('test.') == -1 && file.name.indexOf('tests.') == -1 && file.name.indexOf('.hide.') == -1 &&
+                                                (file.name.toLocaleLowerCase().indexOf('test.') == -1 && file.name.toLocaleLowerCase().indexOf('tests.') == -1 && file.name.toLocaleLowerCase().indexOf('.hide.') == -1 &&
+                                                //ignore java copiled files
+                                                (file.name.toLocaleLowerCase().indexOf('.class') == -1) &&
                                                 //readmes and directories
                                                 file.name != 'README.md' && !isDirectory(file.path) && file.name.indexOf('_') != 0) &&
                                                 //ignore javascript files when using vanillajs compiler
@@ -137,7 +139,7 @@ module.exports = (filePath, { grading, editor, language }) => {
             if (config.outputPath && !fs.existsSync(config.outputPath)) fs.mkdirSync(config.outputPath);
 
             // TODO we could use npm library front-mater to read the title of the exercises from the README.md
-            config.exercises = getDirectories(exercisesPath).map(ex => ({ slug: ex.substring(ex.indexOf('exercises/')+10), title: ex.substring(ex.indexOf('exercises/')+10), path: ex}));
+            config.exercises = getDirectories(config.exercisesPath).map(ex => ({ slug: ex.substring(ex.indexOf('exercises/')+10), title: ex.substring(ex.indexOf('exercises/')+10), path: ex}));
             config.exercises.forEach(d => {
                 if(!validateExerciseDirectoryName(d.slug)){
                     Console.error('Exercise directory "'+d.slug+'" has an invalid name, it has to start with two digits followed by words separated by underscors or hyphen (no white spaces). e.g: 01.12-hello-world');

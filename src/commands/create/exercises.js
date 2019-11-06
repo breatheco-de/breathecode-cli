@@ -22,7 +22,8 @@ class StartExercisesComand extends Command {
                 { title: 'HTML/CSS/JS (vanillajs)', value: 'vanillajs' },
                 { title: 'React.js', value: 'react' },
                 { title: 'Node.js', value: 'node' },
-                { title: 'Python 3.7', value: 'python3' }
+                { title: 'Python 3.7', value: 'python3' },
+                { title: 'Java', value: 'java' }
               ],
             },{
               type: 'select',

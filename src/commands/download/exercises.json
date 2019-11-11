@@ -1,0 +1,30 @@
+[
+    {
+      "slug": "react",
+      "language": "react",
+      "title": "Learn the React.js framework",
+      "url": "https://github.com/4GeeksAcademy/react-exercises.git",
+      "folder": "react-exercises"
+    },
+    {
+      "slug": "dom",
+      "language": "javascript",
+      "title": "Learn how to manipulate the DOM with Javascript",
+      "url": "https://github.com/4GeeksAcademy/dom-exercises.git",
+      "folder": "dom-exercises"
+    },
+    {
+      "slug": "html",
+      "language": "html",
+      "title": "Learn the basics of HTML",
+      "url": "https://github.com/4GeeksAcademy/html-exercises.git",
+      "folder": "html-exercises"
+    },
+    {
+      "slug": "css",
+      "language": "css",
+      "title": "Learn the basics of CSS",
+      "url": "https://github.com/4GeeksAcademy/css-exercises.git",
+      "folder": "css-exercises"
+    }
+]

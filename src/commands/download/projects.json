@@ -1,26 +1,32 @@
-{
-    "vanillajs": {
+[
+    {
+        "technology": "vanillajs",
         "url": "https://github.com/4GeeksAcademy/vanillajs-hello.git",
         "folder": "vanillajs-hello"
     },
-    "react": {
+    {
+        "technology": "react",
         "url": "https://github.com/4GeeksAcademy/react-hello.git",
         "folder": "react-hello"
     },
-    "flask": {
+    {
+        "technology": "flask",
         "url": "https://github.com/4GeeksAcademy/flask-rest-hello.git",
         "folder": "flask-hello"
     },
-    "django-rest": {
+    {
+        "technology": "django-rest",
         "url": "https://github.com/4GeeksAcademy/django-rest-hello.git",
         "folder": "django-rest-hello"
     },
-    "wordpress": {
+    {
+        "technology": "wordpress",
         "url": "https://github.com/4GeeksAcademy/wordpress-hello.git",
         "folder": "wordpress-hello"
     },
-    "react-webapp": {
+    {
+        "technology": "react-webapp",
         "url": "https://github.com/4GeeksAcademy/react-hello-webapp.git",
         "folder": "react-hello-webapp"
     }
-}
+]

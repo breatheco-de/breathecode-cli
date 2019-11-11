@@ -22,8 +22,14 @@ module.exports = function({ socket, files, config }){
 
             const { stdout, stderr, code } = shell.exec(command);
 
-            if(code != 0) socket.log('testing-error',[ stderr, stdout ]);
-            else socket.log('testing-success',[ stderr, stdout ]);
+            if(code != 0){
+              socket.log('testing-error',[ stdout ]);
+              Console.error("There was an error while testing");
+            }
+            else{
+              socket.log('testing-success',[ stdout ]);
+              Console.success("Everything is amazing!");
+            }
         });
     }
     catch(err){

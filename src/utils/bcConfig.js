@@ -27,14 +27,14 @@ module.exports = (filePath, { grading, editor, language }) => {
       config = merge(jsonConfig,{ language });
       Console.debug("This is your configuration file: ",config);
       if(typeof config.language == 'undefined' && typeof config.compiler == 'undefined'){
-        Console.error("The language has to be specified in the bd.json or as the -l=[language] flag");
-        throw new Error("The language has to be specified in the bd.json or as the -l=[language] flag");
+        Console.error("The language has to be specified in the bc.json or as the -l=[language] flag");
+        throw new Error("The language has to be specified in the bc.json or as the -l=[language] flag");
       }
     }
     else{
       if(typeof config.language == 'undefined' && typeof config.compiler == 'undefined'){
-        Console.error("The language has to be specified in the bd.json or as the -l=[language] flag");
-        throw new Error("The language has to be specified in the bd.json or as the -l=[language] flag");
+        Console.error("The language has to be specified in the bc.json or as the -l=[language] flag");
+        throw new Error("The language has to be specified in the bc.json or as the -l=[language] flag");
       }
 
       if (!fs.existsSync('./.breathecode')) fs.mkdirSync('./.breathecode');

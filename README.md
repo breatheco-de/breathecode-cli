@@ -44,7 +44,7 @@ $ npm install -g breathecode-cli
 $ breathecode COMMAND
 running command...
 $ breathecode (-v|--version|version)
-breathecode-cli/1.1.82 linux-x64 node-v10.15.3
+breathecode-cli/1.1.83 linux-x64 node-v10.15.3
 $ breathecode --help [COMMAND]
 USAGE
   $ breathecode COMMAND
@@ -55,12 +55,13 @@ USAGE
 # Commands
 
 * [breathecode create:exercises](#createexercises)
+* [breathecode download:exercises](#downloadexercises)
+* [breathecode download:project](#downloadproject)
 * [breathecode help [COMMAND]](#help-command)
 * [breathecode login](#login)
 * [breathecode run:exercises](#runexercises)
 * [breathecode run:server](#runserver)
-* [breathecode start:exercises](#startexercises)
-* [breathecode start:project](#startproject)
+* [breathecode update [CHANNEL]](#update-channel)
 * [breathecode utils:todo](#utilstodo)
 ## create:exercises
 
@@ -71,10 +72,51 @@ USAGE
   $ breathecode create:exercises
 
 OPTIONS
+  -g, --grading=grading    Grading type for exercises: [isolated, incremental]
   -l, --language=language  specify what language you want: [html, css, react, vanilajs, node, python]
 ```
 
-_See code: [src/commands/create/exercises.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.82/src/commands/create/exercises.js)_
+_See code: [src/commands/create/exercises.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.83/src/commands/create/exercises.js)_
+
+## download:exercises
+
+Start a new project using a boilerplate
+
+```
+USAGE
+  $ breathecode download:exercises
+
+OPTIONS
+  -m, --mode=mode              install a particular branch or version for the boilerplate
+  -n, --name=name              [default: hello-rigo] app folder name
+  -r, --root                   install on the root directory
+  -t, --technology=technology  technology, e.g: [dom,html,css,react,python-lists,python-beginner,etc].
+
+ALIASES
+  $ breathecode start:exercises
+```
+
+_See code: [src/commands/download/exercises.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.83/src/commands/download/exercises.js)_
+
+## download:project
+
+Start a new project using a boilerplate
+
+```
+USAGE
+  $ breathecode download:project
+
+OPTIONS
+  -m, --mode=mode              install a particular branch or version for the boilerplate
+  -n, --name=name              [default: hello-rigo] app folder name
+  -r, --root                   install on the root directory
+  -t, --technology=technology  technology, e.g: [flask,django,react,flux,vanillajs,wordpress,etc].
+
+ALIASES
+  $ breathecode start:project
+```
+
+_See code: [src/commands/download/project.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.83/src/commands/download/project.js)_
 
 ## help [COMMAND]
 
@@ -91,7 +133,7 @@ OPTIONS
   --all  see all commands in CLI
 ```
 
-_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v1.1.6/src/commands/help.ts)_
+_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v2.2.1/src/commands/help.ts)_
 
 ## login
 
@@ -107,7 +149,7 @@ OPTIONS
   -t, --type=js|jsx|scss|css|md|html|py  [default: js] file extensions to look for
 ```
 
-_See code: [src/commands/login.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.82/src/commands/login.js)_
+_See code: [src/commands/login.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.83/src/commands/login.js)_
 
 ## run:exercises
 
@@ -118,15 +160,15 @@ USAGE
   $ breathecode run:exercises
 
 OPTIONS
-  -d, --debug                     debugger mode fro more verbage
-  -e, --editor=standalone|gitpod  [default: standalone] [standalone, gitpod]
-  -h, --host=host                 server host
-  -l, --language=language         specify what language you want: [html, css, react, vanilajs, node, python]
-  -m, --mode=exercises|tutorial   [default: exercises] [exercises, tutorial]
-  -p, --port=port                 server port
+  -d, --debug                         debugger mode for more verbage
+  -e, --editor=standalone|gitpod      [standalone, gitpod]
+  -g, --grading=isolated|incremental  [isolated, incremental]
+  -h, --host=host                     server host
+  -l, --language=language             specify what language you want: [html, css, react, vanilajs, node, python]
+  -p, --port=port                     server port
 ```
 
-_See code: [src/commands/run/exercises.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.82/src/commands/run/exercises.js)_
+_See code: [src/commands/run/exercises.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.83/src/commands/run/exercises.js)_
 
 ## run:server
 
@@ -143,41 +185,18 @@ OPTIONS
   -p, --port=port          [default: 8080] server port
 ```
 
-_See code: [src/commands/run/server.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.82/src/commands/run/server.js)_
+_See code: [src/commands/run/server.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.83/src/commands/run/server.js)_
 
-## start:exercises
+## update [CHANNEL]
 
-Start a new project using a boilerplate
-
-```
-USAGE
-  $ breathecode start:exercises
-
-OPTIONS
-  -m, --mode=mode              install a particular branch or version for the boilerplate
-  -n, --name=name              [default: hello-rigo] app folder name
-  -r, --root                   install on the root directory
-  -t, --technology=technology  technology, e.g: [dom,html,css,react,python-lists,python-beginner,etc].
-```
-
-_See code: [src/commands/start/exercises.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.82/src/commands/start/exercises.js)_
-
-## start:project
-
-Start a new project using a boilerplate
+update the breathecode CLI
 
 ```
 USAGE
-  $ breathecode start:project
-
-OPTIONS
-  -m, --mode=mode              install a particular branch or version for the boilerplate
-  -n, --name=name              [default: hello-rigo] app folder name
-  -r, --root                   install on the root directory
-  -t, --technology=technology  technology, e.g: [flask,django,react,flux,vanillajs,wordpress,etc].
+  $ breathecode update [CHANNEL]
 ```
 
-_See code: [src/commands/start/project.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.82/src/commands/start/project.js)_
+_See code: [@oclif/plugin-update](https://github.com/oclif/plugin-update/blob/v1.3.9/src/commands/update.ts)_
 
 ## utils:todo
 
@@ -192,5 +211,5 @@ OPTIONS
   -t, --type=js|jsx|scss|css|md|html|py  [default: js] file extensions to look for
 ```
 
-_See code: [src/commands/utils/todo.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.82/src/commands/utils/todo.js)_
+_See code: [src/commands/utils/todo.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.83/src/commands/utils/todo.js)_
 <!-- commandsstop -->

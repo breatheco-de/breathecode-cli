@@ -54,12 +54,18 @@ module.exports = (files) => ({
     const count = getInputs(/input\((?:["'`]{1}(.*)["'`]{1})?\)/gm, content);
     let answers = (count.length == 0) ? [] : await socket.ask(count);
 
+    const rootPath = this.getEntryPath().replace('Test.java', '');
     const cmd = `
-      javac -cp ./.breathecode/junit.jar ${this.getEntryPath()} &&
-      java -cp ${this.getEntryPath().replace('Test.java', '')}:./.breathecode/junit.jar:./.breathecode/hamcrest.jar org.junit.runner.JUnitCore Test &&
-      rm Test.class
+      javac -cp ./.breathecode/junit.jar ${this.getEntryPath()} ${appPath} &&
+      java -cp ${rootPath}:./.breathecode/junit.jar:./.breathecode/hamcrest.jar org.junit.runner.JUnitCore Test
     `;
-    //Console.log(cmd);
+    return cmd
+  },
+  cleanup: async function(socket){
+    const rootPath = this.getEntryPath().replace('Test.java', '');
+    const cmd = `
+      rm ${rootPath}*.class
+    `;
     return cmd
   }
 

@@ -30,6 +30,16 @@ module.exports = function({ socket, files, config }){
               socket.log('testing-success',[ stdout || stderr ]);
               Console.success("Everything is amazing!");
             }
+            if(typeof config.cleanup !== "undefined"){
+              if(typeof config.cleanup === 'function' || typeof config.cleanup === 'object') return config.cleanup(socket);
+            }
+        })
+        .then(command => {
+            const { stdout, stderr, code } = shell.exec(command);
+            if(code == 0){
+              Console.debug("The cleanup command runned successfully");
+            }
+            else Console.warning("There is an error on the cleanup command for the test");
         });
     }
     catch(err){

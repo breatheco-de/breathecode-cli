@@ -23,11 +23,11 @@ module.exports = function({ socket, files, config }){
             const { stdout, stderr, code } = shell.exec(command);
 
             if(code != 0){
-              socket.log('testing-error',[ stdout ]);
+              socket.log('testing-error',[ stdout || stderr ]);
               Console.error("There was an error while testing");
             }
             else{
-              socket.log('testing-success',[ stdout ]);
+              socket.log('testing-success',[ stdout || stderr ]);
               Console.success("Everything is amazing!");
             }
         });

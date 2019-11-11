@@ -19,10 +19,11 @@ class SingleCommand extends Command {
             type: 'select',
             name: 'technology',
             message: 'Pick a technology:',
-            choices: [...new Set(catalog.map(c => ({ title: c.language, value: c.language })))],
+            choices: [...new Set(catalog.map(c => c.language))].map(c => ({ title: c, value: c })),
           }]);
         flags.technology = langChoice.technology;
       }
+      if(!flags.technology) return;
 
       let exerciseChoice = await prompts([{
           type: 'select',

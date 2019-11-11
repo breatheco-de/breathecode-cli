@@ -14,6 +14,13 @@
       "folder": "dom-exercises"
     },
     {
+      "slug": "javascript-functions-exercises",
+      "language": "javascript",
+      "title": "Using functions in Javascript",
+      "url": "https://github.com/4GeeksAcademy/javascript-functions-exercises.git",
+      "folder": "javascript-functions-exercises"
+    },
+    {
       "slug": "html",
       "language": "html",
       "title": "Learn the basics of HTML",
@@ -26,5 +33,26 @@
       "title": "Learn the basics of CSS",
       "url": "https://github.com/4GeeksAcademy/css-exercises.git",
       "folder": "css-exercises"
+    },
+    {
+      "slug": "bootstrap-exercises",
+      "language": "css",
+      "title": "Learn Bootstrap",
+      "url": "https://github.com/4GeeksAcademy/bootstrap-exercises.git",
+      "folder": "bootstrap-exercises"
+    },
+    {
+      "slug": "python-beginner-exercises",
+      "language": "python3",
+      "title": "Learn and Practice the basics of Python",
+      "url": "https://github.com/4GeeksAcademy/python-beginner-exercises.git",
+      "folder": "python-beginner-exercises"
+    },
+    {
+      "slug": "python-lists-exercises",
+      "language": "python3",
+      "title": "Looping lists and touples in Python",
+      "url": "https://github.com/4GeeksAcademy/python-lists-exercises.git",
+      "folder": "python-lists-exercises"
     }
 ]

@@ -68,6 +68,8 @@ class StartExercisesComand extends Command {
                     fs.mkdirSync(`./${basePath}exercises/01-hello-world`);
                     fs.writeFileSync(`./${basePath}exercises/01-hello-world/README.md`, "# Hello World \n \n Type here your exercise instructions");
                 }
+
+                Console.success(`😋 Exercises boilerplate created successfully`);
             }
             else Console.error(`The directory must be empty in order to start creating the exercises: ${files.join(',')}`);
           }

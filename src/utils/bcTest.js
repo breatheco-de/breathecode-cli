@@ -35,11 +35,13 @@ module.exports = function({ socket, files, config }){
             }
         })
         .then(command => {
-            const { stdout, stderr, code } = shell.exec(command);
-            if(code == 0){
-              Console.debug("The cleanup command runned successfully");
+            if(command){
+              const { stdout, stderr, code } = shell.exec(command);
+              if(code == 0){
+                Console.debug("The cleanup command runned successfully");
+              }
+              else Console.warning("There is an error on the cleanup command for the test");
             }
-            else Console.warning("There is an error on the cleanup command for the test");
         });
     }
     catch(err){

@@ -12,7 +12,7 @@ module.exports = async function({ files, socket }){
     let entryPath = files.map(f => './'+f.path).find(f => f.indexOf('App.java') > -1);
     Console.info(`Compiling ${entryPath}...`);
     const content = fs.readFileSync(entryPath, "utf8");
-    const count = getInputs(/input\((?:["'`]{1}(.*)["'`]{1})?\)/gm, content);
+    const count = getInputs(/reader\.readLine\((?:["'`]{1}(.*)["'`]{1})?\)/gm, content);
     let inputs = (count.length == 0) ? [] : await socket.ask(count);
     //JAVA_TOOL_OPTIONS
     const resultPromise = java.runFile(entryPath, {

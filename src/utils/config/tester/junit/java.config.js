@@ -61,9 +61,9 @@ module.exports = (files) => ({
 
     const appPath = files.map(f => './'+f.path).find(f => f.indexOf('App.java') > -1);
 
-    const content = fs.readFileSync(appPath, "utf8");
-    const count = getInputs(/reader\.readLine\((?:["'`]{1}(.*)["'`]{1})?\)/gm, content);
-    let answers = (count.length == 0) ? [] : await socket.ask(count);
+    // const content = fs.readFileSync(appPath, "utf8");
+    // const count = getInputs(/reader\.readLine\((?:["'`]{1}(.*)["'`]{1})?\)/gm, content);
+    // let answers = (count.length == 0) ? [] : await socket.ask(count);
 
     const rootPath = this.getEntryPath().replace('Test.java', '');
     const cmd = `

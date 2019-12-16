@@ -59,7 +59,7 @@ module.exports = {
     },
     emit: function(action, status='ready', logs=[], inputs=[]){
 
-      if(['webpack', 'html'].includes(this.config.compiler)){
+      if(['webpack','vanillajs','vue', 'react', 'css', 'html'].includes(this.config.compiler)){
         if(['compiler-success', 'compiler-warning'].includes(status)) this.addAllowed('preview');
         if(['compiler-error'].includes(status) || action == 'ready') this.removeAllowed('preview');
       }

@@ -83,7 +83,7 @@ class InstructionsCommand extends Command {
     app.use('/',express.static('.breathecode/_app'));
 
     server.listen( config.port, function () {
-      Console.success("Exercises are running 😃 Open your browser to start practicing!")
+      Console.success(`Exercises are running 😃 Open your browser to start practicing! http://0.0.0.0:${config.port}`)
     });
 
     socket.start(config, server);

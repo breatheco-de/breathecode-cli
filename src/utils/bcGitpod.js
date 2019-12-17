@@ -8,9 +8,10 @@ module.exports = {
     initialized: false,
     init: function(){
       if(this.initialized) return;
+      else this.initialized = true;
 
-      if(shell.exec(`gp -h`).code == 0){
-        this.hasGPCommand = false;
+      if(shell.exec(`gp -h`, { silent: true }).code == 0){
+        this.hasGPCommand = true;
       }
       else{
         Console.debug(`Gitpod command line tool not found`);

@@ -9,6 +9,12 @@ const bcActivity = require('../../bcActivity.js');
 module.exports = async function({ files, socket }){
     socket.log('compiling',['Compiling...']);
 
+    if( !files || files.length == 0){
+      socket.log('compiler-error', [ "No files to compile or build" ]);
+      Console.error("No files to compile or build");
+      return;
+    }
+
     let entryPath = files.map(f => './'+f.path).find(f => f.indexOf('App.java') > -1);
     Console.info(`Compiling ${entryPath}...`);
     const content = fs.readFileSync(entryPath, "utf8");

@@ -19,7 +19,7 @@ class SingleCommand extends Command {
             name: 'technology',
             message: 'Pick a project technology:',
             choices: [...new Set(catalog.map(c => ({ title: c.technology, value: c.technology })))],
-          }]);s
+          }]);
         flags.technology = choice.technology;
       }
 

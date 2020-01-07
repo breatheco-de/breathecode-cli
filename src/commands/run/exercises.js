@@ -49,13 +49,13 @@ class InstructionsCommand extends Command {
     });
 
     app.get('/readme', function(req, res) {
-        res.write(exercises.getReadme());
-        res.end();
+        const readme = exercises.getReadme();
+        res.json(readme);
     });
 
     app.get('/exercise/:slug/readme', function(req, res) {
-        res.write(exercises.getReadme(req.params.slug));
-        res.end();
+        const readme = exercises.getReadme(req.params.slug);
+        res.json(readme);
     });
 
     app.get('/exercise/:slug', function(req, res) {

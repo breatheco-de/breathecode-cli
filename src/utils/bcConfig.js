@@ -1,6 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 let Console = require('./console');
+const frontMatter = require('front-matter');
 let _defaults = require('./config/compiler/_defaults.js');
 /* exercise folder name standard */
 const validateExerciseDirectoryName = (str) => {
@@ -60,11 +61,14 @@ module.exports = (filePath, { grading, editor, language }) => {
                 if (!exercise) throw Error('Exercise not found');
                 const basePath = exercise.path;
                 if (!fs.existsSync(basePath+'/README.md')) throw Error('Readme file not found for exercise: '+basePath+'/README.md');
-                return fs.readFileSync(basePath+'/README.md');
+
+                const content = fs.readFileSync(basePath+'/README.md',"utf8");
+                const attr = frontMatter(content);
+                return attr;
             }
             else{
                 if (!fs.existsSync('./README.md')) throw Error('Readme file not found');
-                return fs.readFileSync('./README.md');
+                return frontMatter(fs.readFileSync('./README.md',"utf8"));
             }
         },
         getFile: (slug, name) => {

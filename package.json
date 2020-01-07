@@ -39,6 +39,7 @@
     "eslint-loader": "^2.0.0",
     "eslint-plugin-react": "^7.11.0",
     "file-loader": "^1.1.5",
+    "front-matter": "^3.0.2",
     "globby": "^8.0.1",
     "html-loader": "^0.5.5",
     "html-validator": "^4.1.1",

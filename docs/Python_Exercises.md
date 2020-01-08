@@ -1,16 +1,58 @@
 # Grading Exercises in Python
 
-1. Testing function of variable declarations.
-2. Testing `print` (stdout)
-3. Testing `input` (stdin)
+1. Testing content of the file.
+2. Testing function of variable declarations.
+3. Testing `print` (stdout) for the entire application
+4. Testing console output (stdout) for just one function.
+5. Testing `input` (stdin)
 
-### Testing Function or variable declaration (existance) in Python
+### 1) Testing that the student solution contains a particular regex or string
+```py
+@pytest.mark.it("1. Create a variable named 'color' with the string value red")
+def test_declare_variable():
+    path = os.path.dirname(os.path.abspath(__file__))+'/app.py'
+    with open(path, 'r') as content_file:
+        content = content_file.read()
+        regex = re.compile(r"color(\s*)=(\s*)\"red\"")
+        assert bool(regex.search(content)) == True
+```
+
+### 2) Testing Function or variable declaration (existance) in Python
+```py
+@pytest.mark.it('1. You should create a variable named variables_are_cool')
+def test_variable_exists():
+    try:
+        from app import myVariable
+    except ImportError:
+        raise ImportError("The variable 'myVariable' should exist on app.py")
+```
 ![Testing Functions in Python](https://ucarecdn.com/ab3f9bbd-beff-492e-ad37-3be3fba18cfe/testingfunctionspythonbreathecodecli.jpg)
 
-### Testing a print (stdout) in Python
+### 3) Testing a print (stdout) in Python
+```py
+import io
+import sys
+sys.stdout = buffer = io.StringIO()
+
+@pytest.mark.it('3. The printed value on the console should be "red"')
+def test_for_file_output(capsys):
+    captured = buffer.getvalue()
+    assert captured == "red\n"
+```
 ![Testing Stdout in Python](https://ucarecdn.com/c95e4deb-0e57-4aa3-8f89-486b4f1eb1cc/testingstdoutpythonbreathecodecli.jpg)
 
-### Testing stdin (using input function) in Python
+### 4) Testing console output (stdout) for just one function.  
+
+```py
+@pytest.mark.it('The console should output "Hello" inside the function printHello ')
+def test_for_file_output(capsys):
+    from app import printHello
+    printHello()
+    captured = capsys.readouterr()
+    assert captured.out == "Hello\n"
+```
+
+### 5) Testing stdin (using input function) in Python
 
 ```py
 import pytest, io, sys, json

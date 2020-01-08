@@ -3,7 +3,8 @@
 1. Testing content of the file.
 2. Testing function of variable declarations.
 3. Testing `print` (stdout) for the entire application
-4. Testing `input` (stdin)
+4. Testing console output (stdout) for just one function.
+5. Testing `input` (stdin)
 
 ### 1) Testing that the student solution contains a particular regex or string
 ```py
@@ -40,7 +41,18 @@ def test_for_file_output(capsys):
 ```
 ![Testing Stdout in Python](https://ucarecdn.com/c95e4deb-0e57-4aa3-8f89-486b4f1eb1cc/testingstdoutpythonbreathecodecli.jpg)
 
-### 4) Testing stdin (using input function) in Python
+### 4) Testing console output (stdout) for just one function.  
+
+```py
+@pytest.mark.it('The console should output "Hello" inside the function printHello ')
+def test_for_file_output(capsys):
+    from app import printHello
+    printHello()
+    captured = capsys.readouterr()
+    assert captured.out == "Hello\n"
+```
+
+### 5) Testing stdin (using input function) in Python
 
 ```py
 import pytest, io, sys, json

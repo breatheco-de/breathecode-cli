@@ -23,8 +23,15 @@ module.exports = function({ socket, files, config }){
             const { stdout, stderr, code } = shell.exec(command);
 
             if(code != 0){
-              socket.log('testing-error',[ stdout || stderr ]);
-              Console.error("There was an error while testing");
+              const errors = typeof config.getErrors != 'undefined' ? config.getErrors(stdout || stderr) : [];
+              let errorLog = [ stdout || stderr ];
+              let msg = '';
+              if(errors.length > 0){
+                msg = `   You are failing on the following tests: \n ${errors.map(e => "      ✗ " + e + "\n").join()}`;
+                errorLog.push(msg);
+              }
+              socket.log('testing-error', errorLog, errors);
+              Console.error("There was an error while testing \n"+msg);
             }
             else{
               socket.log('testing-success',[ stdout || stderr ]);

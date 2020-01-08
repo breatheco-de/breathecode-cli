@@ -48,6 +48,19 @@ def pytest_generate_tests(metafunc):
     let answers = (count.length == 0) ? [] : await socket.ask(count);
 
     return `pytest ${this.getEntryPath()} --testdox --capture=${this.config.capture} --color=${this.config.color} --stdin='${JSON.stringify(answers)}'`
+  },
+  getErrors(stdout){
+    //@pytest.mark.it('1. Your code needs to print Yellow on the console')
+    var regex = /@pytest\.mark\.it\(["'](.+)["']\)/gm;
+    let errors = [];
+    let found = null;
+    while ((found = regex.exec(stdout)) !== null){
+      if (found.index === regex.lastIndex) {
+          regex.lastIndex++;
+      }
+      errors.push(found[1]);
+    }
+    return errors;
   }
 
 });

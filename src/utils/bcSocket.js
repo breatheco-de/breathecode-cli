@@ -54,10 +54,10 @@ module.exports = {
         this.on('input', ({ inputs }) => resolve(inputs));
       })
     },
-    log: function(status, messages=[]){
-      this.emit('log',status,messages);
+    log: function(status, messages=[],report=[]){
+      this.emit('log',status,messages,[],report);
     },
-    emit: function(action, status='ready', logs=[], inputs=[]){
+    emit: function(action, status='ready', logs=[], inputs=[], report=[]){
 
       if(['webpack','vanillajs','vue', 'react', 'css', 'html'].includes(this.config.compiler)){
         if(['compiler-success', 'compiler-warning'].includes(status)) this.addAllowed('preview');
@@ -66,6 +66,6 @@ module.exports = {
 
       if(this.config.grading === 'incremental') this.removeAllowed('run');
 
-      this.socket.emit('compiler', { action, status, logs, allowed: this.allowedActions, inputs });
+      this.socket.emit('compiler', { action, status, logs, allowed: this.allowedActions, inputs, report });
     }
 };

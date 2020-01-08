@@ -4,6 +4,17 @@
 2. Testing `print` (stdout)
 3. Testing `input` (stdin)
 
+### Testing that the student solution contains a particular regex or string
+```py
+@pytest.mark.it("1. Create a variable named 'color' with the string value red")
+def test_declare_variable():
+    path = os.path.dirname(os.path.abspath(__file__))+'/app.py'
+    with open(path, 'r') as content_file:
+        content = content_file.read()
+        regex = re.compile(r"color(\s*)=(\s*)\"red\"")
+        assert bool(regex.search(content)) == True
+```
+
 ### Testing Function or variable declaration (existance) in Python
 ![Testing Functions in Python](https://ucarecdn.com/ab3f9bbd-beff-492e-ad37-3be3fba18cfe/testingfunctionspythonbreathecodecli.jpg)
 

@@ -1,10 +1,11 @@
 # Grading Exercises in Python
 
-1. Testing function of variable declarations.
-2. Testing `print` (stdout)
-3. Testing `input` (stdin)
+1. Testing content of the file.
+2. Testing function of variable declarations.
+3. Testing `print` (stdout) for the entire application
+4. Testing `input` (stdin)
 
-### Testing that the student solution contains a particular regex or string
+### 1) Testing that the student solution contains a particular regex or string
 ```py
 @pytest.mark.it("1. Create a variable named 'color' with the string value red")
 def test_declare_variable():
@@ -15,13 +16,19 @@ def test_declare_variable():
         assert bool(regex.search(content)) == True
 ```
 
-### Testing Function or variable declaration (existance) in Python
+### 2) Testing Function or variable declaration (existance) in Python
 ![Testing Functions in Python](https://ucarecdn.com/ab3f9bbd-beff-492e-ad37-3be3fba18cfe/testingfunctionspythonbreathecodecli.jpg)
 
-### Testing a print (stdout) in Python
+### 3) Testing a print (stdout) in Python
+```py
+@pytest.mark.it('3. The printed value on the console should be "red"')
+def test_for_file_output(capsys):
+    captured = buffer.getvalue()
+    assert captured == "red\n"
+```
 ![Testing Stdout in Python](https://ucarecdn.com/c95e4deb-0e57-4aa3-8f89-486b4f1eb1cc/testingstdoutpythonbreathecodecli.jpg)
 
-### Testing stdin (using input function) in Python
+### 4) Testing stdin (using input function) in Python
 
 ```py
 import pytest, io, sys, json

@@ -2,6 +2,7 @@ const path = require('path');
 let shell = require('shelljs');
 const fs = require('fs');
 let Console = require('./console');
+const color = require('colors');
 
 module.exports = function({ socket, files, config }){
 
@@ -27,10 +28,10 @@ module.exports = function({ socket, files, config }){
               let errorLog = [ stdout || stderr ];
               let msg = '';
               if(errors.length > 0){
-                msg = `   You are failing on the following tests: \n ${errors.map(e => "      ✗ " + e + "\n").join()}`;
+                msg = `\n\n   You are failing on the following tests: \n ${[...new Set(errors)].map((e,i) => `      ✗ ${i.toString().cyan}. ${e.red.italic} \n`).join()}`;
                 errorLog.push(msg);
               }
-              socket.log('testing-error', errorLog, errors);
+              socket.log('testing-error', errorLog, [...new Set(errors)]);
               Console.error("There was an error while testing \n"+msg);
             }
             else{

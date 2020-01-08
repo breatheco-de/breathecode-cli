@@ -21,6 +21,10 @@ def test_declare_variable():
 
 ### 3) Testing a print (stdout) in Python
 ```py
+import io
+import sys
+sys.stdout = buffer = io.StringIO()
+
 @pytest.mark.it('3. The printed value on the console should be "red"')
 def test_for_file_output(capsys):
     captured = buffer.getvalue()

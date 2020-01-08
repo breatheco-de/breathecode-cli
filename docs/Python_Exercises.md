@@ -17,6 +17,14 @@ def test_declare_variable():
 ```
 
 ### 2) Testing Function or variable declaration (existance) in Python
+```py
+@pytest.mark.it('1. You should create a variable named variables_are_cool')
+def test_variable_exists():
+    try:
+        from app import myVariable
+    except ImportError:
+        raise ImportError("The variable 'myVariable' should exist on app.py")
+```
 ![Testing Functions in Python](https://ucarecdn.com/ab3f9bbd-beff-492e-ad37-3be3fba18cfe/testingfunctionspythonbreathecodecli.jpg)
 
 ### 3) Testing a print (stdout) in Python

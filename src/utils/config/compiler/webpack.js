@@ -35,16 +35,16 @@ module.exports = async function({ files, config, socket }){
       ...entry,
       `webpack-dev-server/client?http://${config.address}:${config.port}`
     ];
-    if(typeof config.template !== 'undefined'){
-        if(fs.existsSync(config.template)){
-            Console.info('Compiling with special template '+config.template);
+    if(typeof config.webpack_template !== 'undefined'){
+        if(fs.existsSync(config.webpack_template)){
+            Console.info('Compiling with special template '+config.webpack_template);
             webpackConfig.plugins.push(new HtmlWebpackPlugin({
-              template: config.template,
+              template: config.webpack_template,
               favicon: __dirname + '/favicon.png'
             }));
         }
         else{
-            Console.warning('Template not found '+config.template);
+            Console.warning('Template not found '+config.webpack_template);
             Console.help('Check your bc.json template property and fix the path. Using the default template for now.');
 
         }

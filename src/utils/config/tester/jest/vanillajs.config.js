@@ -6,7 +6,7 @@ const babelTransformPath = require.resolve('./babelTransform.vanillajs.js');
 
 module.exports = (files) => ({
   config: {
-      verbose: true,
+      verbose: false,
       moduleDirectories: [nodeModulesPath],
       prettierPath: nodeModulesPath+'/prettier',
       transform: {
@@ -29,7 +29,8 @@ module.exports = (files) => ({
     return testsPath;
   },
   getCommand: async function(socket){
-    return `jest --config '${JSON.stringify({ ...this.config, testRegex: this.getEntryPath() })}' --colors`
+    this.config.reporters = [[ __dirname+'/_reporter.js', { reportPath: './.breathecode' }]];
+    return `jest --config '${JSON.stringify({ ...this.config, testRegex: this.getEntryPath()  })}' --colors`
   }
 
 });

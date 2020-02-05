@@ -1,88 +1,73 @@
+
+shared_defaults = {
+  port: 3000,
+  address: "localhost",
+  editor: "standalone",
+  outputPath: './.breathecode/dist',
+  publicPath: '/preview',
+  grading: 'isolated',
+  ignoreRegex: null,
+  webpack_template: null, // if you want webpack to use an HTML template
+  disable_grading: false,
+
+  // Mandatory
+  language: null,
+  compiler: null,
+  tester: null,
+  actions: []
+}
+
 module.exports = {
   "html": {
-    port: 3000,
-    address: "localhost",
+    ...shared_defaults,
     language: "html",
     compiler: "html",
     tester: "jest",
     ignoreRegex: /.*\.js/gm,
-    editor: "standalone",
-    outputPath: './.breathecode/dist',
-    publicPath: '/preview',
-    actions: ['build', 'test'],
-    grading: 'isolated',
+    actions: ['build', 'test']
   },
   "css": {
-    port: 3000,
-    address: "localhost",
+    ...shared_defaults,
     language: "css",
     compiler: "webpack",
     tester: "jest",
-    editor: "standalone",
-    outputPath: './.breathecode/dist',
-    publicPath: '/preview',
     ignoreRegex: /.*\.js/gm,
-    actions: ['build', 'test'],
-    grading: 'isolated',
+    actions: ['build', 'test']
   },
   "vanillajs": {
-    port: 3000,
-    address: "localhost",
+    ...shared_defaults,
     language: "vanillajs",
     compiler: "webpack",
     tester: "jest",
-    editor: "standalone",
-    outputPath: './.breathecode/dist',
-    publicPath: '/preview',
-    ignoreRegex: null,
-    grading: 'isolated',
     actions: ['build', 'test']
   },
   "react": {
-    port: 3000,
-    address: "localhost",
+    ...shared_defaults,
     language: "react",
     compiler: "webpack",
     tester: "jest",
-    editor: "standalone",
-    outputPath: './.breathecode/dist',
-    publicPath: '/preview',
-    template: __dirname + '/template.html',
-    ignoreRegex: null,
-    grading: 'isolated',
+    webpack_template: __dirname + '/template.html',
     actions: ['build', 'test']
   },
   "python3": {
-    port: 3000,
-    address: "localhost",
+    ...shared_defaults,
     language: "python3",
     compiler: "python3",
     tester: "pytest",
-    editor: "standalone",
-    ignoreRegex: null,
-    grading: 'isolated',
     actions: ['run', 'test']
   },
   "node": {
-    port: 3000,
-    address: "localhost",
+    ...shared_defaults,
     language: "node",
     compiler: "node",
     tester: "jest",
-    editor: "standalone",
-    ignoreRegex: null,
-    grading: 'isolated',
     actions: ['run', 'test']
   },
   "java": {
-    port: 3000,
-    address: "localhost",
+    ...shared_defaults,
     language: "java",
     compiler: "java",
     tester: "junit",
-    editor: "standalone",
-    ignoreRegex: null,
-    grading: 'isolated',
     actions: ['run', 'test']
   }
 }

@@ -1,6 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 const prettier = require("prettier");
+let shell = require('shelljs');
 let Console = require('../../console');
 const { python } = require('compile-run');
 const { getInputs, cleanStdout } = require('./_utils.js');
@@ -8,6 +9,11 @@ const bcActivity = require('../../bcActivity.js');
 
 module.exports = async function({ files, socket }){
     socket.log('compiling',['Compiling...']);
+
+    const packageName = "python3";
+    if (!shell.which(packageName)) {
+      throw Error(`🚫 You need to have ${packageName} installed to run test the exercises`);
+    }
 
     if( !files || files.length == 0){
       socket.log('compiler-error', [ "No files to compile or build" ]);

@@ -7,7 +7,8 @@ module.exports = (files) => ({
   config: {
       verbose: true,
       moduleDirectories: [nodeModulesPath],
-      prettierPath: nodeModulesPath+'/prettier'
+      prettierPath: nodeModulesPath+'/prettier',
+      testResultsProcessor: nodeModulesPath+'/jest-json-repoter'
   },
   validate: ()=>{
     if (!fs.existsSync(nodeModulesPath+'/prettier')) throw new Error(`Uknown prettier path`);
@@ -25,7 +26,21 @@ module.exports = (files) => ({
     return testsPath;
   },
   getCommand: async function(socket){
+    console.log(this.config);
     return `jest --config '${JSON.stringify({ ...this.config, testRegex: this.getEntryPath() })}' --colors`
+  },
+  getErrors(stdout){
+    //@pytest.mark.it('1. Your code needs to print Yellow on the console')
+    var regex = /@pytest\.mark\.it\(["'](.+)["']\)/gm;
+    let errors = [];
+    let found = null;
+    while ((found = regex.exec(stdout)) !== null){
+      if (found.index === regex.lastIndex) {
+          regex.lastIndex++;
+      }
+      errors.push(found[1]);
+    }
+    return errors;
   }
 
 });

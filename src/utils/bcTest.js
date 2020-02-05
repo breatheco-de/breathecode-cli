@@ -16,6 +16,11 @@ module.exports = function({ socket, files, config }){
     try{
       const config = require(configPath)(files);
       config.validate();
+
+      if(config.ignoreTests){
+        Console.error('Grading is disabled on bc.json file.');
+        socket.log('testing-error', [], ['Grading is disabled on bc.json file.']);
+      }
       Console.info('Running tests...');
 
       config.getCommand(socket)

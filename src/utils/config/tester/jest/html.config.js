@@ -3,12 +3,11 @@ const path = require('path');
 const fs = require('fs');
 const nodeModulesPath = path.resolve(__dirname, '../../../../../node_modules');
 
-module.exports = (files) => ({
+module.exports = (files, slug='') => ({
   config: {
       verbose: true,
       moduleDirectories: [nodeModulesPath],
       prettierPath: nodeModulesPath+'/prettier',
-      testResultsProcessor: nodeModulesPath+'/jest-json-repoter'
   },
   validate: ()=>{
     if (!fs.existsSync(nodeModulesPath+'/prettier')) throw new Error(`Uknown prettier path`);
@@ -26,21 +25,7 @@ module.exports = (files) => ({
     return testsPath;
   },
   getCommand: async function(socket){
-    console.log(this.config);
+    this.config.reporters = [[ __dirname+'/_reporter.js', { reportPath: `./.breathecode/reports/${slug}.json` }]];
     return `jest --config '${JSON.stringify({ ...this.config, testRegex: this.getEntryPath() })}' --colors`
   },
-  getErrors(stdout){
-    //@pytest.mark.it('1. Your code needs to print Yellow on the console')
-    var regex = /@pytest\.mark\.it\(["'](.+)["']\)/gm;
-    let errors = [];
-    let found = null;
-    while ((found = regex.exec(stdout)) !== null){
-      if (found.index === regex.lastIndex) {
-          regex.lastIndex++;
-      }
-      errors.push(found[1]);
-    }
-    return errors;
-  }
-
 });

@@ -5,7 +5,7 @@ const nodeModulesPath = path.resolve(__dirname, '../../../../../node_modules');
 const babelTransformPath = require.resolve('./babelTransform.node.js');
 const { getInputs, cleanStdout } = require('../../compiler/_utils.js');
 
-module.exports = (files) => ({
+module.exports = (files, slug='') => ({
   config: {
       verbose: true,
       moduleDirectories: [nodeModulesPath],
@@ -36,6 +36,7 @@ module.exports = (files) => ({
     const count = getInputs(/prompt\((?:["'`]{1}(.*)["'`]{1})?\)/gm, content);
     let answers = (count.length == 0) ? [] : await socket.ask(count);
 
+    this.config.reporters = [[ __dirname+'/_reporter.js', { reportPath: `./.breathecode/reports/${slug}.json` }]];
     return `jest --config '${JSON.stringify({ ...this.config, globals: { __stdin: answers }, testRegex: this.getEntryPath() })}' --colors`
   }
 

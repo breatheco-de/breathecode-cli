@@ -1,5 +1,5 @@
 
-shared_defaults = {
+const shared_defaults = {
   port: 3000,
   address: "localhost",
   editor: "standalone",

@@ -4,7 +4,7 @@ const fs = require('fs');
 let Console = require('./console');
 const color = require('colors');
 
-module.exports = function({ socket, files, config }){
+module.exports = function({ socket, files, config, slug }){
 
     const configPath = path.resolve(__dirname,`./config/tester/${config.tester}/${config.language}.config.js`);
     if (!fs.existsSync(configPath)){
@@ -14,13 +14,21 @@ module.exports = function({ socket, files, config }){
     }
 
     try{
-      const config = require(configPath)(files);
+      const config = require(configPath)(files, slug);
       config.validate();
 
       if(config.ignoreTests){
         Console.error('Grading is disabled on bc.json file.');
         socket.log('testing-error', [], ['Grading is disabled on bc.json file.']);
+        return;
       }
+
+      if (!fs.existsSync('./.breathecode/reports')){
+        fs.mkdirSync('./.breathecode/reports');
+        Console.debug("Creating the ./.breathecode/reports directory");
+        return;
+      }
+
       Console.info('Running tests...');
 
       config.getCommand(socket)

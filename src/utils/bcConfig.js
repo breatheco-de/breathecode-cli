@@ -16,7 +16,7 @@ const merge = (target, ...sources) =>
       .reduce((obj, [key, value]) => (obj[key] = value, obj), {})
   ));
 
-module.exports = (filePath, { grading, editor, language }) => {
+module.exports = (filePath, { grading, editor, language, disable_grading }) => {
 
     const confPath = (fs.existsSync(filePath+'bc.json')) ? './bc.json' : (fs.existsSync(filePath+'./.bc.json')) ? './.bc.json' : (fs.existsSync(filePath+'.breathecode/.bc.json')) ? '.breathecode/.bc.json' : '.breathecode/bc.json';
 
@@ -25,7 +25,7 @@ module.exports = (filePath, { grading, editor, language }) => {
       const bcContent = fs.readFileSync(confPath);
       const jsonConfig = JSON.parse(bcContent);
       if(!jsonConfig) throw Error(`Invalid ${confPath} syntax: Unable to parse.`);
-      config = merge(jsonConfig,{ language });
+      config = merge(jsonConfig,{ language, disable_grading });
       Console.debug("This is your configuration file: ",config);
       if(typeof config.language == 'undefined' && typeof config.compiler == 'undefined'){
         Console.error("The language has to be specified in the bc.json or as the -l=[language] flag");
@@ -47,14 +47,27 @@ module.exports = (filePath, { grading, editor, language }) => {
       throw new Error(`Invalid language or compiler: ${config.language || config.compiler}`);
     }
 
+    // if ignoreRegex is saved into a json, it saves as an object abd breaks the cli
+    if(config.ignoreRegex && config.ignoreRegex.constructor !== RegExp) delete config.ignoreRegex;
+
     config = merge(defaults || {}, config, { grading, editor } );
     config.exercisesPath = config.grading === "isolated" ? filePath+'exercises' : filePath+'.breathecode/exercises';
 
-    Console.debug("These is your configuration: ",config);
+    Console.debug("This is your configuration: ", defaults);
     if (config.grading === 'isolated' && !fs.existsSync(config.exercisesPath))  throw Error(`You are running with ${config.grading} grading, so make sure you have an exercises folder on ${config.exercisesPath}`);
 
     return {
         getConfig: () => config,
+        getTestReport: (slug=null) => {
+          if(!slug) throw Error("You have to specify the exercise slug to get the results from");
+
+          const _path = `./.breathecode/reports/${slug}.json`;
+          if (!fs.existsSync(_path)) return {};
+
+          const content = fs.readFileSync(_path);
+          const data = JSON.parse(content);
+          return data;
+        },
         getReadme: (slug=null) => {
             if(slug){
                 const exercise = config.exercises.find(ex => ex.slug == slug);

@@ -17,12 +17,12 @@ class InstructionsCommand extends Command {
 
     Console.info("Loading the configuration for the exercises.");
     Console.debug("These are your flags: ",flags);
-    var exercises = bcConfig('./', { grading: flags.grading, editor: flags.editor, language: flags.language });
+    var exercises = bcConfig('./', { grading: flags.grading, editor: flags.editor, language: flags.language, disable_grading: flags.disable_grading });
     Console.info("Building the exercise index...");
     exercises.buildIndex();
     var config = exercises.getConfig();
 
-    Console.info(`Compiler: ${config.compiler}, grading: ${config.grading}, editor: ${config.editor}, for ${Array.isArray(config.exercises) ? config.exercises.length : 0} exercises found`);
+    Console.info(`Compiler: ${config.compiler}, grading: ${config.grading} ${config.disable_grading ? "(disabled)" : ""}, editor: ${config.editor}, for ${Array.isArray(config.exercises) ? config.exercises.length : 0} exercises found`);
 
     var app = express();
     var server = require('http').Server(app);
@@ -56,6 +56,11 @@ class InstructionsCommand extends Command {
     app.get('/exercise/:slug/readme', function(req, res) {
         const readme = exercises.getReadme(req.params.slug);
         res.json(readme);
+    });
+
+    app.get('/exercise/:slug/report', function(req, res) {
+        const report = exercises.getTestReport(req.params.slug);
+        res.json(JSON.stringify(report));
     });
 
     app.get('/exercise/:slug', function(req, res) {
@@ -124,7 +129,8 @@ class InstructionsCommand extends Command {
         bcTest({
           files: exercises.getAllFiles(data.exerciseSlug),
           socket,
-          config
+          config,
+          slug: data.exerciseSlug
         });
     });
 
@@ -148,6 +154,7 @@ InstructionsCommand.flags = {
   port: flags.string({char: 'p', description: 'server port' }),
   host: flags.string({char: 'h', description: 'server host' }),
   debug: flags.boolean({char: 'd', description: 'debugger mode for more verbage', default: false }),
+  disable_grading: flags.boolean({char: 'dg', description: 'disble grading functionality', default: false }),
   editor: flags.string({ char: 'e', description: '[standalone, gitpod]', options: ['standalone', 'gitpod'] }),
   grading: flags.string({ char: 'g', description: '[isolated, incremental]', options: ['isolated', 'incremental'] }),
 };

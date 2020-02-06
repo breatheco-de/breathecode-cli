@@ -10,13 +10,15 @@ class JSONReporter {
 
   save(result){
     if (typeof(result) !== 'object') throw Error('Results should an object');
-    fs.writeFileSync(this._options.reportPath+'/test.json', JSON.stringify(result, null, 2))
+    fs.writeFileSync(this._options.reportPath, JSON.stringify(result, null, 2))
   }
 
   print({ numFailedTests, success, failed }){
     if(!success){
-      Console.error(`There are ${numFailedTests} errors in your code: `);
-      failed.forEach(error => Console.error(` 𝗑 ${error.title}`))
+      Console.error(`Some of your code is not working as expected:`);
+      console.log("");
+      failed.forEach(error => console.log(` ${error.status !== 'failed' ? '✓'.green.bold : 'x'.red.bold} ${error.title.white}`))
+      console.log('');
     }
     else{
       Console.success("Everything is perfect!!");
@@ -24,15 +26,12 @@ class JSONReporter {
   }
 
   parseSuite(suite) {
-    const suites = suite.testResults.filter(test => test.status === "failed").map(test => ({ title: test.title }));
+    const suites = suite.testResults.map(({title, status}) => ({ title, status }));
     return suites;
   }
 
   onRunComplete(contexts, results) {
-    // console.log('Custom reporter output:');
-    // console.log('GlobalConfig: ', this._globalConfig);
     const errorsGroups = (!results.success) ? results.testResults.map(this.parseSuite) : null;
-    console.log(errorsGroups);
     const result = {
       success: results.success,
       numFailedTests: results.numFailedTests,

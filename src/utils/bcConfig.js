@@ -1,5 +1,6 @@
 const path = require('path');
 const fs = require('fs');
+let shell = require('shelljs');
 let Console = require('./console');
 const frontMatter = require('front-matter');
 let _defaults = require('./config/compiler/_defaults.js');
@@ -45,6 +46,12 @@ module.exports = (filePath, { grading, editor, language, disable_grading }) => {
     if(typeof defaults == 'undefined'){
       Console.error(`Invalid language or compiler: ${config.language || config.compiler}`);
       throw new Error(`Invalid language or compiler: ${config.language || config.compiler}`);
+    }
+
+    // Assign default editor mode if not set already
+    if(!config.editor){
+      if (shell.which('gp')) config.editor = "gitpod";
+      else config.editor = "standalone";
     }
 
     // if ignoreRegex is saved into a json, it saves as an object abd breaks the cli

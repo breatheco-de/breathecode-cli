@@ -2,7 +2,7 @@
 const shared_defaults = {
   port: 3000,
   address: "localhost",
-  editor: "standalone",
+  editor: null,
   outputPath: './.breathecode/dist',
   publicPath: '/preview',
   grading: 'isolated',

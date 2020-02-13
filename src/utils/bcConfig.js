@@ -123,6 +123,8 @@ module.exports = (filePath, { grading, editor, language, disable_grading }) => {
                                             .filter(file =>
                                                 // ignore tests files and files with ".hide" on their name
                                                 (file.name.toLocaleLowerCase().indexOf('test.') == -1 && file.name.toLocaleLowerCase().indexOf('tests.') == -1 && file.name.toLocaleLowerCase().indexOf('.hide.') == -1 &&
+                                                // ignore files with the word "cached", python creates these files for unit testing purposes
+                                                (file.name.toLocaleLowerCase().indexOf('cached') == -1) &&
                                                 //ignore java copiled files
                                                 (file.name.toLocaleLowerCase().indexOf('.class') == -1) &&
                                                 //readmes and directories

@@ -44,7 +44,7 @@ $ npm install -g breathecode-cli
 $ breathecode COMMAND
 running command...
 $ breathecode (-v|--version|version)
-breathecode-cli/1.1.93 linux-x64 node-v10.15.3
+breathecode-cli/1.1.94 linux-x64 node-v10.15.3
 $ breathecode --help [COMMAND]
 USAGE
   $ breathecode COMMAND
@@ -76,7 +76,7 @@ OPTIONS
   -l, --language=language  specify what language you want: [html, css, react, vanilajs, node, python]
 ```
 
-_See code: [src/commands/create/exercises.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.93/src/commands/create/exercises.js)_
+_See code: [src/commands/create/exercises.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.94/src/commands/create/exercises.js)_
 
 ## download:exercises
 
@@ -96,7 +96,7 @@ ALIASES
   $ breathecode start:exercises
 ```
 
-_See code: [src/commands/download/exercises.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.93/src/commands/download/exercises.js)_
+_See code: [src/commands/download/exercises.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.94/src/commands/download/exercises.js)_
 
 ## download:project
 
@@ -116,7 +116,7 @@ ALIASES
   $ breathecode start:project
 ```
 
-_See code: [src/commands/download/project.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.93/src/commands/download/project.js)_
+_See code: [src/commands/download/project.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.94/src/commands/download/project.js)_
 
 ## help [COMMAND]
 
@@ -149,7 +149,7 @@ OPTIONS
   -t, --type=js|jsx|scss|css|md|html|py  [default: js] file extensions to look for
 ```
 
-_See code: [src/commands/login.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.93/src/commands/login.js)_
+_See code: [src/commands/login.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.94/src/commands/login.js)_
 
 ## run:exercises
 
@@ -169,7 +169,7 @@ OPTIONS
   -p, --port=port                     server port
 ```
 
-_See code: [src/commands/run/exercises.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.93/src/commands/run/exercises.js)_
+_See code: [src/commands/run/exercises.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.94/src/commands/run/exercises.js)_
 
 ## run:server
 
@@ -186,7 +186,7 @@ OPTIONS
   -p, --port=port          [default: 8080] server port
 ```
 
-_See code: [src/commands/run/server.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.93/src/commands/run/server.js)_
+_See code: [src/commands/run/server.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.94/src/commands/run/server.js)_
 
 ## update [CHANNEL]
 
@@ -212,5 +212,5 @@ OPTIONS
   -t, --type=js|jsx|scss|css|md|html|py  [default: js] file extensions to look for
 ```
 
-_See code: [src/commands/utils/todo.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.93/src/commands/utils/todo.js)_
+_See code: [src/commands/utils/todo.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.94/src/commands/utils/todo.js)_
 <!-- commandsstop -->

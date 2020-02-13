@@ -28,16 +28,17 @@ def test_variable_exists():
 ```
 ![Testing Functions in Python](https://ucarecdn.com/ab3f9bbd-beff-492e-ad37-3be3fba18cfe/testingfunctionspythonbreathecodecli.jpg)
 
-### 3) Testing a print (stdout) in Python
+### 3) Testing a print (stdout) in the entire app.py
 ```py
 import io
 import sys
-sys.stdout = buffer = io.StringIO()
+from cached import execute_app
 
 @pytest.mark.it('3. The printed value on the console should be "red"')
 def test_for_file_output(capsys):
-    captured = buffer.getvalue()
-    assert captured == "red\n"
+    execute_app()
+    captured = capsys.readouterr()
+    assert "red!\n" == captured.out
 ```
 ![Testing Stdout in Python](https://ucarecdn.com/c95e4deb-0e57-4aa3-8f89-486b4f1eb1cc/testingstdoutpythonbreathecodecli.jpg)
 
@@ -46,7 +47,7 @@ def test_for_file_output(capsys):
 ```py
 @pytest.mark.it('The console should output "Hello" inside the function printHello ')
 def test_for_file_output(capsys):
-    from app import printHello
+    from cached import printHello
     printHello()
     captured = capsys.readouterr()
     assert captured.out == "Hello\n"
@@ -56,20 +57,15 @@ def test_for_file_output(capsys):
 
 ```py
 import pytest, io, sys, json
+from cached import execute_app
 
 @pytest.mark.it('Sum all three input numbers and print on the console the result')
-def test_add_variables(mocker, stdin):
+def test_add_variables(capsys):
 
-    _stdin = json.loads(stdin)
-    mocker.patch('builtins.input', lambda x: _stdin.pop(0))
-
-    sys.stdout = buffer = io.StringIO()
-    import app
-
-    _stdin = json.loads(stdin)
-    sumatory = int(_stdin[0]) + int(_stdin[1]) + int(_stdin[2])
-
-    assert buffer.getvalue() == str(sumatory)+"\n"
+    fake_input = [2,3,4] #fake input
+    with mock.patch('builtins.input', lambda x: fake_input.pop()):
+      captured = capsys.readouterr()
+      assert captured.out == "9\n"
 ```
 
 ![Testing Stdin in Python](https://ucarecdn.com/eb33c3dd-3bda-4aeb-83be-b61cfd82ffae/testingstdinpythonbreathecodecli.jpg)

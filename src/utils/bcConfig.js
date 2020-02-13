@@ -78,7 +78,7 @@ module.exports = (filePath, { grading, editor, language, disable_grading }) => {
         getReadme: (slug=null) => {
             if(slug){
                 const exercise = config.exercises.find(ex => ex.slug == slug);
-                if (!exercise) throw Error('Exercise not found');
+                if (!exercise) throw Error(`Exercise ${slug} not found`);
                 const basePath = exercise.path;
                 if (!fs.existsSync(basePath+'/README.md')) throw Error('Readme file not found for exercise: '+basePath+'/README.md');
 

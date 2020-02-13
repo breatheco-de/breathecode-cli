@@ -3,7 +3,7 @@ const path = require('path');
 const fs = require('fs');
 const nodeModulesPath = path.resolve(__dirname, '../../../../../node_modules');
 const babelTransformPath = require.resolve('./babelTransform.node.js');
-const { getInputs, cleanStdout } = require('../../compiler/_utils.js');
+const { getMatches, cleanStdout } = require('../../compiler/_utils.js');
 
 module.exports = (files, slug='') => ({
   config: {
@@ -33,7 +33,7 @@ module.exports = (files, slug='') => ({
 
     const appPath = files.map(f => './'+f.path).find(f => f.indexOf('app.js') > -1);
     const content = fs.readFileSync(appPath, "utf8");
-    const count = getInputs(/prompt\((?:["'`]{1}(.*)["'`]{1})?\)/gm, content);
+    const count = getMatches(/prompt\((?:["'`]{1}(.*)["'`]{1})?\)/gm, content);
     let answers = (count.length == 0) ? [] : await socket.ask(count);
 
     this.config.reporters = [[ __dirname+'/_reporter.js', { reportPath: `./.breathecode/reports/${slug}.json` }]];

@@ -4,7 +4,7 @@ const prettier = require("prettier");
 let shell = require('shelljs');
 let Console = require('../../console');
 const { python } = require('compile-run');
-const { getInputs, cleanStdout } = require('./_utils.js');
+const { getMatches, cleanStdout } = require('./_utils.js');
 const bcActivity = require('../../bcActivity.js');
 
 module.exports = async function({ files, socket }){
@@ -23,7 +23,7 @@ module.exports = async function({ files, socket }){
     let entryPath = files.map(f => './'+f.path).find(f => f.indexOf('app.py') > -1);
     Console.info(`Compiling ${entryPath}...`);
     const content = fs.readFileSync(entryPath, "utf8");
-    const count = getInputs(/input\((?:["'`]{1}(.*)["'`]{1})?\)/gm, content);
+    const count = getMatches(/input\((?:["'`]{1}(.*)["'`]{1})?\)/gm, content);
     let inputs = (count.length == 0) ? [] : await socket.ask(count);
 
     const resultPromise = python.runFile(entryPath, { stdin: inputs.join('\n'), executionPath: 'python3' })
@@ -47,7 +47,7 @@ module.exports = async function({ files, socket }){
             else{
               socket.log('compiler-success', [ cleanStdout(result.stdout, count) ]);
               Console.clean();
-              console.log(result.stdout);
+              Console.log(result.stdout);
             }
         })
         .catch(err => {

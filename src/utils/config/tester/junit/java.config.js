@@ -3,7 +3,7 @@ let shell = require('shelljs');
 let Console = require('../../../console');
 const indentString = require('indent-string');
 const path = require('path');
-const { getInputs, cleanStdout } = require('../../compiler/_utils.js');
+const { getMatches, cleanStdout } = require('../../compiler/_utils.js');
 
 const installCommands = {
   jmock: `curl -0 https://repo1.maven.org/maven2/org/jmock/jmock-junit4/2.12.0/jmock-junit4-2.12.0.jar -o ./.breathecode/jmock.jar`,
@@ -62,7 +62,7 @@ module.exports = (files) => ({
     const appPath = files.map(f => './'+f.path).find(f => f.indexOf('App.java') > -1);
 
     // const content = fs.readFileSync(appPath, "utf8");
-    // const count = getInputs(/reader\.readLine\((?:["'`]{1}(.*)["'`]{1})?\)/gm, content);
+    // const count = getMatches(/reader\.readLine\((?:["'`]{1}(.*)["'`]{1})?\)/gm, content);
     // let answers = (count.length == 0) ? [] : await socket.ask(count);
 
     const rootPath = this.getEntryPath().replace('Test.java', '');

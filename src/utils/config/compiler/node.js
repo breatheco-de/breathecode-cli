@@ -3,7 +3,7 @@ const fs = require('fs');
 const prettier = require("prettier");
 let Console = require('../../console');
 const { node } = require('compile-run');
-const { getInputs, cleanStdout } = require('./_utils.js');
+const { getMatches, cleanStdout } = require('./_utils.js');
 const bcActivity = require('../../bcActivity.js');
 
 module.exports = async function({ files, socket }){
@@ -18,7 +18,7 @@ module.exports = async function({ files, socket }){
     let entryPath = files.map(f => './'+f.path).find(f => f.indexOf('app.js') > -1);
 
     const content = fs.readFileSync(entryPath, "utf8");
-    const count = getInputs(/prompt\((?:["'`]{1}(.*)["'`]{1})?\)/gm, content);
+    const count = getMatches(/prompt\((?:["'`]{1}(.*)["'`]{1})?\)/gm, content);
     let inputs = (count.length == 0) ? [] : await socket.ask(count);
 
     const lib = fs.readFileSync(path.resolve(__dirname,'./_node_lib.js'), "utf8");

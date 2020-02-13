@@ -2,7 +2,8 @@ const fs = require('fs');
 let shell = require('shelljs');
 const indentString = require('indent-string');
 const path = require('path');
-const { getInputs, cleanStdout } = require('../../compiler/_utils.js');
+const Console = require('../../../console.js');
+const { getMatches, cleanStdout, indent } = require('../../compiler/_utils.js');
 
 module.exports = (files) => ({
   config: {
@@ -37,6 +38,18 @@ def pytest_generate_tests(metafunc):
     let entryPath = files.map(f => './'+f.path).find(f => f.indexOf('test.py') > -1 || f.indexOf('tests.py') > -1);
     if (!fs.existsSync(entryPath)) throw new Error(`🚫 No tests.py script found on the exercise files`);
 
+    const appPath = files.map(f => './'+f.path).find(f => f.indexOf('app.py') > -1);
+    if (!fs.existsSync(appPath)) throw new Error(`🚫 No appy.py script found on the exercise files`);
+    let content = fs.readFileSync(appPath, "utf8");
+    const count = getMatches(/def\s[a-zA-Z]/gm, content);
+
+    if(count.length == 0){
+      Console.log("Adding main function for all the code");
+      content = `def execute_app():\n${indent(content, 4)}`;
+    }
+    const directory = `${path.dirname(entryPath)}/cached.py`;
+    Console.log(directory);
+    fs.writeFileSync(directory, content);
     return entryPath;
   },
   getCommand: async function(socket){
@@ -44,7 +57,7 @@ def pytest_generate_tests(metafunc):
     const appPath = files.map(f => './'+f.path).find(f => f.indexOf('app.py') > -1);
 
     const content = fs.readFileSync(appPath, "utf8");
-    const count = getInputs(/input\((?:["'`]{1}(.*)["'`]{1})?\)/gm, content);
+    const count = getMatches(/input\((?:["'`]{1}(.*)["'`]{1})?\)/gm, content);
     let answers = (count.length == 0) ? [] : await socket.ask(count);
 
     return `pytest ${this.getEntryPath()} --testdox --capture=${this.config.capture} --color=${this.config.color} --stdin='${JSON.stringify(answers)}'`

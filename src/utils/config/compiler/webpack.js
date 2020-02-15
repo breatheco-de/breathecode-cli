@@ -46,7 +46,6 @@ module.exports = async function({ files, config, socket }){
         else{
             Console.warning('Template not found '+config.webpack_template);
             Console.help('Check your bc.json template property and fix the path. Using the default template for now.');
-
         }
     }
 
@@ -75,6 +74,7 @@ module.exports = async function({ files, config, socket }){
       }
     }
 
+    Console.log(webpackConfig);
     const compiler = webpack(webpackConfig);
     socket.log('compiling',['Compiling...']);
     compiler.run((err, stats) => {

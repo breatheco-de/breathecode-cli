@@ -2,7 +2,7 @@ const webpack = require('webpack');
 const path = require('path');
 const prettyConfig = require('../prettier/react.config.js');
 const PrettierPlugin = require("../prettier/plugin.js");
-
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const nodeModulesPath = path.resolve(__dirname, '../../../../node_modules');
 
 module.exports = (exerciseSlug) => ({
@@ -48,13 +48,9 @@ module.exports = (exerciseSlug) => ({
           ]
         },
         {
-          test: /\.(css|scss)$/, use: [{
-              loader: "style-loader" // creates style nodes from JS strings
-          }, {
-              loader: "css-loader" // translates CSS into CommonJS
-          }, {
-              loader: "sass-loader" // compiles Sass to CSS
-          }]
+          test: /\.(css|scss)$/, use: [
+            MiniCssExtractPlugin.loader, 'css-loader'
+          ]
         }, //css only files
         {
           test: /\.(png|svg|jpg|jpeg|gif)$/, use: {
@@ -66,7 +62,7 @@ module.exports = (exerciseSlug) => ({
     ]
   },
   resolve: {
-    extensions: ['*', '.js', '.jsx'],
+    extensions: ['*', '.js', '.jsx', '.css', '.scss'],
     modules: [nodeModulesPath]
   },
   resolveLoader: {
@@ -84,6 +80,10 @@ module.exports = (exerciseSlug) => ({
     }
   },
   plugins: [
+    new MiniCssExtractPlugin({
+      filename: 'styles.css',
+      chunkFilename: 'styles.css',
+    }),
     new webpack.HotModuleReplacementPlugin(),
     new PrettierPlugin(prettyConfig),
   ]

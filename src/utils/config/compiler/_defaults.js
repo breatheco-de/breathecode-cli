@@ -9,6 +9,7 @@ const shared_defaults = {
   ignoreRegex: null,
   webpack_template: null, // if you want webpack to use an HTML template
   disable_grading: false,
+  onCompilerSuccess: null,
 
   // Mandatory
   language: null,
@@ -24,7 +25,8 @@ module.exports = {
     compiler: "html",
     tester: "jest",
     ignoreRegex: /.*\.js/gm,
-    actions: ['build', 'test']
+    actions: ['build', 'test'],
+    onCompilerSuccess: "open-browser",
   },
   "css": {
     ...shared_defaults,
@@ -32,14 +34,16 @@ module.exports = {
     compiler: "webpack",
     tester: "jest",
     ignoreRegex: /.*\.js/gm,
-    actions: ['build', 'test']
+    actions: ['build', 'test'],
+    onCompilerSuccess: "open-browser",
   },
   "vanillajs": {
     ...shared_defaults,
     language: "vanillajs",
     compiler: "webpack",
     tester: "jest",
-    actions: ['build', 'test']
+    actions: ['build', 'test'],
+    onCompilerSuccess: "open-browser",
   },
   "react": {
     ...shared_defaults,
@@ -47,7 +51,8 @@ module.exports = {
     compiler: "webpack",
     tester: "jest",
     webpack_template: __dirname + '/template.html',
-    actions: ['build', 'test']
+    actions: ['build', 'test'],
+    onCompilerSuccess: "open-browser",
   },
   "python3": {
     ...shared_defaults,

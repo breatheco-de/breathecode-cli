@@ -77,7 +77,7 @@ class StartExercisesComand extends Command {
   }
 }
 
-StartExercisesComand.description = 'Initialize the boilerplate for creating exercises'
+StartExercisesComand.description = 'Create new exercises or tutorials'
 StartExercisesComand.flags = {
  language: flags.string({char:'l', description: 'specify what language you want: [html, css, react, vanilajs, node, python]'}),
  grading: flags.string({char:'g', description: 'Grading type for exercises: [isolated, incremental]'}),

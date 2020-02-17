@@ -2,9 +2,10 @@
 
 1. Testing content of the file.
 2. Testing function of variable declarations.
-3. Testing `print` (stdout) for the entire application
-4. Testing console output (stdout) for just one function.
-5. Testing `input` (stdin)
+2. Testing function of global variable value
+4. Testing `print` (stdout) for the entire application
+5. Testing console output (stdout) for just one function.
+6. Testing `input` (stdin)
 
 ### 1) Testing that the student solution contains a particular regex or string
 ```py
@@ -20,44 +21,52 @@ def test_declare_variable():
 ### 2) Testing Function or variable declaration (existance) in Python
 ```py
 @pytest.mark.it('1. You should create a variable named variables_are_cool')
-def test_variable_exists():
+def test_variable_exists(app):
     try:
-        from app import myVariable
-    except ImportError:
-        raise ImportError("The variable 'myVariable' should exist on app.py")
+        app.myVariable
+    except AttributeError:
+        raise AttributeError("The variable 'myVariable' should exist on app.py")
 ```
 ![Testing Functions in Python](https://ucarecdn.com/ab3f9bbd-beff-492e-ad37-3be3fba18cfe/testingfunctionspythonbreathecodecli.jpg)
 
-### 3) Testing a print (stdout) in the entire app.py
+### 3) Testing Function or variable value
+```py
+@pytest.mark.it('1. You should create a variable named variables_are_cool')
+def test_variable_exists(app):
+    try:
+        assert app.myVariable == "Hello"
+    except AttributeError:
+        raise AttributeError("The variable 'myVariable' should exist on app.py")
+```
+![Testing Functions in Python](https://ucarecdn.com/ab3f9bbd-beff-492e-ad37-3be3fba18cfe/testingfunctionspythonbreathecodecli.jpg)
+
+### 4) Testing a print (stdout) in the entire app.py
 ```py
 import io
 import sys
-from cached import execute_app
 
 @pytest.mark.it('3. The printed value on the console should be "red"')
-def test_for_file_output(capsys):
-    execute_app()
+def test_for_file_output(capsys, app):
+    app()
     captured = capsys.readouterr()
     assert "red!\n" == captured.out
 ```
 ![Testing Stdout in Python](https://ucarecdn.com/c95e4deb-0e57-4aa3-8f89-486b4f1eb1cc/testingstdoutpythonbreathecodecli.jpg)
 
-### 4) Testing console output (stdout) for just one function.  
+### 5) Testing console output (stdout) for just one function.  
 
 ```py
 @pytest.mark.it('The console should output "Hello" inside the function printHello ')
-def test_for_file_output(capsys):
-    from cached import printHello
-    printHello()
+def test_for_file_output(capsys, app):
+    app.printHello()
     captured = capsys.readouterr()
     assert captured.out == "Hello\n"
 ```
 
-### 5) Testing stdin (using input function) in Python
+### 6) Testing stdin (using input function) in Python
 
 ```py
 import pytest, io, sys, json
-from cached import execute_app
 
 @pytest.mark.it('Sum all three input numbers and print on the console the result')
 def test_add_variables(capsys):

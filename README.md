@@ -44,7 +44,7 @@ $ npm install -g breathecode-cli
 $ breathecode COMMAND
 running command...
 $ breathecode (-v|--version|version)
-breathecode-cli/1.1.96 linux-x64 node-v10.15.3
+breathecode-cli/1.1.97 linux-x64 node-v10.15.3
 $ breathecode --help [COMMAND]
 USAGE
   $ breathecode COMMAND
@@ -54,30 +54,14 @@ USAGE
 <!-- commands -->
 # Commands
 
-* [breathecode create:exercises](#createexercises)
 * [breathecode download:exercises](#downloadexercises)
 * [breathecode download:project](#downloadproject)
 * [breathecode help [COMMAND]](#help-command)
+* [breathecode init](#init)
 * [breathecode login](#login)
-* [breathecode run:exercises](#runexercises)
-* [breathecode run:server](#runserver)
+* [breathecode run](#run)
 * [breathecode update [CHANNEL]](#update-channel)
 * [breathecode utils:todo](#utilstodo)
-## create:exercises
-
-Initialize the boilerplate for creating exercises
-
-```
-USAGE
-  $ breathecode create:exercises
-
-OPTIONS
-  -g, --grading=grading    Grading type for exercises: [isolated, incremental]
-  -l, --language=language  specify what language you want: [html, css, react, vanilajs, node, python]
-```
-
-_See code: [src/commands/create/exercises.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.96/src/commands/create/exercises.js)_
-
 ## download:exercises
 
 Start a new project using a boilerplate
@@ -96,7 +80,7 @@ ALIASES
   $ breathecode start:exercises
 ```
 
-_See code: [src/commands/download/exercises.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.96/src/commands/download/exercises.js)_
+_See code: [src/commands/download/exercises.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.97/src/commands/download/exercises.js)_
 
 ## download:project
 
@@ -116,7 +100,7 @@ ALIASES
   $ breathecode start:project
 ```
 
-_See code: [src/commands/download/project.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.96/src/commands/download/project.js)_
+_See code: [src/commands/download/project.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.97/src/commands/download/project.js)_
 
 ## help [COMMAND]
 
@@ -135,6 +119,21 @@ OPTIONS
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v2.2.1/src/commands/help.ts)_
 
+## init
+
+Create new exercises or tutorials
+
+```
+USAGE
+  $ breathecode init
+
+OPTIONS
+  -g, --grading=grading    Grading type for exercises: [isolated, incremental]
+  -l, --language=language  specify what language you want: [html, css, react, vanilajs, node, python]
+```
+
+_See code: [src/commands/init.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.97/src/commands/init.js)_
+
 ## login
 
 Login to breathecode
@@ -149,15 +148,15 @@ OPTIONS
   -t, --type=js|jsx|scss|css|md|html|py  [default: js] file extensions to look for
 ```
 
-_See code: [src/commands/login.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.96/src/commands/login.js)_
+_See code: [src/commands/login.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.97/src/commands/login.js)_
 
-## run:exercises
+## run
 
 Runs a small server with all the exercise instructions
 
 ```
 USAGE
-  $ breathecode run:exercises
+  $ breathecode run
 
 OPTIONS
   -d, --debug                         debugger mode for more verbage
@@ -169,24 +168,7 @@ OPTIONS
   -p, --port=port                     server port
 ```
 
-_See code: [src/commands/run/exercises.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.96/src/commands/run/exercises.js)_
-
-## run:server
-
-Runs a dummy server without any configuration
-
-```
-USAGE
-  $ breathecode run:server
-
-OPTIONS
-  -c, --compiler=compiler  compiler type: react, vanillajs, etc.
-  -e, --entry=entry        entry file path for the server
-  -h, --host=host          [default: localhost] server host
-  -p, --port=port          [default: 8080] server port
-```
-
-_See code: [src/commands/run/server.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.96/src/commands/run/server.js)_
+_See code: [src/commands/run.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.97/src/commands/run.js)_
 
 ## update [CHANNEL]
 
@@ -212,5 +194,5 @@ OPTIONS
   -t, --type=js|jsx|scss|css|md|html|py  [default: js] file extensions to look for
 ```
 
-_See code: [src/commands/utils/todo.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.96/src/commands/utils/todo.js)_
+_See code: [src/commands/utils/todo.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.1.97/src/commands/utils/todo.js)_
 <!-- commandsstop -->

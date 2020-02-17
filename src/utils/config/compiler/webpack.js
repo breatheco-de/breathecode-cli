@@ -8,7 +8,10 @@ const bcActivity = require('../../bcActivity.js');
 
 module.exports = async function({ files, config, socket }){
 
-    if(!files) return;
+    if(!files){
+      socket.log('compiler-error',[`No files to compile or build`]);
+      return;
+    }
 
     let entry = files.filter(f => f.path.indexOf('index.js') > -1 || f.path.indexOf('styles.css') > -1).map(f => './'+f.path);
     const webpackConfigPath = path.resolve(__dirname,`../../config/compiler/webpack.config.${config.language}.js`);

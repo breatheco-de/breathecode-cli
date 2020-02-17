@@ -114,7 +114,7 @@ class InstructionsCommand extends Command {
 
     socket.on("build", (data) => {
         const compiler = require('../../utils/config/compiler/'+config.compiler+'.js');
-        socket.log('compiling',['Building exercise '+data.exerciseSlug]);
+        // socket.log('compiling',['Building exercise '+data.exerciseSlug]);
         const files = exercises.getAllFiles(data.exerciseSlug);
 
         compiler({

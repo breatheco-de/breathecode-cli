@@ -1,6 +1,7 @@
 let shell = require('shelljs');
 const path = require('path');
 const fs = require('fs');
+const color = require('colors');
 const nodeModulesPath = path.resolve(__dirname, '../../../../../node_modules');
 const babelTransformPath = require.resolve('./babelTransform.node.js');
 const { getMatches, cleanStdout } = require('../../compiler/_utils.js');
@@ -38,6 +39,21 @@ module.exports = (files, config, slug='') => ({
 
     this.config.reporters = [[ __dirname+'/_reporter.js', { reportPath: `./.breathecode/reports/${slug}.json` }]];
     return `jest --config '${JSON.stringify({ ...this.config, globals: { __stdin: answers }, testRegex: this.getEntryPath() })}' --colors`
+  },
+  getErrors: () => {
+    let stdout = [];
+    if (fs.existsSync(`./.breathecode/reports/${slug}.json`)){
+      const _text = fs.readFileSync(`./.breathecode/reports/${slug}.json`);
+      const errors = JSON.parse(_text);
+      stdout = errors.testResults.map(r => r.message);
+
+      if(errors.failed.length > 0){
+        msg = `\n\n   You are failing on the following tests: \n ${[...new Set(errors)].map((e,i) => `      ✗ ${i.toString().cyan}. ${e.red.italic} \n`).join()}`;
+        stdout.push(msg);
+      }
+    }
+
+    return stdout;
   }
 
 });

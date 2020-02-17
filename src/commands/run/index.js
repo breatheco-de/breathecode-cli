@@ -49,7 +49,8 @@ class InstructionsCommand extends Command {
         Console.debug(err);
         const _err = {
           message: err.message || 'There has been an error' ,
-          status: err.status || 500
+          status: err.status || 500,
+          type: err.type || null
         };
         Console.error(_err.message);
 

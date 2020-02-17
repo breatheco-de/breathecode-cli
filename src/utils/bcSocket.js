@@ -12,7 +12,7 @@ module.exports = {
         }
     },
     addAllowed: function(action){
-        this.allowedActions = this.allowedActions.filter(a => a !== action).push(action);
+        this.allowedActions = this.allowedActions.filter(a => a !== action).concat([action]);
     },
     removeAllowed: function(action){
         this.allowedActions = this.allowedActions.filter(a => a !== action);
@@ -22,7 +22,7 @@ module.exports = {
         this.allowedActions = config.actions.filter(act => config.disable_grading ? act !== 'test' : true);
         this.socket = connect(server);
         this.socket.on('connection', (socket) => {
-          Console.debug("Connection with client successfully established");
+          Console.debug("Connection with client successfully established", this.allowedActions);
           this.log('ready',['Ready to compile or test...']);
 
           socket.on('compiler', ({action, data}) => {

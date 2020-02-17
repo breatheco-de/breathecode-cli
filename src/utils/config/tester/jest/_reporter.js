@@ -13,12 +13,16 @@ class JSONReporter {
     fs.writeFileSync(this._options.reportPath, JSON.stringify(result, null, 2))
   }
 
-  print({ numFailedTests, success, failed }){
-    if(!success){
-      Console.error(`Some of your code is not working as expected:`);
+  print({ numFailedTestSuites, failed, testResults }){
+    if(numFailedTestSuites > 0){
+      let _success = true;
+      console.log(testResults.map(e => e.failureMessage).join("\n"));
       console.log("");
-      failed.forEach(error => console.log(` ${error.status !== 'failed' ? '✓'.green.bold : 'x'.red.bold} ${error.title.white}`))
+      failed.forEach(error => {
+        console.log(` ${error.status !== 'failed' ? '✓'.green.bold : 'x'.red.bold} ${error.title.white}`);
+      });
       console.log('');
+      Console.error(`Some of your code is not working as expected, read above ↑`);
     }
     else{
       Console.success("Everything is perfect!!");
@@ -31,14 +35,17 @@ class JSONReporter {
   }
 
   onRunComplete(contexts, results) {
+    // console.log("Results", results);
     const errorsGroups = (!results.success) ? results.testResults.map(this.parseSuite) : null;
     const result = {
       success: results.success,
+      numFailedTestSuites: results.numFailedTestSuites,
       numFailedTests: results.numFailedTests,
       numPassedTests: results.numPassedTests,
+      testResults: results.testResults.map(r => ({ message: r.failureMessage, errorType: r.testExecError })),
       failed: [].concat.apply([], errorsGroups),
     }
-    this.print(result);
+    //this.print(result);
     this.save(result);
   }
 }

@@ -34,18 +34,13 @@ module.exports = function({ socket, files, config, slug }){
             const { stdout, stderr, code } = shell.exec(command);
 
             if(code != 0){
-              const errors = typeof testingConfig.getErrors != 'undefined' ? testingConfig.getErrors(stdout || stderr) : [];
+              const errors = typeof(testingConfig.getErrors === 'function') ? testingConfig.getErrors(stdout || stderr) : [];
               let errorLog = [ stdout || stderr ];
-              let msg = '';
-              if(errors.length > 0){
-                msg = `\n\n   You are failing on the following tests: \n ${[...new Set(errors)].map((e,i) => `      ✗ ${i.toString().cyan}. ${e.red.italic} \n`).join()}`;
-                errorLog.push(msg);
-              }
               socket.log('testing-error', errorLog, [...new Set(errors)]);
-              Console.error("There was an error while testing \n"+msg);
+              Console.error("There was an error while testing");
             }
             else{
-              socket.log('testing-success',[ stdout || stderr ]);
+              socket.log('testing-success',[ stdout || stderr ].concat(["😁Everything is amazing!"]));
               Console.success("Everything is amazing!");
             }
             if(typeof testingConfig.cleanup !== "undefined"){
@@ -60,10 +55,13 @@ module.exports = function({ socket, files, config, slug }){
               }
               else Console.warning("There is an error on the cleanup command for the test");
             }
+        })
+        .catch(err => {
+          throw err;
         });
     }
     catch(err){
-      throw Error([ err.message, err.toString() ]);
+      throw err;
     }
 
 };

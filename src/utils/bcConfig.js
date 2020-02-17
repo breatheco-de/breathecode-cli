@@ -2,7 +2,7 @@ const path = require('path');
 const fs = require('fs');
 let shell = require('shelljs');
 let Console = require('./console');
-const { ValidationError } = require('./errors.js');
+const { ValidationError, NotFoundError } = require('./errors.js');
 const frontMatter = require('front-matter');
 let _defaults = require('./config/compiler/_defaults.js');
 /* exercise folder name standard */
@@ -80,7 +80,7 @@ module.exports = (filePath, { grading, editor, language, disable_grading }) => {
             if(lang == 'us') lang = null; // <-- english is default, no need to append it to the file name
             if(slug){
                 const exercise = config.exercises.find(ex => ex.slug == slug);
-                if (!exercise) throw ValidationError(`Exercise ${slug} not found`);
+                if (!exercise) throw NotFoundError(`Exercise ${slug} not found`);
                 const basePath = exercise.path;
                 if (!fs.existsSync(`${basePath}/README${lang ? "."+lang : ''}.md`)){
                   Console.error(`Language ${lang} not found for exercise ${slug}, switching to default language`);
@@ -104,7 +104,7 @@ module.exports = (filePath, { grading, editor, language, disable_grading }) => {
         },
         getFile: (slug, name) => {
             const exercise = config.exercises.find(ex => ex.slug == slug);
-            if (!exercise) throw Error(`Exercise ${slug} not found`);
+            if (!exercise) throw NotFoundError(`Exercise ${slug} not found`);
             const basePath = exercise.path;
             if (!fs.existsSync(basePath+'/'+name)) throw ValidationError('File not found: '+basePath+'/'+name);
             else if(fs.lstatSync(basePath+'/'+name).isDirectory()) return 'Error: This is not a file to be read, but a directory: '+basePath+'/'+name;
@@ -124,7 +124,7 @@ module.exports = (filePath, { grading, editor, language, disable_grading }) => {
         getExerciseDetails: (slug) => {
 
             const exercise = config.exercises.find(ex => ex.slug == slug);
-            if (!exercise) throw Error('Exercise not found: '+slug);
+            if (!exercise) throw NotFoundError('Exercise not found: '+slug);
             const basePath = exercise.path;
 
             const isDirectory = source => fs.lstatSync(source).isDirectory();
@@ -182,7 +182,7 @@ module.exports = (filePath, { grading, editor, language, disable_grading }) => {
         },
         getAllFiles: (slug) => {
             const exercise = config.exercises.find(ex => ex.slug == slug);
-            if (!exercise) throw ValidationError('Exercise not found: '+slug);
+            if (!exercise) throw NotFoundError('Exercise not found: '+slug);
             const basePath = exercise.path;
             const isDirectory = source => fs.lstatSync(source).isDirectory();
             const getFiles = source => fs.readdirSync(source).map(file => ({ path: source+'/'+file, name: file}));

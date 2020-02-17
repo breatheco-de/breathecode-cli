@@ -4,6 +4,12 @@ const ValidationError = (message) => {
   _err.type = 'validation-error';
   return _err;
 }
+const NotFoundError = (message) => {
+  const _err = new Error(message);
+  _err.status = 400;
+  _err.type = 'not-found-error';
+  return _err;
+}
 const CompilerError = (message) => {
   const _err = new Error(message);
   _err.status = 400;
@@ -17,4 +23,4 @@ const TestingError = (message) => {
   return _err;
 }
 
-module.exports = { ValidationError, CompilerError, TestingError };
+module.exports = { ValidationError, CompilerError, TestingError, NotFoundError };

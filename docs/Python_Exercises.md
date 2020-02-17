@@ -1,5 +1,6 @@
 # Grading Exercises in Python
 
+0. Use the print function
 1. Testing content of the file.
 2. Testing function of variable declarations.
 2. Testing function of global variable value
@@ -7,6 +8,14 @@
 5. Testing console output (stdout) for just one function.
 6. Testing `input` (stdin)
 
+### 0) Use the print function
+```py
+@pytest.mark.it("Use the print function")
+def test_output():
+    f = open(os.path.dirname(os.path.abspath(__file__)) + '/app.py')
+    content = f.read()
+    assert content.find("print(") > 0
+```
 ### 1) Testing that the student solution contains a particular regex or string
 ```py
 @pytest.mark.it("1. Create a variable named 'color' with the string value red")

@@ -1,27 +1,24 @@
 const path = require('path');
 let shell = require('shelljs');
 const fs = require('fs');
+let { TestingError } = require('./errors');
 let Console = require('./console');
 const color = require('colors');
 
 module.exports = function({ socket, files, config, slug }){
 
-    const configPath = path.resolve(__dirname,`./config/tester/${config.tester}/${config.language}.config.js`);
-    if (!fs.existsSync(configPath)){
-      Console.error(`No testing engine has been found for: '${config.language}'`);
-      socket.log('internal-error', [`Uknown testing engine for compiler: '${config.language}'`]);
-      return;
-    }
+  const configPath = path.resolve(__dirname,`./config/tester/${config.tester}/${config.language}.config.js`);
+  if (!fs.existsSync(configPath)){
+    Console.error(`No testing engine has been found for: '${config.language}'`);
+    socket.log('internal-error', [`Uknown testing engine for compiler: '${config.language}'`]);
+    return;
+  }
 
-    try{
-      const config = require(configPath)(files, config, slug);
-      config.validate();
+  try{
+    const testingConfig = require(configPath)(files, config, slug);
+    testingConfig.validate();
 
-      if(config.ignoreTests){
-        Console.error('Grading is disabled on bc.json file.');
-        socket.log('testing-error', [], ['Grading is disabled on bc.json file.']);
-        return;
-      }
+      if(config.ignoreTests) throw TestingError('Grading is disabled on bc.json file.');
 
       if (!fs.existsSync('./.breathecode/reports')){
         fs.mkdirSync('./.breathecode/reports');
@@ -31,13 +28,13 @@ module.exports = function({ socket, files, config, slug }){
 
       Console.info('Running tests...');
 
-      config.getCommand(socket)
+      testingConfig.getCommand(socket)
         .then(command => {
 
             const { stdout, stderr, code } = shell.exec(command);
 
             if(code != 0){
-              const errors = typeof config.getErrors != 'undefined' ? config.getErrors(stdout || stderr) : [];
+              const errors = typeof testingConfig.getErrors != 'undefined' ? testingConfig.getErrors(stdout || stderr) : [];
               let errorLog = [ stdout || stderr ];
               let msg = '';
               if(errors.length > 0){
@@ -51,8 +48,8 @@ module.exports = function({ socket, files, config, slug }){
               socket.log('testing-success',[ stdout || stderr ]);
               Console.success("Everything is amazing!");
             }
-            if(typeof config.cleanup !== "undefined"){
-              if(typeof config.cleanup === 'function' || typeof config.cleanup === 'object') return config.cleanup(socket);
+            if(typeof testingConfig.cleanup !== "undefined"){
+              if(typeof testingConfig.cleanup === 'function' || typeof testingConfig.cleanup === 'object') return testingConfig.cleanup(socket);
             }
         })
         .then(command => {
@@ -66,8 +63,7 @@ module.exports = function({ socket, files, config, slug }){
         });
     }
     catch(err){
-      socket.log('internal-error',[ err.message, err.toString() ]);
-      Console.error(err.message, err.toString());
+      throw Error([ err.message, err.toString() ]);
     }
 
 };

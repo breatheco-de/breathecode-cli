@@ -15,7 +15,7 @@ module.exports = function({ socket, exerciseSlug, fileName, config }){
         if(typeof fileName == undefined){
           var exercises = bcConfig('./');
           exercises.buildIndex();
-          const files = exercises.getExerciseDetails(exerciseSlug);
+          const files = exercises.getExerciseDetails(exerciseSlug).files;
           files.forEach((file)=>{
             const content = fs.readFileSync(file.path, "utf8");
             const formatted = prettier.format(content, options);

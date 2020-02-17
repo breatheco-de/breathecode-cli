@@ -33,7 +33,7 @@ def pytest_generate_tests(metafunc):
 
     if 'app' in metafunc.fixturenames:
         try:
-          sys.path.append('${outputPath}')
+          sys.path.append('${config.outputPath}')
           import cached_app
           metafunc.parametrize("app",[cached_app.execute_app])
         except SyntaxError:
@@ -57,10 +57,10 @@ def pytest_generate_tests(metafunc):
     const count = getMatches(/def\s[a-zA-Z]/gm, content);
 
     if(count.length == 0){
-      Console.log("Adding main function for all the code");
+      Console.debug("Adding main function for all the code");
       content = `def execute_app():\n${indent(content, 4)}`;
     }
-    const directory = `${outputPath}/cached_app.py`;
+    const directory = `${config.outputPath}/cached_app.py`;
     fs.writeFileSync(directory, content);
     return entryPath;
   },

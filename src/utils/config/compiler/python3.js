@@ -3,6 +3,7 @@ const fs = require('fs');
 const prettier = require("prettier");
 let shell = require('shelljs');
 let Console = require('../../console');
+let { CompilerError } = require('../../errors');
 const { python } = require('compile-run');
 const { getMatches, cleanStdout } = require('./_utils.js');
 const bcActivity = require('../../bcActivity.js');
@@ -16,11 +17,12 @@ module.exports = async function({ files, socket }){
     }
 
     if( !files || files.length == 0){
-      socket.log('compiler-error', [ "No files to compile or build" ]);
-      Console.error("No files to compile or build");
-      return;
+      throw Error("No files to compile or build");
     }
+
     let entryPath = files.map(f => './'+f.path).find(f => f.indexOf('app.py') > -1);
+    if(!entryPath) throw new Error("This exercise doesn't seem to have an app.py entry file");
+
     Console.info(`Compiling ${entryPath}...`);
     const content = fs.readFileSync(entryPath, "utf8");
     const count = getMatches(/input\((?:["'`]{1}(.*)["'`]{1})?\)/gm, content);
@@ -31,7 +33,7 @@ module.exports = async function({ files, socket }){
             socket.clean();
 
             if(result.exitCode > 0){
-              socket.log('compiler-error', [ result.stderr ]);
+
               bcActivity.error('exercise_error', {
                 details: result.stderr,
                 framework: null,
@@ -41,8 +43,7 @@ module.exports = async function({ files, socket }){
                 data: entryPath,
                 compiler: 'python3'
               });
-              console.log(result.stderr);
-              Console.error("There was an error");
+              throw CompilerError(result.stderr);
             }
             else{
               socket.log('compiler-success', [ cleanStdout(result.stdout, count) ]);
@@ -51,8 +52,6 @@ module.exports = async function({ files, socket }){
             }
         })
         .catch(err => {
-            Console.error(err.message || err);
-            socket.log('compiler-error',[ err.stderr ]);
-            return;
+            throw CompilerError(result.stderr);
         });
 };

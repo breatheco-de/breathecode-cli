@@ -40,48 +40,67 @@ class InstructionsCommand extends Command {
       next();
     });
 
-    app.get('/config', function (req, res) {
+    //client error handler
+    const withHandler = (func) => (req, res) => {
+      try{
+        func(req, res);
+      }
+      catch(err){
+        Console.debug(err);
+        const _err = {
+          message: err.message || 'There has been an error' ,
+          status: err.status || 500
+        };
+        Console.error(_err.message);
+
+        //send rep to the server
+        res.status(_err.status);
+        res.json(_err);
+      }
+    };
+
+    app.get('/config', withHandler((req, res)=>{
         res.json(config);
-    });
+    }));
 
-    app.get('/exercise', function (req, res) {
+    app.get('/exercise', withHandler((req, res) => {
         res.json(config.exercises);
-    });
+    }));
 
-    app.get('/readme', function(req, res) {
-        const readme = exercises.getReadme();
+    app.get('/readme', withHandler((req, res)=>{
+        const readme = exercises.getReadme({ lang: req.query.lang || null, slug: null });
         res.json(readme);
-    });
+    }));
 
-    app.get('/exercise/:slug/readme', function(req, res) {
-        const readme = exercises.getReadme(req.params.slug);
+    app.get('/exercise/:slug/readme', withHandler((req, res) => {
+        const readme = exercises.getReadme({ lang: req.query.lang || null, slug: req.params.slug });
         res.json(readme);
-    });
+    }));
 
-    app.get('/exercise/:slug/report', function(req, res) {
+    app.get('/exercise/:slug/report', withHandler((req, res) => {
         const report = exercises.getTestReport(req.params.slug);
         res.json(JSON.stringify(report));
-    });
+    }));
 
-    app.get('/exercise/:slug', function(req, res) {
+    app.get('/exercise/:slug', withHandler((req, res) => {
         res.json(exercises.getExerciseDetails(req.params.slug));
-    });
+    }));
 
-    app.get('/exercise/:slug/file/:fileName', function(req, res) {
+    app.get('/exercise/:slug/file/:fileName', withHandler((req, res) => {
         res.write(exercises.getFile(req.params.slug, req.params.fileName));
         res.end();
-    });
+    }));
 
-    app.get('/assets/:fileName', function(req, res) {
+    app.get('/assets/:fileName', withHandler((req, res) => {
         res.write(exercises.getAsset(req.params.fileName));
         res.end();
-    });
+    }));
 
     const textBodyParser = bodyParser.text();
-    app.put('/exercise/:slug/file/:fileName', textBodyParser, function(req, res) {
+    app.put('/exercise/:slug/file/:fileName', textBodyParser, withHandler((req, res) => {
         const result = exercises.saveFile(req.params.slug, req.params.fileName, req.body);
         res.end();
-    });
+    }));
 
     if(config.outputPath) app.use('/preview', express.static(config.outputPath));
 
@@ -117,31 +136,47 @@ class InstructionsCommand extends Command {
         // socket.log('compiling',['Building exercise '+data.exerciseSlug]);
         const files = exercises.getAllFiles(data.exerciseSlug);
 
-        compiler({
-          files,
-          socket,
-          config
-        });
+        compiler({ files, socket, config })
+          .catch(error => {
+            const message = error.message || 'There has been an uknown error';
+            socket.log(error.type || 'internal-error', [ message ]);
+            Console.error(message);
+            Console.debug(error);
+          })
     });
 
     socket.on("run", (data) => {
         const compiler = require('../../utils/config/compiler/'+config.compiler+'.js');
         socket.log('compiling',['Compiling exercise '+data.exerciseSlug]);
         compiler({
-          files: exercises.getExerciseDetails(data.exerciseSlug),
+          files: exercises.getExerciseDetails(data.exerciseSlug).files,
           socket: socket,
           config
-        });
+        })
+        .catch(error => {
+          const message = error.message || 'There has been an uknown error';
+          socket.log(error.type || 'internal-error', [ message ]);
+          Console.error(message);
+          Console.debug(error);
+        })
     });
 
     socket.on("test", (data) => {
         socket.log('testing',['Testing your code output']);
-        bcTest({
-          files: exercises.getAllFiles(data.exerciseSlug),
-          socket,
-          config,
-          slug: data.exerciseSlug
-        });
+        try{
+          bcTest({
+            files: exercises.getAllFiles(data.exerciseSlug),
+            socket,
+            config,
+            slug: data.exerciseSlug
+          });
+        }
+        catch(error){
+          const message = error.message || 'There has been an uknown error';
+          socket.log(error.type || 'internal-error', [ message ]);
+          Console.error(message);
+          Console.debug(error);
+        }
     });
 
     socket.on("prettify", (data) => {

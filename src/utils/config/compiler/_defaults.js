@@ -25,7 +25,7 @@ module.exports = {
     compiler: "html",
     tester: "jest",
     ignoreRegex: /.*\.js/gm,
-    actions: ['build', 'test'],
+    actions: ['build', 'test', 'reset'],
     onCompilerSuccess: "open-browser",
   },
   "css": {
@@ -34,7 +34,7 @@ module.exports = {
     compiler: "webpack",
     tester: "jest",
     ignoreRegex: /.*\.js/gm,
-    actions: ['build', 'test'],
+    actions: ['build', 'test', 'reset'],
     onCompilerSuccess: "open-browser",
   },
   "vanillajs": {
@@ -42,7 +42,7 @@ module.exports = {
     language: "vanillajs",
     compiler: "webpack",
     tester: "jest",
-    actions: ['build', 'test'],
+    actions: ['build', 'test', 'reset'],
     onCompilerSuccess: "open-browser",
   },
   "react": {
@@ -51,7 +51,7 @@ module.exports = {
     compiler: "webpack",
     tester: "jest",
     webpack_template: __dirname + '/template.html',
-    actions: ['build', 'test'],
+    actions: ['build', 'test', 'reset'],
     onCompilerSuccess: "open-browser",
   },
   "python3": {
@@ -59,20 +59,20 @@ module.exports = {
     language: "python3",
     compiler: "python3",
     tester: "pytest",
-    actions: ['run', 'test']
+    actions: ['run', 'test', 'reset']
   },
   "node": {
     ...shared_defaults,
     language: "node",
     compiler: "node",
     tester: "jest",
-    actions: ['run', 'test']
+    actions: ['run', 'test', 'reset']
   },
   "java": {
     ...shared_defaults,
     language: "java",
     compiler: "java",
     tester: "junit",
-    actions: ['run', 'test']
+    actions: ['run', 'test', 'reset']
   }
 }

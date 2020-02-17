@@ -96,6 +96,16 @@ class InstructionsCommand extends Command {
       Console.debug("Opening these files on gitpod: ", data);
       Gitpod.openFile(data.files);
     });
+    socket.on("reset", (exercise) => {
+      Console.debug("Reseting exercise "+exercise.exerciseSlug);
+      try{
+        exercises.reset(exercise.exerciseSlug);
+        socket.log('ready',['Ready to compile...']);
+      }
+      catch(error){
+        socket.log('error',[error.message || "There was an error reseting the exercise"]);
+      }
+    });
     socket.on("preview", (data) => {
       Console.debug("Preview triggered, removing the 'preview' action ");
       socket.removeAllowed("preview");

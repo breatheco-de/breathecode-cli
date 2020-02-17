@@ -4,7 +4,7 @@ const fs = require('fs');
 const nodeModulesPath = path.resolve(__dirname, '../../../../../node_modules');
 const babelTransformPath = require.resolve('./babelTransform.vanillajs.js');
 
-module.exports = (files, slug='') => ({
+module.exports = (files, config, slug='') => ({
   config: {
       verbose: true,
       moduleDirectories: [nodeModulesPath],

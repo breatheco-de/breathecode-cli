@@ -3,7 +3,7 @@ const path = require('path');
 const fs = require('fs');
 const nodeModulesPath = path.resolve(__dirname, '../../../../../node_modules');
 
-module.exports = (files, slug='') => ({
+module.exports = (files, config, slug='') => ({
   config: {
       verbose: true,
       moduleDirectories: [nodeModulesPath],

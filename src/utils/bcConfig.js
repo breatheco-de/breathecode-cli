@@ -119,20 +119,17 @@ module.exports = (filePath, { grading, editor, language, disable_grading }) => {
             const isDirectory = source => fs.lstatSync(source).isDirectory();
             const getFiles = source => fs.readdirSync(source)
                                         .map(file => ({ path: source+'/'+file, name: file}))
-                                            // TODO: we could implement some way for teachers to hide files from the developer, like putting on the name index.hidden.js
                                             .filter(file =>
                                                 // ignore tests files and files with ".hide" on their name
                                                 (file.name.toLocaleLowerCase().indexOf('test.') == -1 && file.name.toLocaleLowerCase().indexOf('tests.') == -1 && file.name.toLocaleLowerCase().indexOf('.hide.') == -1 &&
-                                                // ignore files with the word "cached", python creates these files for unit testing purposes
-                                                (file.name.toLocaleLowerCase().indexOf('cached') == -1) &&
-                                                //ignore java copiled files
+                                                // ignore java compiled files
                                                 (file.name.toLocaleLowerCase().indexOf('.class') == -1) &&
-                                                //readmes and directories
+                                                // readmes and directories
                                                 file.name != 'README.md' && !isDirectory(file.path) && file.name.indexOf('_') != 0) &&
-                                                //ignore javascript files when using vanillajs compiler
+                                                // ignore javascript files when using vanillajs compiler
                                                 (!config.ignoreRegex || !config.ignoreRegex.exec(file.name))
                                                 ).sort((f1, f2) => {
-                                                    const score = { //sorting priority
+                                                    const score = { // sorting priority
                                                       "index.html": 1,
                                                       "styles.css": 2,
                                                       "styles.scss": 2,
@@ -145,17 +142,41 @@ module.exports = (filePath, { grading, editor, language, disable_grading }) => {
                                                     return score[f1.name] < score[f2.name] ? -1 : 1;
                                                 });
             if(config.grading === 'incremental') return getFiles('./');
-            else return getFiles(basePath);
+            else{
+               const _files = getFiles(basePath);
+               if (!fs.existsSync('./.breathecode/resets')) fs.mkdirSync('./.breathecode/resets');
+               if (!fs.existsSync('./.breathecode/resets/'+slug)){
+                 fs.mkdirSync('./.breathecode/resets/'+slug);
+                 _files.forEach(f => {
+                   if (!fs.existsSync(`./.breathecode/resets/${slug}/${f.name}`)){
+                      const content = fs.readFileSync(f.path)
+                      fs.writeFileSync(`./.breathecode/resets/${slug}/${f.name}`, content)
+                   }
+                 });
+               }
+               return _files;
+            }
+        },
+        reset: (slug) => {
+          if (!fs.existsSync('./.breathecode/resets/'+slug)) Console.error("Could not find the original files for "+slug);
+
+          const exercise = config.exercises.find(ex => ex.slug == slug);
+          if(!exercise) throw new Error(`Exercise ${slug} not found on the configuration`);
+
+          fs.readdirSync(`./.breathecode/resets/${slug}/`)
+            .forEach(fileName => {
+              const content = fs.readFileSync(`./.breathecode/resets/${slug}/${fileName}`);
+
+              console.log(`${exercise.path}/${fileName}`);
+              fs.writeFileSync(`${exercise.path}/${fileName}`, content)
+            });
         },
         getAllFiles: (slug) => {
             const exercise = config.exercises.find(ex => ex.slug == slug);
             if (!exercise) throw Error('Exercise not found: '+slug);
             const basePath = exercise.path;
             const isDirectory = source => fs.lstatSync(source).isDirectory();
-            const getFiles = source => fs.readdirSync(source)
-                                        .map(file => ({ path: source+'/'+file, name: file}));
-                                            // TODO: we could implement some way for teachers to hide files from the developer, like putting on the name index.hidden.js
-                                            //.filter(file => (file.name.indexOf('tests.') > -1 || file.name.indexOf('test.') > -1 )); // hide directories, readmes and tests
+            const getFiles = source => fs.readdirSync(source).map(file => ({ path: source+'/'+file, name: file}));
             return getFiles(basePath);
         },
         buildIndex: function(){

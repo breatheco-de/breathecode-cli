@@ -14,7 +14,7 @@ const installCommands = {
   hamcrest: `curl -0 https://search.maven.org/remotecontent?filepath=org/hamcrest/hamcrest/2.2/hamcrest-2.2.jar -o ./.breathecode/hamcrest.jar`
 };
 
-module.exports = (files) => ({
+module.exports = (files, config, slug) => ({
   config: {
     capture: "sys",
     color: "yes",

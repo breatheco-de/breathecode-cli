@@ -5,7 +5,7 @@ const path = require('path');
 const Console = require('../../../console.js');
 const { getMatches, cleanStdout, indent } = require('../../compiler/_utils.js');
 
-module.exports = (files) => ({
+module.exports = (files, config, slug) => ({
   config: {
     capture: "sys",
     color: "yes",
@@ -33,7 +33,7 @@ def pytest_generate_tests(metafunc):
 
     if 'app' in metafunc.fixturenames:
         try:
-          sys.path.append('.breathecode/dist/')
+          sys.path.append('${outputPath}')
           import cached_app
           metafunc.parametrize("app",[cached_app.execute_app])
         except SyntaxError:
@@ -60,7 +60,7 @@ def pytest_generate_tests(metafunc):
       Console.log("Adding main function for all the code");
       content = `def execute_app():\n${indent(content, 4)}`;
     }
-    const directory = `./.breathecode/dist/cached_app.py`;
+    const directory = `${outputPath}/cached_app.py`;
     fs.writeFileSync(directory, content);
     return entryPath;
   },

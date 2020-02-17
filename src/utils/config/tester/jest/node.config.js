@@ -5,7 +5,7 @@ const nodeModulesPath = path.resolve(__dirname, '../../../../../node_modules');
 const babelTransformPath = require.resolve('./babelTransform.node.js');
 const { getMatches, cleanStdout } = require('../../compiler/_utils.js');
 
-module.exports = (files, slug='') => ({
+module.exports = (files, config, slug='') => ({
   config: {
       verbose: true,
       moduleDirectories: [nodeModulesPath],

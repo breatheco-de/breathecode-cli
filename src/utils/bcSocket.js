@@ -12,7 +12,7 @@ module.exports = {
         }
     },
     addAllowed: function(action){
-        this.allowedActions.push(action);
+        this.allowedActions = this.allowedActions.filter(a => a !== action).push(action);
     },
     removeAllowed: function(action){
         this.allowedActions = this.allowedActions.filter(a => a !== action);

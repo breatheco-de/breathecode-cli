@@ -14,7 +14,7 @@ module.exports = function({ socket, files, config, slug }){
     }
 
     try{
-      const config = require(configPath)(files, slug);
+      const config = require(configPath)(files, config, slug);
       config.validate();
 
       if(config.ignoreTests){

@@ -38,7 +38,7 @@ module.exports = (files, config, slug='') => ({
       stdout = errors.testResults.map(r => r.message);
 
       if(errors.failed.length > 0){
-        msg = `\n\n   You are failing on the following tests: \n ${[...new Set(errors.failed)].map((e,i) => ` ${e.status !== 'failed' ? '✓'.green.bold : 'x'.red.bold}${i} ${e.title.white} \n`).join()}`;
+        msg = `\n\n   ${'Your code must to comply with the following tests:'.red} \n\n${[...new Set(errors.failed)].map((e,i) => `     ${e.status !== 'failed' ? '✓ (done)'.green.bold : 'x (fail)'.red.bold} ${i}. ${e.title.white}`).join('\n')} \n\n`;
         stdout.push(msg);
       }
     }

@@ -16,7 +16,6 @@ module.exports = function({ socket, files, config, slug }){
 
   try{
     const testingConfig = require(configPath)(files, config, slug);
-    console.log(testingConfig);
     testingConfig.validate();
 
       if(config.ignoreTests) throw TestingError('Grading is disabled on bc.json file.');
@@ -24,14 +23,12 @@ module.exports = function({ socket, files, config, slug }){
       if (!fs.existsSync('./.breathecode/reports')){
         fs.mkdirSync('./.breathecode/reports');
         Console.debug("Creating the ./.breathecode/reports directory");
-        return;
       }
 
       Console.info('Running tests...');
 
       testingConfig.getCommand(socket)
         .then(command => {
-
             const { stdout, stderr, code } = shell.exec(command);
 
             if(code != 0){

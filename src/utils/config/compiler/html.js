@@ -37,7 +37,6 @@ module.exports = async function({ files, config, socket }){
 
     const foundErrors = [].concat(htmlErrors.filter(e => e !== null));
     if(foundErrors.length > 0){
-      socket.log('compiler-error',[ foundErrors.map(e => `Line: ${e.lastLine} ${e.message}`) ]);
       Console.error("Error compiling HTML: ", errors.toString());
       bcActivity.error('exercise_error', {
         details: foundErrors.map(e => `Line: ${e.lastLine} ${e.message}`).join('\n'),
@@ -47,7 +46,7 @@ module.exports = async function({ files, config, socket }){
         name: null,
         compiler: 'html'
       });
-      return;
+      throw CompilerError(foundErrors.map(e => `Line: ${e.lastLine} ${e.message}`));
     }
     else{
       socket.log('compiler-success',[ '' ]);

@@ -28,30 +28,26 @@ module.exports = async function({ files, socket }){
     const count = getMatches(/input\((?:["'`]{1}(.*)["'`]{1})?\)/gm, content);
     let inputs = (count.length == 0) ? [] : await socket.ask(count);
 
-    const resultPromise = python.runFile(entryPath, { stdin: inputs.join('\n'), executionPath: 'python3' })
-        .then(result => {
-            socket.clean();
+    const result = await python.runFile(entryPath, { stdin: inputs.join('\n'), executionPath: 'python3' })
 
-            if(result.exitCode > 0){
+    socket.clean();
 
-              bcActivity.error('exercise_error', {
-                details: result.stderr,
-                framework: null,
-                language: 'python3',
-                message: result.stderr,
-                name: bcActivity.getPythonError(result.stderr),
-                data: entryPath,
-                compiler: 'python3'
-              });
-              throw CompilerError(result.stderr);
-            }
-            else{
-              socket.log('compiler-success', [ cleanStdout(result.stdout, count) ]);
-              Console.clean();
-              Console.log(result.stdout);
-            }
-        })
-        .catch(err => {
-            throw CompilerError(err);
-        });
+    if(result.exitCode > 0){
+
+      bcActivity.error('exercise_error', {
+        details: result.stderr,
+        framework: null,
+        language: 'python3',
+        message: result.stderr,
+        name: bcActivity.getPythonError(result.stderr),
+        data: entryPath,
+        compiler: 'python3'
+      });
+      throw CompilerError(result.stderr);
+    }
+    else{
+      socket.log('compiler-success', [ cleanStdout(result.stdout, count) ]);
+      Console.clean();
+      Console.log(result.stdout);
+    }
 };

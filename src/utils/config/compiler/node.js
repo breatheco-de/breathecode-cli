@@ -23,32 +23,22 @@ module.exports = async function({ files, socket }){
 
     const lib = fs.readFileSync(path.resolve(__dirname,'./_node_lib.js'), "utf8");
 
-    const resultPromise = node.runSource(`${lib} ${content}`, { stdin: inputs.join('\n') })
-        .then(result => {
-            socket.clean();
-            if(result.exitCode > 0){
-              socket.log('compiler-error',[ result.stderr ]);
-              bcActivity.error('exercise_error', {
-                details: result.stderr,
-                framework: null,
-                language: 'javascript',
-                message: null,
-                name: null,
-                compiler: 'node'
-              });
-              console.log(result.stderr);
-              Console.error("There was an error");
-            }
-            else{
-              socket.log('compiler-success',[ cleanStdout(result.stdout, count) ]);
-              Console.clean();
-              console.log(cleanStdout(result.stdout));
-            }
-            // else if(stats.hasWarnings()) status = 'compiler-warning';
-        })
-        .catch(err => {
-            Console.error(err.message);
-            socket.log('compiler-error',[ err.stderr ]);
-            return;
-        });
+    const result = await node.runSource(`${lib} ${content}`, { stdin: inputs.join('\n') })
+    socket.clean();
+    if(result.exitCode > 0){
+      bcActivity.error('exercise_error', {
+        details: result.stderr,
+        framework: null,
+        language: 'javascript',
+        message: null,
+        name: null,
+        compiler: 'node'
+      });
+      throw CompilerError(result.stderr);
+    }
+    else{
+      socket.log('compiler-success',[ cleanStdout(result.stdout, count) ]);
+      Console.clean();
+      console.log(cleanStdout(result.stdout));
+    }
 };

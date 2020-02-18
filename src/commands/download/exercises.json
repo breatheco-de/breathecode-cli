@@ -14,6 +14,13 @@
       "folder": "dom-exercises"
     },
     {
+      "slug": "javascript-beginner",
+      "language": "node",
+      "title": "Get introduced in the world of Javascript",
+      "url": "https://github.com/4GeeksAcademy/javascript-beginner-exercises",
+      "folder": "javascript-beginner-exercises"
+    },
+    {
       "slug": "javascript-functions-exercises",
       "language": "javascript",
       "title": "Using functions in Javascript",

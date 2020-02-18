@@ -16,6 +16,7 @@ module.exports = function({ socket, files, config, slug }){
 
   try{
     const testingConfig = require(configPath)(files, config, slug);
+    console.log(testingConfig);
     testingConfig.validate();
 
       if(config.ignoreTests) throw TestingError('Grading is disabled on bc.json file.');
@@ -35,8 +36,9 @@ module.exports = function({ socket, files, config, slug }){
 
             if(code != 0){
               const errors = typeof(testingConfig.getErrors === 'function') ? testingConfig.getErrors(stdout || stderr) : [];
-              let errorLog = [ stdout || stderr ];
-              socket.log('testing-error', errorLog, [...new Set(errors)]);
+              let errorLog = [];//[ stdout || stderr ];
+              socket.log('testing-error', errors);
+              console.log(errors.join('\n'))
               Console.error("There was an error while testing");
             }
             else{

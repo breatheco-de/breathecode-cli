@@ -12,6 +12,7 @@ module.exports = {
         }
     },
     addAllowed: function(action){
+                                                      //remove duplicates
         this.allowedActions = this.allowedActions.filter(a => a !== action).concat([action]);
     },
     removeAllowed: function(action){
@@ -19,7 +20,10 @@ module.exports = {
     },
     start: function(config, server){
         this.config = config;
+
+        // remove test action if grading is disabled
         this.allowedActions = config.actions.filter(act => config.disable_grading ? act !== 'test' : true);
+
         this.socket = connect(server);
         this.socket.on('connection', (socket) => {
           Console.debug("Connection with client successfully established", this.allowedActions);

@@ -52,6 +52,6 @@ module.exports = async function({ files, socket }){
             }
         })
         .catch(err => {
-            throw CompilerError(result.stderr);
+            throw CompilerError(err);
         });
 };

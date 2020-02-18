@@ -1,7 +1,7 @@
 const Console = require('./console');
 const shell = require('shelljs');
 const socket = require('./bcSocket.js');
-
+const fs = require('fs');
 module.exports = {
     socket: null,
     config: null,
@@ -28,5 +28,27 @@ module.exports = {
       });
 
       socket.log('ready',['Ready to compile or test...']);
+    },
+    setup(){
+      this.init();//initilize gitpod config
+      this.autosave("on");
+    },
+    autosave: async function(value="on"){
+
+      this.init();//initilize gitpod config
+
+      if(this.hasGPCommand){
+        if (!fs.existsSync('./.theia')) fs.mkdirSync('./.theia');
+        if (!fs.existsSync('./.theia/settings.json')){
+          fs.writeFileSync(
+            './.theia/settings.json',
+            JSON.stringify({
+                "editor.autoSave": value
+            }, null, 4)
+          )
+
+        }
+      }
+
     }
 };

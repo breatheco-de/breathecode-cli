@@ -2,6 +2,7 @@ const path = require('path');
 const fs = require('fs');
 let shell = require('shelljs');
 let Console = require('./console');
+const Gitpod = require('./bcGitpod.js');
 const { ValidationError, NotFoundError } = require('./errors.js');
 const frontMatter = require('front-matter');
 let _defaults = require('./config/compiler/_defaults.js');
@@ -54,7 +55,7 @@ module.exports = (filePath, { grading, editor, language, disable_grading }) => {
       if (shell.which('gp')) config.editor = "gitpod";
       else config.editor = "standalone";
     }
-
+    if(config.editor === "gitpod") Gitpod.setup();
     // if ignoreRegex is saved into a json, it saves as an object abd breaks the cli
     if(config.ignoreRegex && config.ignoreRegex.constructor !== RegExp) delete config.ignoreRegex;
 

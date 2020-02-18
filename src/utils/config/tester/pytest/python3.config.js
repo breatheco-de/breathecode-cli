@@ -83,9 +83,15 @@ def pytest_generate_tests(metafunc):
       if (found.index === regex.lastIndex) {
           regex.lastIndex++;
       }
-      errors.push(found[1]);
+      errors.push({ title: found[1], status: 'failed' });
     }
-    return errors;
+
+    let _stdout = [stdout];
+    if(errors.length > 0){
+      msg = `\n\n   ${'Your code must to comply with the following tests:'.red} \n\n${[...new Set(errors)].map((e,i) => `     ${e.status !== 'failed' ? '✓ (done)'.green.bold : 'x (fail)'.red.bold} ${i}. ${e.title.white}`).join('\n')} \n\n`;
+      _stdout.push(msg);
+    }
+    return _stdout;
   }
 
 });

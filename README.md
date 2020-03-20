@@ -1,7 +1,7 @@
-[![Version](https://img.shields.io/npm/v/@breathecode/breathecode-cli.svg)](https://npmjs.org/package/breathecode-cli)
+[![Version](https://img.shields.io/npm/v/breathecode-cli.svg)](https://npmjs.org/package/breathecode-cli)
 [![Build Status](https://travis-ci.org/breatheco-de/breathecode-cli.svg?branch=master)](https://travis-ci.org/breatheco-de/breathecode-cli)
 [![Downloads/week](https://img.shields.io/npm/dw/@breathecode/breathecode-cli.svg)](https://npmjs.org/package/breathecode-cli)
-[![License](https://img.shields.io/npm/l/@breathecode/breathecode-cli.svg)](https://github.com/Techniv/Licenses-for-GitHub/tree/master/GNU-GPL)
+[![License](https://img.shields.io/npm/l/breathecode-cli.svg)](https://breatheco.de/terms-and-conditions/)
 # BreatheCode-Cli
 
 Command Line Interface for BreatheCode students:

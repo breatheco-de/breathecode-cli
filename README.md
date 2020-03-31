@@ -4,11 +4,10 @@
 [![License](https://img.shields.io/npm/l/breathecode-cli.svg)](https://breatheco.de/terms-and-conditions/)
 # BreatheCode-Cli
 
-Command Line Interface for BreatheCode students:
-- Download boilerplates.
-- Cloud 9 integration.
-- Automatic code generation (snippets).
-- Syntact correction.
+Command Line Interface for improving your coding skills, as a part of the BreatheCo.de platform.
+- Hundreds of exercises on Javascript, Node, Python, Java, Webpack, etc.
+- Hudreds of projects todo, with interactive video tutorials.
+- Gitpod Integration for on click coding environment.
 - Any idea? [Suggest new features or integrations here.](https://github.com/breatheco-de/breathecode-cli/issues/new)
 
 ## Table of contents

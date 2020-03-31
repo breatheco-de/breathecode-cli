@@ -4,9 +4,14 @@ const fs = require('fs');
 const prettier = require("prettier");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 let Console = require('../../console');
+let { CompilerError } = require('../../errors');
 const bcActivity = require('../../bcActivity.js');
 
-module.exports = async function({ files, config, socket }){
+const run = (compiler) => new Promise((res, rej) => compiler.run((err, stats) => {
+  res({ err, stats });
+}));
+
+module.exports = async ({ files, config, socket }) => {
   if(!files){
     socket.log('compiler-error',[`No files to compile or build`]);
     return;
@@ -78,47 +83,51 @@ module.exports = async function({ files, config, socket }){
 
   const compiler = webpack(webpackConfig);
   socket.log('compiling',['Compiling...']);
-  compiler.run((err, stats) => {
+  const { err, stats } = await run(compiler);
 
-        if (err) {
-            console.error(err);
-            socket.log('compiler-error',[ err.message || err ]);
-            bcActivity.error('exercise_error', {
-              details: err.message,
-              framework: config.language,
-              language: config.language,
-              message: err.message,
-              data: '',
-              compiler: 'webpack'
-            });
-            return;
-        }
+  if (err) {
+      socket.log('compiler-error',[ err.message || err ]);
+      console.log(output);
+      bcActivity.error('exercise_error', {
+        details: err.message,
+        framework: config.language,
+        language: config.language,
+        message: err.message,
+        data: '',
+        compiler: 'webpack'
+      });
+      return;
+  }
 
-        const output = stats.toString({
-            chunks: false,  // Makes the build much quieter
-            colors: true    // Shows colors in the console
-        });
-        if(stats.hasErrors()){
-          bcActivity.error('exercise_error', {
-            details: output,
-            framework: config.language,
-            language: config.language,
-            message: output,
-            data: '',
-            compiler: 'webpack'
-          });
-          throw CompilerError(output);
-        }
-        else if(stats.hasWarnings()){
-          socket.log('compiler-warning',[ output ]);
-          console.log(output);
-          Console.warning("Your code compiled successfully but with some warnings");
-        }
-        else{
-          socket.log('compiler-success',[ output ]);
-          console.log(output);
-          Console.success("Successfully built");
-        }
-
+  const output = stats.toString({
+      chunks: false,  // Makes the build much quieter
+      colors: true    // Shows colors in the console
+  });
+  if(stats.hasErrors()){
+    bcActivity.error('exercise_error', {
+      details: output,
+      framework: config.language,
+      language: config.language,
+      message: output,
+      data: '',
+      compiler: 'webpack'
     });
-};
+    socket.log('compiler-error',[ output ]);
+    console.log(output);
+    Console.error("Your code has some errors");
+    return;
+  }
+  else if(stats.hasWarnings()){
+    socket.log('compiler-warning',[ output ]);
+    console.log(output);
+    Console.warning("Your code compiled successfully but with some warnings");
+    return;
+  }
+  else{
+    socket.log('compiler-success',[ output ]);
+    console.log(output);
+    Console.success("Successfully built");
+    return;
+  }
+
+}

@@ -10,17 +10,17 @@ const storage = require('node-persist');
 module.exports = {
     sessionStarted: false,
     token: null,
-    currentCohort: { slug: null, current_day: null },
+    currentCohort: null,
     initialize: async function(){
       if(!this.sessionStarted){
         await storage.init({ dir: '.breathecode/.session'});
         this.sessionStarted = true;
       }
-
+      return true
     },
     setPayload: async function(value){
       await this.initialize();
-      await storage.setItem('bc-payload', value);
+      await storage.setItem('bc-payload', { assets_token: this.token, ...value });
       Console.debug("Payload successfuly found and set for "+value.email);
       return true;
     },
@@ -42,11 +42,25 @@ module.exports = {
     get: async function(){
       await this.sync();
       if(!this.isActive()) return null;
+
+      const payload = await this.getPayload();
       return {
-        token: this.token,
-        currentCohort: this.currentCohort,
-        payload: await this.getPayload()
+        payload, token: this.token,
+        currentCohort: this.getCurrentCohort(payload),
       };
+    },
+    getCurrentCohort: function(data){
+        if(this.currentCohort) return this.currentCohort;
+
+        const currentCohorts = data.full_cohorts.filter(c => {
+            return moment().isBetween(c['kickoff_date'], c['ending_date']);
+        });
+
+        this.currentCohort = currentCohorts.length === 1 ? currentCohorts[0] :
+          currentCohorts.length > 1 ? currentCohorts.pop() :
+            data.full_cohorts.length > 1 ? currentCohorts.pop() : null;
+
+        return this.currentCohort;
     },
     login: async function(){
 
@@ -65,12 +79,7 @@ module.exports = {
           });
           if(resp.status === 200){
             const data = await resp.json();
-
-            const currentCohorts = data.full_cohorts.filter(c => {
-                return moment().isBetween(c['kickoff_date'], c['ending_date']);
-            });
-
-            this.currentCohort = currentCohorts.length === 1 ? currentCohorts[0] : currentCohorts.length > 1 ? currentCohorts.pop() : null;
+            this.currentCohort = this.getCurrentCohort(data);
 
             this.start({ token: data.assets_token, payload: data });
           }
@@ -109,10 +118,7 @@ module.exports = {
           if(resp.status === 200){
             const data = await resp.json();
 
-            const currentCohorts = data.full_cohorts.filter(c => {
-                return moment().isBetween(c['kickoff_date'], c['ending_date']);
-            });
-            this.currentCohort = currentCohorts.length === 1 ? currentCohorts[0] : currentCohorts.length > 1 ? currentCohorts.pop() : null;
+            this.currentCohort = this.getCurrentCohort(data);
             await this.setPayload(data);
           }
           else if(resp.status === 400){

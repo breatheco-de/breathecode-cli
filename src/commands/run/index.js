@@ -27,7 +27,9 @@ class InstructionsCommand extends Command {
     var app = express();
     var server = require('http').Server(app);
 
-    Session.get().then(s => s ? Console.info(`Hello ${s.payload.email}.`) : Console.debug("No active session available"));
+    const s = await Session.get();
+    if(s) Console.info(`Hello ${s.payload.email}.`);
+    else Console.debug("No active session available");
 
     const download = require('../../utils/bcDownloader.js');
     await download('https://raw.githubusercontent.com/breatheco-de/breathecode-ide/master/dist/app.tar.gz', './.breathecode/_app/app.tar.gz');
@@ -142,7 +144,7 @@ class InstructionsCommand extends Command {
           .catch(error => {
             console.log("Finish running with error");
             const message = error.message || 'There has been an uknown error';
-            socket.log(error.type || 'internal-error', [ message ]);
+            socket.log(error.type || 'internal-error', [ message ], [], error);
             Console.error(message);
             Console.debug(error);
           })
@@ -158,7 +160,7 @@ class InstructionsCommand extends Command {
         })
         .catch(error => {
           const message = error.message || 'There has been an uknown error';
-          socket.log(error.type || 'internal-error', [ message ]);
+          socket.log(error.type || 'internal-error', [ message ], [], error);
           Console.error(message);
           Console.debug(error);
         })
@@ -166,20 +168,18 @@ class InstructionsCommand extends Command {
 
     socket.on("test", (data) => {
         socket.log('testing',['Testing your code output']);
-        try{
-          bcTest({
-            files: exercises.getAllFiles(data.exerciseSlug),
-            socket,
-            config,
-            slug: data.exerciseSlug
-          });
-        }
-        catch(error){
+        bcTest({
+          files: exercises.getAllFiles(data.exerciseSlug),
+          socket,
+          config,
+          slug: data.exerciseSlug
+        })
+        .catch(error => {
           const message = error.message || 'There has been an uknown error';
-          socket.log(error.type || 'internal-error', [ message ]);
+          socket.log(error.type || 'internal-error', [ message ], [], error);
           Console.error(message);
           Console.debug(error);
-        }
+        });
     });
 
     socket.on("prettify", (data) => {

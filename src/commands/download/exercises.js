@@ -1,4 +1,5 @@
 const {Command, flags} = require('@oclif/command');
+const fetch = require('node-fetch');
 let BashScripts = require('../../utils/bash/index');
 let Console = require('../../utils/console');
 const prompts = require('prompts');
@@ -10,11 +11,11 @@ class SingleCommand extends Command {
   async run() {
       const { flags } = this.parse(SingleCommand);
 
-      const catalogJson = fs.readFileSync(path.resolve(__dirname,`./exercises.json`));
-      const catalog = JSON.parse(catalogJson);
+      const catalogResp = await fetch('https://assets.breatheco.de/apis/registry/all');
+      const catalog = Object.values(await catalogResp.json());
 
       if(!flags.technology){
-        Console.error(`Please specify the main technology for the exercises you want to download`);
+        Console.info(`Please specify the main technology for the exercises you want to download`);
         let langChoice = await prompts([{
             type: 'select',
             name: 'technology',
@@ -41,8 +42,8 @@ class SingleCommand extends Command {
   }
 }
 
-SingleCommand.aliases = ['start:exercises'];
-SingleCommand.description = 'Start a new project using a boilerplate'
+SingleCommand.aliases = ['download:exercises'];
+SingleCommand.description = 'Download new exercises to practice a particular technology'
 SingleCommand.flags = {
  technology: flags.string({char:'t', description: 'technology, e.g: [dom,html,css,react,python-lists,python-beginner,etc].', default: null }),
  root: flags.boolean({char:'r', description: 'install on the root directory'}),

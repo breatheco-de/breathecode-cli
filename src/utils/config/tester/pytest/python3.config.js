@@ -1,6 +1,7 @@
 const fs = require('fs');
 let shell = require('shelljs');
 const indentString = require('indent-string');
+const { InternalError, TestingError } = require('../../../errors.js');
 const path = require('path');
 const Console = require('../../../console.js');
 const { getMatches, cleanStdout, indent } = require('../../compiler/_utils.js');
@@ -13,12 +14,12 @@ module.exports = (files, config, slug) => ({
   validate: function(){
     if (!shell.which('python3')) {
       const packageName = "python3";
-      throw Error(`🚫 You need to have ${packageName} installed to run test the exercises`);
+      throw TestingError(`🚫 You need to have ${packageName} installed to run test the exercises`);
     }
 
     if (!shell.which('pytest')) {
       const packageName = "pytest";
-      throw Error(`🚫 You need to have ${packageName} installed to run test the exercises, run $ pip3 install pytest-testdox mock ${packageName}`);
+      throw TestingError(`🚫 You need to have ${packageName} installed to run test the exercises, run $ pip3 install pytest-testdox mock ${packageName}`);
     }
 
     //i have to create this conftest.py configuration for pytest, to allow passing the inputs as a parameter
@@ -49,10 +50,10 @@ def pytest_generate_tests(metafunc):
   getEntryPath: () => {
 
     let entryPath = files.map(f => './'+f.path).find(f => f.indexOf('test.py') > -1 || f.indexOf('tests.py') > -1);
-    if (!fs.existsSync(entryPath)) throw new Error(`🚫 No tests.py script found on the exercise files`);
+    if (!fs.existsSync(entryPath)) throw TestingError(`🚫 No tests.py script found on the exercise files`);
 
     const appPath = files.map(f => './'+f.path).find(f => f.indexOf('app.py') > -1);
-    if (!fs.existsSync(appPath)) throw new Error(`🚫 No appy.py script found on the exercise files`);
+    if (!fs.existsSync(appPath)) throw TestingError(`🚫 No app.py script found on the exercise files`);
     let content = fs.readFileSync(appPath, "utf8");
     const count = getMatches(/def\s[a-zA-Z]/gm, content);
 

@@ -28,6 +28,10 @@ module.exports = (filePath, { grading, editor, language, disable_grading }) => {
       const bcContent = fs.readFileSync(confPath);
       const jsonConfig = JSON.parse(bcContent);
       if(!jsonConfig) throw Error(`Invalid ${confPath} syntax: Unable to parse.`);
+
+      //add using id to the installation
+      if(!jsonConfig.session) jsonConfig.session = Math.floor(Math.random() * 10000000000000000000);
+
       config = merge(jsonConfig,{ language, disable_grading });
       Console.debug("This is your configuration file: ",config);
       if(typeof config.language == 'undefined' && typeof config.compiler == 'undefined'){
@@ -62,7 +66,7 @@ module.exports = (filePath, { grading, editor, language, disable_grading }) => {
     config = merge(defaults || {}, config, { grading, editor } );
     config.exercisesPath = config.grading === "isolated" ? filePath+'exercises' : filePath+'.breathecode/exercises';
 
-    Console.debug("This is your last known configuration: ", defaults);
+    Console.debug("This is your last known configuration: ", config);
     if (config.grading === 'isolated' && !fs.existsSync(config.exercisesPath))  throw Error(`You are running with ${config.grading} grading, so make sure you have an exercises folder on ${config.exercisesPath}`);
 
     return {

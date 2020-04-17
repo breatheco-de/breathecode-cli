@@ -13,15 +13,15 @@ module.exports = async function({ files, socket }){
 
     const packageName = "python3";
     if (!shell.which(packageName)) {
-      throw Error(`🚫 You need to have ${packageName} installed to run test the exercises`);
+      throw CompilerError(`🚫 You need to have ${packageName} installed to run test the exercises`);
     }
 
     if( !files || files.length == 0){
-      throw Error("No files to compile or build");
+      throw CompilerError("No files to compile or build");
     }
 
     let entryPath = files.map(f => './'+f.path).find(f => f.indexOf('app.py') > -1);
-    if(!entryPath) throw new Error("This exercise doesn't seem to have an app.py entry file");
+    if(!entryPath) throw new CompilerError("This exercise doesn't seem to have an app.py entry file");
 
     Console.info(`Compiling ${entryPath}...`);
     const content = fs.readFileSync(entryPath, "utf8");

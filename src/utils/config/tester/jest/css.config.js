@@ -1,6 +1,7 @@
 let shell = require('shelljs');
 const path = require('path');
 const fs = require('fs');
+const { InternalError, TestingError } = require('../../../errors.js');
 const color = require('colors');
 const nodeModulesPath = path.resolve(__dirname, '../../../../../node_modules');
 const babelTransformPath = require.resolve('./babelTransform.vanillajs.js');
@@ -15,17 +16,17 @@ module.exports = (files, config, slug='') => ({
       }
   },
   validate: ()=>{
-    if (!fs.existsSync(nodeModulesPath+'/prettier')) throw new Error(`Uknown prettier path`);
+    if (!fs.existsSync(nodeModulesPath+'/prettier')) throw TestingError(`Uknown prettier path`);
 
     if (!shell.which('jest')) {
       const packageName = "jest@24.8.0";
-      throw Error(`🚫 You need to have ${packageName} installed to run test the exercises, run $ npm i ${packageName} -g`);
+      throw TestingError(`🚫 You need to have ${packageName} installed to run test the exercises, run $ npm i ${packageName} -g`);
     }
   },
   getEntryPath: () => {
 
     let testsPath = files.map(f => f.path).find(f => f.indexOf('test.js') > -1 || f.indexOf('tests.js') > -1);
-    if (!fs.existsSync(testsPath))  throw new Error(`🚫 No test script found on the exercise files`);
+    if (!fs.existsSync(testsPath))  throw TestingError(`🚫 No test script found on the exercise files`);
 
     return testsPath;
   },
@@ -46,7 +47,7 @@ module.exports = (files, config, slug='') => ({
         stdout.push(msg);
       }
     }
-    else throw new Error("Could not find the error report for "+slug);
+    else throw TestingError("Could not find the error report for "+slug);
 
     return stdout;
   }

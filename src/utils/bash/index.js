@@ -22,8 +22,9 @@ module.exports = {
             })
         })
     },
-    install({ url, folder }, flags=null){
+    install({ repository, folder }, flags=null){
 
+        const url = repository;
         Console.startLoading()
         Console.info('Verifing git installation')
         if (!shell.which('git')) {

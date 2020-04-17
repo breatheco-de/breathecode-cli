@@ -1,6 +1,7 @@
 const fs = require('fs');
 let shell = require('shelljs');
 let Console = require('../../../console');
+const { InternalError, TestingError } = require('../../../errors.js');
 const indentString = require('indent-string');
 const path = require('path');
 const { getMatches, cleanStdout } = require('../../compiler/_utils.js');
@@ -22,26 +23,26 @@ module.exports = (files, config, slug) => ({
   validate: function(){
     if (!shell.which('java')) {
       const packageName = "java";
-      throw Error(`🚫 You need to have ${packageName} installed to run test the exercises`);
+      throw TestingError(`🚫 You need to have ${packageName} installed to run test the exercises`);
     }
 
     if (!fs.existsSync('./.breathecode/mockito.jar')){
       if(!this.install('mockito') || !this.install('bytebuddy') || !this.install('objenesis')){
         Console.error("There was a problem instaling mockito");
-        throw new Error("There was a problem instaling mockito");
+        throw TestingError("There was a problem instaling mockito");
       }
     }
 
     if (!fs.existsSync('./.breathecode/junit.jar')){
       if(!this.install('junit')){
         Console.error("There was a problem instaling jUnit");
-        throw new Error("There was a problem instaling jUnit");
+        throw TestingError("There was a problem instaling jUnit");
       }
     }
     if (!fs.existsSync('./.breathecode/hamcrest.jar')){
       if(!this.install('hamcrest')){
         Console.error("There was a problem instaling hamcrest");
-        throw new Error("There was a problem instaling hamcrest");
+        throw TestingError("There was a problem instaling hamcrest");
       }
     }
   },
@@ -53,7 +54,7 @@ module.exports = (files, config, slug) => ({
   getEntryPath: () => {
 
     let entryPath = files.map(f => './'+f.path).find(f => f.indexOf('test.java') > -1 || f.indexOf('tests.java') > -1 || f.indexOf('Test.java') > -1 );
-    if (!fs.existsSync(entryPath)) throw new Error(`🚫 No tests.java script found on the exercise files`);
+    if (!fs.existsSync(entryPath)) throw TestingError(`🚫 No tests.java script found on the exercise files`);
 
     return entryPath;
   },

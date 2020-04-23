@@ -2,6 +2,7 @@ const path = require('path');
 const fs = require('fs');
 const prettier = require("prettier");
 let Console = require('../../console');
+let { CompilerError } = require('../../errors');
 const { node } = require('compile-run');
 const { getMatches, cleanStdout } = require('./_utils.js');
 const bcActivity = require('../../bcActivity.js');

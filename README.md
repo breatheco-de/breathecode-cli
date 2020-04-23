@@ -43,7 +43,7 @@ $ npm install -g breathecode-cli
 $ breathecode COMMAND
 running command...
 $ breathecode (-v|--version|version)
-breathecode-cli/1.2.5 linux-x64 node-v10.15.3
+breathecode-cli/1.2.51 linux-x64 node-v10.15.3
 $ breathecode --help [COMMAND]
 USAGE
   $ breathecode COMMAND
@@ -54,7 +54,7 @@ USAGE
 # Commands
 
 * [breathecode download:exercises](#downloadexercises)
-* [breathecode download:project](#downloadproject)
+* [breathecode download:template](#downloadtemplate)
 * [breathecode help [COMMAND]](#help-command)
 * [breathecode init](#init)
 * [breathecode login](#login)
@@ -64,7 +64,7 @@ USAGE
 * [breathecode utils:todo](#utilstodo)
 ## download:exercises
 
-Start a new project using a boilerplate
+Download new exercises to practice a particular technology
 
 ```
 USAGE
@@ -77,18 +77,18 @@ OPTIONS
   -t, --technology=technology  technology, e.g: [dom,html,css,react,python-lists,python-beginner,etc].
 
 ALIASES
-  $ breathecode start:exercises
+  $ breathecode download:exercises
 ```
 
-_See code: [src/commands/download/exercises.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.2.5/src/commands/download/exercises.js)_
+_See code: [src/commands/download/exercises.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.2.51/src/commands/download/exercises.js)_
 
-## download:project
+## download:template
 
-Start a new project using a boilerplate
+Download a new template or boilerplate
 
 ```
 USAGE
-  $ breathecode download:project
+  $ breathecode download:template
 
 OPTIONS
   -m, --mode=mode              install a particular branch or version for the boilerplate
@@ -97,10 +97,10 @@ OPTIONS
   -t, --technology=technology  technology, e.g: [flask,django,react,flux,vanillajs,wordpress,etc].
 
 ALIASES
-  $ breathecode start:project
+  $ breathecode download:template
 ```
 
-_See code: [src/commands/download/project.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.2.5/src/commands/download/project.js)_
+_See code: [src/commands/download/template.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.2.51/src/commands/download/template.js)_
 
 ## help [COMMAND]
 
@@ -132,7 +132,7 @@ OPTIONS
   -l, --language=language  specify what language you want: [html, css, react, vanilajs, node, python]
 ```
 
-_See code: [src/commands/init.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.2.5/src/commands/init.js)_
+_See code: [src/commands/init.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.2.51/src/commands/init.js)_
 
 ## login
 
@@ -148,7 +148,7 @@ OPTIONS
   -t, --type=js|jsx|scss|css|md|html|py  [default: js] file extensions to look for
 ```
 
-_See code: [src/commands/login.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.2.5/src/commands/login.js)_
+_See code: [src/commands/login.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.2.51/src/commands/login.js)_
 
 ## publish
 
@@ -159,7 +159,7 @@ USAGE
   $ breathecode publish
 ```
 
-_See code: [src/commands/publish.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.2.5/src/commands/publish.js)_
+_See code: [src/commands/publish.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.2.51/src/commands/publish.js)_
 
 ## run
 
@@ -179,7 +179,7 @@ OPTIONS
   -p, --port=port                     server port
 ```
 
-_See code: [src/commands/run.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.2.5/src/commands/run.js)_
+_See code: [src/commands/run.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.2.51/src/commands/run.js)_
 
 ## update [CHANNEL]
 
@@ -205,5 +205,5 @@ OPTIONS
   -t, --type=js|jsx|scss|css|md|html|py  [default: js] file extensions to look for
 ```
 
-_See code: [src/commands/utils/todo.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.2.5/src/commands/utils/todo.js)_
+_See code: [src/commands/utils/todo.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.2.51/src/commands/utils/todo.js)_
 <!-- commandsstop -->

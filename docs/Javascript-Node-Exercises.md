@@ -2,8 +2,30 @@
 
 1. How many times a function is called
 
+## Function exists:  
 
-# 1) How many times a function is called
+```js
+test("Function getColor should exist", function(){
+  const file = rewire("./app.js");
+  const getColor = file.__get__('getColor');
+  expect(getColor).toBeTruthy();
+});
+
+```
+
+## Function returns something:  
+
+```js
+test("Function getColor should return something", function(){
+  const file = rewire("./app.js");
+  const getColor = file.__get__('getColor');
+  expect(getColor()).toBeTruthy();
+});
+
+```
+
+# How many times a function is called
+
 ```js
 // mock the function
 let _buffer = "";

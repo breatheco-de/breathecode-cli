@@ -1,6 +1,6 @@
 
 
-1. How many times a function is called
+
 
 ## Function exists:  
 
@@ -24,7 +24,7 @@ test("Function getColor should return something", function(){
 
 ```
 
-# How many times a function is called
+## How many times a function is called
 
 ```js
 // mock the function
@@ -38,7 +38,7 @@ it('console.log() function should have been called 2 times', function () {
 });
 ```
 
-## 2) A particular string has been printed on the console
+## A particular string has been printed on the console
 ```js
 it('Print the 1st item on the array (position 2)', function () {
     //You can also compare the entire console buffer (if there have been several console.log calls on the exercise)
@@ -46,7 +46,7 @@ it('Print the 1st item on the array (position 2)', function () {
 });
 ```
 
-## 3) That a function has been called with specific parameter
+## That a function has been called with specific parameter
 
 ```js
 it('Call the function with Hello world', function () {

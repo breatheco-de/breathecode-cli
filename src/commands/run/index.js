@@ -174,6 +174,9 @@ class InstructionsCommand extends Command {
           config,
           slug: data.exerciseSlug
         })
+        .then(result => {
+          exercises.save();
+        })
         .catch(error => {
           const message = error.message || 'There has been an uknown error';
           socket.log(error.type || 'internal-error', [ message ], [], error);

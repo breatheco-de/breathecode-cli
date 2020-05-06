@@ -59,7 +59,7 @@ module.exports = (filePath, { grading, editor, language, disable_grading }) => {
       if (shell.which('gp')) config.editor = "gitpod";
       else config.editor = "standalone";
     }
-    if(config.editor === "gitpod") Gitpod.setup();
+    if(config.editor === "gitpod") Gitpod.setup(config);
     // if ignoreRegex is saved into a json, it saves as an object abd breaks the cli
     if(config.ignoreRegex && config.ignoreRegex.constructor !== RegExp) delete config.ignoreRegex;
 
@@ -203,6 +203,7 @@ module.exports = (filePath, { grading, editor, language, disable_grading }) => {
             config.exercises = getDirectories(config.exercisesPath).map(ex => ({
               slug: ex.substring(ex.indexOf('exercises/')+10),
               title: ex.substring(ex.indexOf('exercises/')+10),
+              done: false,
               path: ex
             }));
             config.exercises = config.exercises.map(ex => {

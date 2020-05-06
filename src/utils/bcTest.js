@@ -9,11 +9,7 @@ const bcActivity = require('./bcActivity.js');
 module.exports = async function({ socket, files, config, slug }){
 
   const configPath = path.resolve(__dirname,`./config/tester/${config.tester}/${config.language}.config.js`);
-  if (!fs.existsSync(configPath)){
-    Console.error(`No testing engine has been found for: '${config.language}'`);
-    socket.log('internal-error', [`Uknown testing engine for compiler: '${config.language}'`]);
-    return;
-  }
+  if (!fs.existsSync(configPath)) throw CompilerError(`Uknown testing engine for compiler: '${config.language}'`);
 
       const testingConfig = require(configPath)(files, config, slug);
       testingConfig.validate();
@@ -56,7 +52,13 @@ module.exports = async function({ socket, files, config, slug }){
           editor: config.editor,
           compiler: config.compiler
         });
+        config.exercises = config.exercises.map(e => {
+          if(e.slug === slug) e.done = true;
+          return e;
+        });
       }
+
+
       if(typeof testingConfig.cleanup !== "undefined"){
         if(typeof testingConfig.cleanup === 'function' || typeof testingConfig.cleanup === 'object'){
           const clean = await testingConfig.cleanup(socket);
@@ -70,4 +72,6 @@ module.exports = async function({ socket, files, config, slug }){
 
         }
       }
+
+      return true;
 };

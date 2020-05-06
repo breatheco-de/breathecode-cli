@@ -6,9 +6,11 @@ module.exports = {
     socket: null,
     config: null,
     initialized: false,
-    init: function(){
+    init: function(config=null){
       if(this.initialized) return;
       else this.initialized = true;
+
+      if(config) this.config = config;
 
       if(shell.exec(`gp -h`, { silent: true }).code == 0){
         this.hasGPCommand = true;
@@ -21,6 +23,9 @@ module.exports = {
 
       this.init();//initilize gitpod config
 
+      // gitpod will open files only on isolated mode
+      if(this.config.grading !== 'isolated') throw new Error('Files can only be automatically opened on isolated grading');
+
       if(this.hasGPCommand) files.reverse().forEach(f => {
         if(shell.exec(`gp open ${f}`).code > 0){
           Console.debug(`Error opening file ${f} on gitpod`);
@@ -29,8 +34,8 @@ module.exports = {
 
       socket.log('ready',['Ready to compile or test...']);
     },
-    setup(){
-      this.init();//initilize gitpod config
+    setup(config){
+      this.init(config);//initilize gitpod config
       this.autosave("on");
     },
     autosave: async function(value="on"){

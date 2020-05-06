@@ -53,27 +53,35 @@ def pytest_generate_tests(metafunc):
     if (!fs.existsSync(entryPath)) throw TestingError(`🚫 No tests.py script found on the exercise files`);
 
     const appPath = files.map(f => './'+f.path).find(f => f.indexOf('app.py') > -1);
-    if (!fs.existsSync(appPath)) throw TestingError(`🚫 No app.py script found on the exercise files`);
-    let content = fs.readFileSync(appPath, "utf8");
-    const count = getMatches(/def\s[a-zA-Z]/gm, content);
+    if (fs.existsSync(appPath)){
+      let content = fs.readFileSync(appPath, "utf8");
+      const count = getMatches(/def\s[a-zA-Z]/gm, content);
 
-    if(count.length == 0){
-      Console.debug("Adding main function for all the code");
-      content = `def execute_app():\n${indent(content, 4)}`;
+      if(count.length == 0){
+        Console.debug("Adding main function for all the code");
+        content = `def execute_app():\n${indent(content, 4)}`;
+      }
+      const directory = `${config.outputPath}/cached_app.py`;
+      fs.writeFileSync(directory, content);
     }
-    const directory = `${config.outputPath}/cached_app.py`;
-    fs.writeFileSync(directory, content);
+    else if(config.grading === "isolated") throw TestingError(`🚫 No app.py script found on the exercise files`);
+
     return entryPath;
   },
   getCommand: async function(socket){
 
+    console.log("Files", files);
     const appPath = files.map(f => './'+f.path).find(f => f.indexOf('app.py') > -1);
+    if(appPath !== undefined){
+      const content = fs.readFileSync(appPath, "utf8");
+      const count = getMatches(/input\((?:["'`]{1}(.*)["'`]{1})?\)/gm, content);
+      let answers = (count.length == 0) ? [] : await socket.ask(count);
 
-    const content = fs.readFileSync(appPath, "utf8");
-    const count = getMatches(/input\((?:["'`]{1}(.*)["'`]{1})?\)/gm, content);
-    let answers = (count.length == 0) ? [] : await socket.ask(count);
-
-    return `pytest ${this.getEntryPath()} --testdox --capture=${this.config.capture} --color=${this.config.color} --stdin='${JSON.stringify(answers)}'`
+      return `pytest ${this.getEntryPath()} --testdox --capture=${this.config.capture} --color=${this.config.color} --stdin='${JSON.stringify(answers)}'`
+    }
+    else{
+      return `pytest ${this.getEntryPath()} --testdox --capture=${this.config.capture} --color=${this.config.color}`
+    }
   },
   getErrors(stdout){
     //@pytest.mark.it('1. Your code needs to print Yellow on the console')

@@ -1,15 +1,18 @@
-# Ignore everything
-/*
 
+# configuration and readme
 !.gitignore
 !.gitpod.yml
 !.gitpod.Dockerfile
 !bc.json
 !README.md
 
-!/exercises
-!/exercises/*
-
+# python garbage
 *.pyc
 __pycache__/
 .pytest_cache/
+
+# breathecode exercises
+!/.breathecode
+/.breathecode/**
+!/.breathecode/exercises
+!/.breathecode/exercises/**

@@ -14,6 +14,7 @@ module.exports = {
 
       if(shell.exec(`gp -h`, { silent: true }).code == 0){
         this.hasGPCommand = true;
+        config.address = shell.exec(`gp url`, { silent: true }).stdout.replace(/(\r\n|\n|\r)/gm,"");
       }
       else{
         Console.debug(`Gitpod command line tool not found`);

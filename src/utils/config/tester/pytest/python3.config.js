@@ -23,7 +23,10 @@ module.exports = (files, config, slug) => ({
     }
 
     //i have to create this conftest.py configuration for pytest, to allow passing the inputs as a parameter
-    fs.writeFileSync("./conftest.py", `import sys
+    fs.writeFileSync("./conftest.py", `import sys, os, json
+if os.path.isdir("./.venv"):
+    sys.path.append('./.venv/lib/python3.7/site-packages')
+
 def pytest_addoption(parser):
     parser.addoption("--stdin", action="append", default=[],
         help="json with the stdin to pass to test functions")
@@ -43,6 +46,9 @@ def pytest_generate_tests(metafunc):
           metafunc.parametrize("app",[cached_app])
         except AttributeError:
           metafunc.parametrize("app",[cached_app])
+
+    if 'config' in metafunc.fixturenames:
+        metafunc.parametrize("config", [json.loads('${JSON.stringify(config)}')])
 `)
 
 

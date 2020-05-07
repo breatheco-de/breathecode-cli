@@ -110,7 +110,10 @@ class InstructionsCommand extends Command {
     app.use('/',express.static('.breathecode/_app'));
 
     server.listen( config.port, function () {
-      Console.success(`Exercises are running 😃 Open your browser to start practicing! http://0.0.0.0:${config.port}`)
+      Console.success(`Exercises are running 😃 Open your browser to start practicing!`);
+      Console.success(`\n            Here is your exercises link:`);
+      if(config.editor === 'gitpod') Console.log(`            https://${config.port}-${config.address.substring(8)}`);
+      else Console.log(`            ${config.address}:${config.port}`);
     });
 
     socket.start(config, server);

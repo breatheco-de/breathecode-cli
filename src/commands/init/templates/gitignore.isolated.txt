@@ -10,11 +10,11 @@
 !/exercises
 !/exercises/*
 
-*.pyc
-__pycache__/
-.pytest_cache/
-
 !/.breathecode
 /.breathecode/**
 !/.breathecode/resets
 !/.breathecode/resets/**
+
+*.pyc
+__pycache__/
+.pytest_cache/

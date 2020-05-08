@@ -6,13 +6,13 @@
 !bc.json
 !README.md
 
-# python garbage
-*.pyc
-__pycache__/
-.pytest_cache/
-
 # breathecode exercises
 !/.breathecode
 /.breathecode/**
 !/.breathecode/exercises
 !/.breathecode/exercises/**
+
+# python garbage
+*.pyc
+__pycache__/
+.pytest_cache/

@@ -100,9 +100,10 @@ class StartExercisesComand extends Command {
             Console.error(err.message);
           } else {
             if (!files.length) {
+                const templatesDir = "../../utils/templates";
                 fs.writeFileSync('./bc.json', JSON.stringify(config, null, 2));
 
-                fs.writeFileSync('./.gitignore', fs.readFileSync(path.resolve(__dirname,`./_templates/gitignore.${grading}.txt`)));
+                fs.writeFileSync('./.gitignore', fs.readFileSync(path.resolve(__dirname,`${templatesDir}/gitignore.${grading}.txt`)));
 
                 let basePath = "";
                 if (grading == "incremental") basePath = ".breathecode/";
@@ -111,11 +112,11 @@ class StartExercisesComand extends Command {
                     if(basePath != '' && !fs.existsSync(`./${basePath}`)) fs.mkdirSync(`./${basePath}`);
                     fs.mkdirSync(`./${basePath}exercises`);
                     fs.mkdirSync(`./${basePath}exercises/01-introduction`);
-                    fs.writeFileSync(`./${basePath}exercises/01-introduction/README.md`, fs.readFileSync(path.resolve(__dirname,`./_templates/INTRO.md`)));
-                    fs.mkdirSync(`./${basePath}exercises/01-hello-world`);
-                    fs.writeFileSync(`./${basePath}exercises/02-hello-world/README.md`, fs.readFileSync(path.resolve(__dirname,`./_templates/README.md`)));
-                    fs.writeFileSync(`./${basePath}exercises/02-hello-world/test.${extensions[language]}`, fs.readFileSync(path.resolve(__dirname,`./_templates/test.${language}.${extensions[language]}`)));
-                    fs.writeFileSync(`./${basePath}exercises/02-hello-world/app.${extensions[language]}`, fs.readFileSync(path.resolve(__dirname,`./_templates/app.${extensions[language]}`)));
+                    fs.writeFileSync(`./${basePath}exercises/01-introduction/README.md`, fs.readFileSync(path.resolve(__dirname,`${templatesDir}/README.md`)));
+                    fs.mkdirSync(`./${basePath}exercises/02-hello-world`);
+                    fs.writeFileSync(`./${basePath}exercises/02-hello-world/README.md`, fs.readFileSync(path.resolve(__dirname,`${templatesDir}/README.${grading}.md`)));
+                    fs.writeFileSync(`./${basePath}exercises/02-hello-world/test.${extensions[language]}`, fs.readFileSync(path.resolve(__dirname,`${templatesDir}/test.${language}.${extensions[language]}`)));
+                    fs.writeFileSync(`./${basePath}exercises/02-hello-world/app.${extensions[language]}`, fs.readFileSync(path.resolve(__dirname,`${templatesDir}/app.${extensions[language]}`)));
                 }
 
                 Console.success(`😋 Exercises boilerplate created successfully`);

@@ -200,10 +200,11 @@ module.exports = (filePath, { grading, editor, language, disable_grading }) => {
             if (config.outputPath && !fs.existsSync(config.outputPath)) fs.mkdirSync(config.outputPath);
 
             // TODO we could use npm library front-mater to read the title of the exercises from the README.md
-            config.exercises = getDirectories(config.exercisesPath).map(ex => ({
+            config.exercises = getDirectories(config.exercisesPath).map((ex, i) => ({
               slug: ex.substring(ex.indexOf('exercises/')+10),
               title: ex.substring(ex.indexOf('exercises/')+10),
-              done: false,
+              //if the exercises was on the config before I may keep the status done
+              done: (typeof config.exercises[i] !== 'undefined' && ex.substring(ex.indexOf('exercises/')+10) == config.exercises[i].slug) ? config.exercises[i].done : false,
               path: ex
             }));
             config.exercises = config.exercises.map(ex => {

@@ -22,10 +22,15 @@ module.exports = (files, config, slug) => ({
       throw TestingError(`🚫 You need to have ${packageName} installed to run test the exercises, run $ pip3 install pytest-testdox mock ${packageName}`);
     }
 
+    let venvPythonPath = null;
+    if (fs.existsSync("./.venv/lib/") ) {
+      const pythons = fs.readdirSync('./.venv/lib/');
+      if(pythons.length > 0) venvPythonPath = "./.venv/lib/"+pythons[0];
+    }
     //i have to create this conftest.py configuration for pytest, to allow passing the inputs as a parameter
     fs.writeFileSync("./conftest.py", `import sys, os, json
-if os.path.isdir("./.venv"):
-    sys.path.append('./.venv/lib/python3.7/site-packages')
+if os.path.isdir("./.venv/lib/"):
+    sys.path.append('${venvPythonPath}/site-packages')
 
 def pytest_addoption(parser):
     parser.addoption("--stdin", action="append", default=[],
@@ -76,7 +81,6 @@ def pytest_generate_tests(metafunc):
   },
   getCommand: async function(socket){
 
-    console.log("Files", files);
     const appPath = files.map(f => './'+f.path).find(f => f.indexOf('app.py') > -1);
     if(appPath !== undefined){
       const content = fs.readFileSync(appPath, "utf8");

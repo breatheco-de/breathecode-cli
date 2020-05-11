@@ -9,8 +9,12 @@
 # breathecode exercises
 !/.breathecode
 /.breathecode/**
+!/.breathecode/bc.json
+!/.breathecode/.bc.json
 !/.breathecode/exercises
 !/.breathecode/exercises/**
+!/.breathecode/assets
+!/.breathecode/assets/**
 
 # python garbage
 *.pyc

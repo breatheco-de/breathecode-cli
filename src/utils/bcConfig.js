@@ -204,7 +204,7 @@ module.exports = (filePath, { grading, editor, language, disable_grading }) => {
               slug: ex.substring(ex.indexOf('exercises/')+10),
               title: ex.substring(ex.indexOf('exercises/')+10),
               //if the exercises was on the config before I may keep the status done
-              done: (typeof config.exercises[i] !== 'undefined' && ex.substring(ex.indexOf('exercises/')+10) == config.exercises[i].slug) ? config.exercises[i].done : false,
+              done: (Array.isArray(config.exercises) && typeof config.exercises[i] !== 'undefined' && ex.substring(ex.indexOf('exercises/')+10) == config.exercises[i].slug) ? config.exercises[i].done : false,
               path: ex
             }));
             config.exercises = config.exercises.map(ex => {

@@ -59,14 +59,16 @@ module.exports = (filePath, { grading, editor, language, disable_grading }) => {
       if (shell.which('gp')) config.editor = "gitpod";
       else config.editor = "standalone";
     }
-    if(config.editor === "gitpod") Gitpod.setup(config);
     // if ignoreRegex is saved into a json, it saves as an object abd breaks the cli
     if(config.ignoreRegex && config.ignoreRegex.constructor !== RegExp) delete config.ignoreRegex;
 
     config = merge(defaults || {}, config, { grading, editor } );
     config.exercisesPath = config.grading === "isolated" ? filePath+'exercises' : filePath+'.breathecode/exercises';
 
-    Console.debug("This is your last known configuration: ", config);
+    Console.debug("This is your updated configuration: ", config);
+
+    if(config.editor === "gitpod") Gitpod.setup(config);
+
     if (config.grading === 'isolated' && !fs.existsSync(config.exercisesPath))  throw Error(`You are running with ${config.grading} grading, so make sure you have an exercises folder on ${config.exercisesPath}`);
 
     return {

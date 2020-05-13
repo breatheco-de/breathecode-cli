@@ -87,7 +87,6 @@ module.exports = async ({ files, config, socket }) => {
 
   if (err) {
       socket.log('compiler-error',[ err.message || err ]);
-      console.log(output);
       bcActivity.error('exercise_error', {
         details: err.message,
         framework: config.language,

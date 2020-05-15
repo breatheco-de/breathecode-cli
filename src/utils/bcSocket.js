@@ -58,6 +58,10 @@ module.exports = {
         this.on('input', ({ inputs }) => resolve(inputs));
       })
     },
+    reload: function(files=null, exercises=null){
+      console.log("emit")
+      this.emit('reload', files, exercises);
+    },
     log: function(status, messages=[],report=[], data=null){
       this.emit('log',status,messages,[],report, data);
     },
@@ -68,7 +72,11 @@ module.exports = {
         if(['compiler-error'].includes(status) || action == 'ready') this.removeAllowed('preview');
       }
 
-      if(this.config.grading === 'incremental') this.removeAllowed('run');
+      if(this.config.grading === 'incremental'){
+        this.removeAllowed('run');
+        this.removeAllowed('build');
+        this.removeAllowed('reset');
+      }
 
       this.socket.emit('compiler', { action, status, logs, allowed: this.allowedActions, inputs, report, data });
     }

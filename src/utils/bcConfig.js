@@ -2,13 +2,14 @@ const path = require('path');
 const fs = require('fs');
 let shell = require('shelljs');
 let Console = require('./console');
+let watch = require('./watcher');
 const Gitpod = require('./bcGitpod.js');
 const { ValidationError, NotFoundError } = require('./errors.js');
 const frontMatter = require('front-matter');
 let _defaults = require('./config/compiler/_defaults.js');
 /* exercise folder name standard */
 const validateExerciseDirectoryName = (str) => {
-    const regex = /^\d{2,2}(?:\.\d{1,2}?)?-[a-zA-z](?:-|_?[a-zA-z]*)*$/;
+    const regex = /^\d{2,3}(?:\.\d{1,2}?)?-[a-zA-z](?:-|_?[a-zA-z]*)*$/;
     return regex.test(str);
 };
 
@@ -65,7 +66,7 @@ module.exports = (filePath, { grading, editor, language, disable_grading }) => {
     config = merge(defaults || {}, config, { grading, editor } );
     config.exercisesPath = config.grading === "isolated" ? filePath+'exercises' : filePath+'.breathecode/exercises';
 
-    Console.debug("This is your updated configuration: ", config);
+    Console.debug("This is your updated configuration: ", config.exercises);
 
     if(config.editor === "gitpod") Gitpod.setup(config);
 
@@ -196,35 +197,60 @@ module.exports = (filePath, { grading, editor, language, disable_grading }) => {
             return getFiles(basePath);
         },
         buildIndex: function(){
+            Console.info("Building the exercise index...");
+
             const isDirectory = source => fs.lstatSync(source).isDirectory();
             const getDirectories = source => fs.readdirSync(source).map(name => path.join(source, name)).filter(isDirectory);
             if (!fs.existsSync('./.breathecode')) fs.mkdirSync('./.breathecode');
             if (config.outputPath && !fs.existsSync(config.outputPath)) fs.mkdirSync(config.outputPath);
 
             // TODO we could use npm library front-mater to read the title of the exercises from the README.md
-            config.exercises = getDirectories(config.exercisesPath).map((ex, i) => ({
-              slug: ex.substring(ex.indexOf('exercises/')+10),
-              title: ex.substring(ex.indexOf('exercises/')+10),
-              //if the exercises was on the config before I may keep the status done
-              done: (Array.isArray(config.exercises) && typeof config.exercises[i] !== 'undefined' && ex.substring(ex.indexOf('exercises/')+10) == config.exercises[i].slug) ? config.exercises[i].done : false,
-              path: ex
-            }));
+            config.exercises = getDirectories(config.exercisesPath).map((ex, i) => {
+              const slug = ex.substring(ex.indexOf('exercises/')+10);
+              return {
+                slug, title: slug,
+                //if the exercises was on the config before I may keep the status done
+                done: (Array.isArray(config.exercises) && typeof config.exercises[i] !== 'undefined' && ex.substring(ex.indexOf('exercises/')+10) == config.exercises[i].slug) ? config.exercises[i].done : false,
+                path: ex
+              };
+            });
             config.exercises = config.exercises.map(ex => {
                 if(!validateExerciseDirectoryName(ex.slug)){
-                    Console.error('Exercise directory "'+ex.slug+'" has an invalid name, it has to start with two digits followed by words separated by underscors or hyphen (no white spaces). e.g: 01.12-hello-world');
+                    Console.error('Exercise directory "'+ex.slug+'" has an invalid name, it has to start with two or three digits followed by words separated by underscors or hyphen (no white spaces). e.g: 01.12-hello-world');
                     Console.help('Verify that the folder "'+ex.slug+'" starts with a number and it does not contain white spaces or weird characters.');
-                    throw new Error('Error building the exercise index');
+                    throw ValidationError('Error building the exercise index');
                 }
 
-                ex.translations = fs.readdirSync(ex.path).filter(file => file.toLowerCase().includes('readme')).map(file => {
+                const files = fs.readdirSync(ex.path);
+                ex.translations = files.filter(file => file.toLowerCase().includes('readme')).map(file => {
                   const parts = file.split('.');
                   if(parts.length === 3) return parts[1];
                   else return "us";
                 });
+
+                ex.graded = files.filter(file => file.toLowerCase().startsWith('test.') || file.toLowerCase().startsWith('tests.')).length > 0
+
                 return ex;
             });
-
             this.save();
+        },
+        watchIndex: function(onChange=null){
+
+          let exercisesDirectory = null;
+          if(fs.existsSync('./.breathecode/exercises')) exercisesDirectory = './.breathecode/exercises';
+          else if(fs.existsSync('./exercises')) exercisesDirectory = './exercises';
+          else throw ValidationError("No exercises directory to watch");
+
+          this.buildIndex();
+          watch(exercisesDirectory)
+            .then((eventname, filename) => {
+              Console.debug("Changes detected on your exercises")
+              this.buildIndex();
+              if(onChange) onChange();
+            })
+            .catch(error => {
+               throw error;
+            })
         },
         save: () => {
           fs.writeFileSync(confPath, JSON.stringify(config, null, 4))

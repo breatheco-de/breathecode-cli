@@ -8,9 +8,23 @@ const bcTest = require('../../utils/bcTest.js');
 const Session = require('../../utils/bcSession.js');
 const Gitpod = require('../../utils/bcGitpod.js');
 var bodyParser = require('body-parser');
+const { ValidationError, NotFoundError } = require('../../utils/errors.js');
 
 class InstructionsCommand extends Command {
   async run() {
+
+    // quick fix for listening to the process termination on windows
+    if (process.platform === "win32") {
+      var rl = require("readline").createInterface({
+        input: process.stdin,
+        output: process.stdout
+      });
+
+      rl.on("SIGINT", function () {
+        process.emit("SIGINT");
+      });
+    }
+
     const {flags} = this.parse(InstructionsCommand);
 
     Console.debugging(flags.debug);
@@ -18,9 +32,13 @@ class InstructionsCommand extends Command {
     Console.info("Loading the configuration for the exercises.");
     Console.debug("These are your flags: ",flags);
     var exercises = bcConfig('./', { grading: flags.grading, editor: flags.editor, language: flags.language, disable_grading: flags.disable_grading });
-    Console.info("Building the exercise index...");
-    exercises.buildIndex();
+
+    if(flags.create_mode) exercises.watchIndex((_exercises) => socket.reload(null, _exercises));
+    else exercises.buildIndex();
+
+
     var config = exercises.getConfig();
+    // Console.log("Builder after building", config);
 
     Console.info(`Compiler: ${config.compiler}, grading: ${config.grading} ${config.disable_grading ? "(disabled)" : ""}, editor: ${config.editor}, for ${Array.isArray(config.exercises) ? config.exercises.length : 0} exercises found`);
 
@@ -86,7 +104,13 @@ class InstructionsCommand extends Command {
     }));
 
     app.get('/exercise/:slug', withHandler((req, res) => {
-        res.json(exercises.getExerciseDetails(req.params.slug));
+        const details = exercises.getExerciseDetails(req.params.slug);
+
+        if(!details.exercise.graded) socket.removeAllowed("test");
+        else socket.addAllowed('test');
+        socket.log('ready');
+
+        res.json(details);
     }));
 
     app.get('/exercise/:slug/file/:fileName', withHandler((req, res) => {
@@ -208,6 +232,7 @@ InstructionsCommand.flags = {
   port: flags.string({char: 'p', description: 'server port' }),
   host: flags.string({char: 'h', description: 'server host' }),
   debug: flags.boolean({char: 'd', description: 'debugger mode for more verbage', default: false }),
+  create_mode: flags.boolean({char: 'c', description: 'start the exercises on create mode (for teachers)', default: false }),
   disable_grading: flags.boolean({char: 'dg', description: 'disble grading functionality', default: false }),
   editor: flags.string({ char: 'e', description: '[standalone, gitpod]', options: ['standalone', 'gitpod'] }),
   grading: flags.string({ char: 'g', description: '[isolated, incremental]', options: ['isolated', 'incremental'] }),

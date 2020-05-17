@@ -79,8 +79,9 @@ module.exports = async ({ files, config, socket }) => {
 
     const foundErrors = [].concat(htmlErrors.filter(e => e !== null));
     if(foundErrors.length > 0){
-      socket.log('compiler-error',[ foundErrors.map(e => `Line: ${e.lastLine} ${e.message}`) ]);
-      Console.error("Error compiling HTML: ", errors.toString());
+      const errors = foundErrors.map(e => e.message);
+      socket.log('compiler-error',[ errors.join("\n") ]);
+      Console.error("Error compiling HTML: "+errors.join("\n"));
       return;
     }
   }

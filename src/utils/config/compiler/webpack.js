@@ -80,9 +80,9 @@ module.exports = async ({ files, config, socket }) => {
     const foundErrors = [].concat(htmlErrors.filter(e => e !== null));
     if(foundErrors.length > 0){
       const errors = foundErrors.map(e => e.message);
-      socket.log('compiler-error',[ errors.join("\n") ]);
+      // socket.log('compiler-error',[ errors.join("\n") ]);
       Console.error("Error compiling HTML: "+errors.join("\n"));
-      return;
+      throw CompilerError(errors[0]);
     }
   }
 
@@ -91,7 +91,6 @@ module.exports = async ({ files, config, socket }) => {
   const { err, stats } = await run(compiler);
 
   if (err) {
-      socket.log('compiler-error',[ err.message || err ]);
       bcActivity.error('exercise_error', {
         details: err.message,
         framework: config.language,
@@ -100,7 +99,7 @@ module.exports = async ({ files, config, socket }) => {
         data: '',
         compiler: 'webpack'
       });
-      return;
+      throw CompilerError(err);
   }
 
   const output = stats.toString({
@@ -116,10 +115,8 @@ module.exports = async ({ files, config, socket }) => {
       data: '',
       compiler: 'webpack'
     });
-    socket.log('compiler-error',[ output ]);
-    console.log(output);
     Console.error("Your code has some errors");
-    return;
+    throw CompilerError(output);
   }
   else if(stats.hasWarnings()){
     socket.log('compiler-warning',[ output ]);

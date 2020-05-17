@@ -28,16 +28,22 @@ module.exports = async function({ files, config, socket }){
     let htmlErrors = files.filter(f => f.path.indexOf(".html") > -1).map((file)=>{
       const prettyConfig = require(path.resolve(__dirname,`../../config/prettier/${config.compiler}.config.js`));
       const content = fs.readFileSync(file.path, "utf8");
-      const formatted = prettier.format(content, prettyConfig);
-      fs.writeFileSync(file.path, formatted);
-      fs.writeFileSync(`${config.configPath.output}/${file.name}`, formatted);
+      try{
+        const formatted = prettier.format(content, prettyConfig);
+        fs.writeFileSync(file.path, formatted);
+        fs.writeFileSync(`${config.configPath.output}/${file.name}`, formatted);
+      }
+      catch(error){
+        return error;
+      }
       return null;
     });
 
 
     const foundErrors = [].concat(htmlErrors.filter(e => e !== null));
     if(foundErrors.length > 0){
-      Console.error("Error compiling HTML: ", errors.toString());
+      const errors = errors.map(e => e.message);
+      Console.error("Error compiling HTML: ", errors.join(""));
       bcActivity.error('exercise_error', {
         details: foundErrors.map(e => `Line: ${e.lastLine} ${e.message}`).join('\n'),
         framework: null,
@@ -46,7 +52,7 @@ module.exports = async function({ files, config, socket }){
         name: null,
         compiler: 'html'
       });
-      throw CompilerError(foundErrors.map(e => `Line: ${e.lastLine} ${e.message}`));
+      throw CompilerError(errors[0]);
     }
     else{
       socket.log('compiler-success',[ '' ]);

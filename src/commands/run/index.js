@@ -163,13 +163,12 @@ class InstructionsCommand extends Command {
 
     socket.on("build", (data) => {
         const compiler = require('../../utils/config/compiler/'+config.compiler+'.js');
-        // socket.log('compiling',['Building exercise '+data.exerciseSlug]);
+        socket.log('compiling',['Building exercise '+data.exerciseSlug]);
         const files = exercises.getAllFiles(data.exerciseSlug);
 
         compiler({ files, socket, config })
           // .then(() => console.log("Finish running"))
           .catch(error => {
-            console.log("Finish running with error");
             const message = error.message || 'There has been an uknown error';
             socket.log(error.type || 'internal-error', [ message ], [], error);
             Console.error(message);

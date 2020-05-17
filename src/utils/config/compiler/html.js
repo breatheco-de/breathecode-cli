@@ -30,7 +30,7 @@ module.exports = async function({ files, config, socket }){
       const content = fs.readFileSync(file.path, "utf8");
       const formatted = prettier.format(content, prettyConfig);
       fs.writeFileSync(file.path, formatted);
-      fs.writeFileSync(`${config.outputPath}/${file.name}`, formatted);
+      fs.writeFileSync(`${config.configPath.output}/${file.name}`, formatted);
       return null;
     });
 

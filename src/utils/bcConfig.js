@@ -20,20 +20,28 @@ const merge = (target, ...sources) =>
       .reduce((obj, [key, value]) => (obj[key] = value, obj), {})
   ));
 
-const getConfigPath = (basePath, possibleFileNames) => {
-  const possibleFileNames = ['learn.json', 'bc.json', '.breathecode/bc.json', '.learn/learn.json'];
-  return possibleFileNames.find(path => fs.existsSync(basePath+path)) || null;
+const getConfigPath = () => {
+  const possibleFileNames = ['learn.json', '.learn/learn.json','bc.json','.breathecode/bc.json'];
+  let config = possibleFileNames.find(file => fs.existsSync(file)) || null;
+  if(config && fs.existsSync(".breathecode")) return { config, base: ".breathecode" };
+  return { config, base: ".learn" };
 }
 
-module.exports = (filePath, { grading, editor, language, disable_grading }) => {
+const getExercisesPath = (base) => {
+  const possibleFileNames = ['./exercises',base+'/exercises'];
+  return possibleFileNames.find(file => fs.existsSync(file)) || null;
+}
 
-    const confPath = getConfigPath(filePath);
+module.exports = ({ grading, editor, language, disable_grading }) => {
+
+    let confPath = getConfigPath();
+    Console.debug("This is the config path: ", confPath);
 
     let config = { language };
-    if (fs.existsSync(confPath)){
-      const bcContent = fs.readFileSync(confPath);
+    if (confPath){
+      const bcContent = fs.readFileSync(confPath.config);
       const jsonConfig = JSON.parse(bcContent);
-      if(!jsonConfig) throw Error(`Invalid ${confPath} syntax: Unable to parse.`);
+      if(!jsonConfig) throw Error(`Invalid ${confPath.config} syntax: Unable to parse.`);
 
       //add using id to the installation
       if(!jsonConfig.session) jsonConfig.session = Math.floor(Math.random() * 10000000000000000000);
@@ -41,17 +49,12 @@ module.exports = (filePath, { grading, editor, language, disable_grading }) => {
       config = merge(jsonConfig,{ language, disable_grading });
       Console.debug("This is your configuration file: ",config);
       if(typeof config.language == 'undefined' && typeof config.compiler == 'undefined'){
-        Console.error("The language has to be specified in the learn.json or as the -l=[language] flag");
-        throw new Error("The language has to be specified in the learn.json or as the -l=[language] flag");
+        Console.error(`The language has to be specified in the ${confPath.config} or as the -l=[language] flag`);
+        throw new Error(`The language has to be specified in the ${confPath.config} or as the -l=[language] flag`);
       }
     }
     else{
-      if(typeof config.language == 'undefined' && typeof config.compiler == 'undefined'){
-        Console.error("The language has to be specified in the learn.json or as the -l=[language] flag");
-        throw new Error("The language has to be specified in the learn.json or as the -l=[language] flag");
-      }
-
-      if (!fs.existsSync('./.breathecode')) fs.mkdirSync('./.breathecode');
+      throw ValidationError("No learn.json file has been found, make sure you are in the folder");
     }
 
     let defaults = _defaults[config.language || config.compiler];
@@ -68,21 +71,22 @@ module.exports = (filePath, { grading, editor, language, disable_grading }) => {
     // if ignoreRegex is saved into a json, it saves as an object abd breaks the cli
     if(config.ignoreRegex && config.ignoreRegex.constructor !== RegExp) delete config.ignoreRegex;
 
-    config = merge(defaults || {}, config, { grading, editor } );
-    config.exercisesPath = config.grading === "isolated" ? filePath+'exercises' : filePath+'.breathecode/exercises';
+    config = merge(defaults || {}, config, { grading, editor, configPath: confPath } );
+    config.configPath.exercises = getExercisesPath(confPath.base);
+    config.configPath.output = confPath.base+"/dist";
 
-    Console.debug("This is your updated configuration: ", config.exercises);
+    Console.debug("This is your updated configuration: ", config);
 
     if(config.editor === "gitpod") Gitpod.setup(config);
 
-    if (config.grading === 'isolated' && !fs.existsSync(config.exercisesPath))  throw Error(`You are running with ${config.grading} grading, so make sure you have an exercises folder on ${config.exercisesPath}`);
+    if (config.grading === 'isolated' && !config.configPath.exercises)  throw Error(`You are running with ${config.grading} grading, so make sure you have an "exercises" folder`);
 
     return {
         getConfig: () => config,
         getTestReport: (slug=null) => {
           if(!slug) throw Error("You have to specify the exercise slug to get the results from");
 
-          const _path = `./.breathecode/reports/${slug}.json`;
+          const _path = `${config.confPath.base}/reports/${slug}.json`;
           if (!fs.existsSync(_path)) return {};
 
           const content = fs.readFileSync(_path);
@@ -122,10 +126,6 @@ module.exports = (filePath, { grading, editor, language, disable_grading }) => {
             if (!fs.existsSync(basePath+'/'+name)) throw ValidationError('File not found: '+basePath+'/'+name);
             else if(fs.lstatSync(basePath+'/'+name).isDirectory()) return 'Error: This is not a file to be read, but a directory: '+basePath+'/'+name;
             return fs.readFileSync(basePath+'/'+name);
-        },
-        getAsset: (name) => {
-            if (!fs.existsSync('./_assets/'+name)) throw ValidationError('File not foundin: ./_assets/'+name);
-            return fs.readFileSync('./_assets/'+name);
         },
         saveFile: (slug, name, content) => {
             const exercise = config.exercises.find(ex => ex.slug == slug);
@@ -168,13 +168,13 @@ module.exports = (filePath, { grading, editor, language, disable_grading }) => {
             if(config.grading === 'incremental') return { exercise,  files: getFiles('./') };
             else{
                const _files = getFiles(basePath);
-               if (!fs.existsSync('./.breathecode/resets')) fs.mkdirSync('./.breathecode/resets');
-               if (!fs.existsSync('./.breathecode/resets/'+slug)){
-                 fs.mkdirSync('./.breathecode/resets/'+slug);
+               if (!fs.existsSync(`${config.configPath.base}/resets`)) fs.mkdirSync(`${config.configPath.base}/resets`);
+               if (!fs.existsSync(`${config.configPath.base}/resets/`+slug)){
+                 fs.mkdirSync(`${config.configPath.base}/resets/`+slug);
                  _files.forEach(f => {
-                   if (!fs.existsSync(`./.breathecode/resets/${slug}/${f.name}`)){
+                   if (!fs.existsSync(`${config.configPath.base}/resets/${slug}/${f.name}`)){
                       const content = fs.readFileSync(f.path)
-                      fs.writeFileSync(`./.breathecode/resets/${slug}/${f.name}`, content)
+                      fs.writeFileSync(`${config.configPath.base}/resets/${slug}/${f.name}`, content)
                    }
                  });
                }
@@ -182,14 +182,14 @@ module.exports = (filePath, { grading, editor, language, disable_grading }) => {
             }
         },
         reset: (slug) => {
-          if (!fs.existsSync('./.breathecode/resets/'+slug)) throw new Error("Could not find the original files for "+slug);
+          if (!fs.existsSync(`${config.configPath.base}/resets/`+slug)) throw new Error("Could not find the original files for "+slug);
 
           const exercise = config.exercises.find(ex => ex.slug == slug);
           if(!exercise) throw new ValidationError(`Exercise ${slug} not found on the configuration`);
 
-          fs.readdirSync(`./.breathecode/resets/${slug}/`)
+          fs.readdirSync(`${config.configPath.base}/resets/${slug}/`)
             .forEach(fileName => {
-              const content = fs.readFileSync(`./.breathecode/resets/${slug}/${fileName}`);
+              const content = fs.readFileSync(`${config.configPath.base}/resets/${slug}/${fileName}`);
               fs.writeFileSync(`${exercise.path}/${fileName}`, content)
             });
         },
@@ -206,11 +206,11 @@ module.exports = (filePath, { grading, editor, language, disable_grading }) => {
 
             const isDirectory = source => fs.lstatSync(source).isDirectory();
             const getDirectories = source => fs.readdirSync(source).map(name => path.join(source, name)).filter(isDirectory);
-            if (!fs.existsSync('./.breathecode')) fs.mkdirSync('./.breathecode');
-            if (config.outputPath && !fs.existsSync(config.outputPath)) fs.mkdirSync(config.outputPath);
+            if (!fs.existsSync(config.configPath.base)) fs.mkdirSync(config.configPath.base);
+            if (config.configPath.output && !fs.existsSync(config.configPath.output)) fs.mkdirSync(config.configPath.output);
 
             // TODO we could use npm library front-mater to read the title of the exercises from the README.md
-            config.exercises = getDirectories(config.exercisesPath).map((ex, i) => {
+            config.exercises = getDirectories(config.configPath.exercises).map((ex, i) => {
               const slug = ex.substring(ex.indexOf('exercises/')+10);
               return {
                 slug, title: slug,
@@ -241,13 +241,10 @@ module.exports = (filePath, { grading, editor, language, disable_grading }) => {
         },
         watchIndex: function(onChange=null){
 
-          let exercisesDirectory = null;
-          if(fs.existsSync('./.breathecode/exercises')) exercisesDirectory = './.breathecode/exercises';
-          else if(fs.existsSync('./exercises')) exercisesDirectory = './exercises';
-          else throw ValidationError("No exercises directory to watch");
+          if(!config.configPath.exercises) throw ValidationError("No exercises directory to watch");
 
           this.buildIndex();
-          watch(exercisesDirectory)
+          watch(config.configPath.exercises)
             .then((eventname, filename) => {
               Console.debug("Changes detected on your exercises")
               this.buildIndex();
@@ -258,7 +255,12 @@ module.exports = (filePath, { grading, editor, language, disable_grading }) => {
             })
         },
         save: () => {
-          fs.writeFileSync(confPath, JSON.stringify(config, null, 4))
+
+          // we don't want the user to be able to manipulate the configuration path
+          //delete config.configPath;
+          //delete config.configPath.exercises;
+
+          fs.writeFileSync(config.configPath.config, JSON.stringify(config, null, 4))
         }
     };
 };

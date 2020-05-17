@@ -1,7 +1,13 @@
 const fetch = require("node-fetch");
 const Console = require("./console");
 let solutions = null;
-const uknown = { video: "https://www.youtube.com/watch?v=gD1Sa99GiE4", message: "Uknown internal error", slug: "uknown", gif: "https://github.com/breatheco-de/breathecode-cli/blob/master/docs/errors/uknown.gif?raw=true" };
+const uknown = {
+  video: "https://www.youtube.com/watch?v=gD1Sa99GiE4",
+  message: "Uknown internal error",
+  slug: "uknown",
+  gif: "https://github.com/breatheco-de/breathecode-cli/blob/master/docs/errors/uknown.gif?raw=true"
+};
+
 const getSolution = (slug=null) => {
   Console.debug(`Getting solution for ${slug}`, solutions);
   if(!solutions){

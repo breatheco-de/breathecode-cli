@@ -31,13 +31,13 @@ module.exports = (files, config, slug='') => ({
     return testsPath;
   },
   getCommand: async function(socket){
-    this.config.reporters = [[ __dirname+'/_reporter.js', { reportPath: `./.breathecode/reports/${slug}.json` }]];
+    this.config.reporters = [[ __dirname+'/_reporter.js', { reportPath: `${config.configPath.base}/reports/${slug}.json` }]];
     return `jest --config '${JSON.stringify({ ...this.config, testRegex: this.getEntryPath() })}' --colors`
   },
     getErrors: () => {
     let stdout = [];
-    if (fs.existsSync(`./.breathecode/reports/${slug}.json`)){
-      const _text = fs.readFileSync(`./.breathecode/reports/${slug}.json`);
+    if (fs.existsSync(`${config.configPath.base}/reports/${slug}.json`)){
+      const _text = fs.readFileSync(`${config.configPath.base}/reports/${slug}.json`);
       const errors = JSON.parse(_text);
 
       stdout = errors.testResults.map(r => r.message);

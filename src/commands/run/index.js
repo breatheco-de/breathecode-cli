@@ -31,7 +31,7 @@ class InstructionsCommand extends Command {
 
     Console.info("Loading the configuration for the exercises.");
     Console.debug("These are your flags: ",flags);
-    var exercises = bcConfig('./', { grading: flags.grading, editor: flags.editor, language: flags.language, disable_grading: flags.disable_grading });
+    var exercises = bcConfig({ grading: flags.grading, editor: flags.editor, language: flags.language, disable_grading: flags.disable_grading });
 
     if(flags.create_mode) exercises.watchIndex((_exercises) => socket.reload(null, _exercises));
     else exercises.buildIndex();
@@ -50,7 +50,7 @@ class InstructionsCommand extends Command {
     else Console.debug("No active session available");
 
     const download = require('../../utils/bcDownloader.js');
-    await download('https://raw.githubusercontent.com/breatheco-de/breathecode-ide/master/dist/app.tar.gz', './.breathecode/_app/app.tar.gz');
+    await download('https://raw.githubusercontent.com/breatheco-de/breathecode-ide/master/dist/app.tar.gz', config.configPath.base+'/_app/app.tar.gz');
 
 
     app.use(function(req, res, next) {
@@ -129,9 +129,9 @@ class InstructionsCommand extends Command {
         res.end();
     }));
 
-    if(config.outputPath) app.use('/preview', express.static(config.outputPath));
+    if(config.configPath.output) app.use('/preview', express.static(config.configPath.output));
 
-    app.use('/',express.static('.breathecode/_app'));
+    app.use('/',express.static(config.configPath.base+'/_app'));
 
     server.listen( config.port, function () {
       Console.success(`Exercises are running 😃 Open your browser to start practicing!`);

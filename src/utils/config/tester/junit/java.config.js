@@ -6,14 +6,14 @@ const indentString = require('indent-string');
 const path = require('path');
 const { getMatches, cleanStdout } = require('../../compiler/_utils.js');
 
-const installCommands = {
-  jmock: `curl -0 https://repo1.maven.org/maven2/org/jmock/jmock-junit4/2.12.0/jmock-junit4-2.12.0.jar -o ./.breathecode/jmock.jar`,
-  mockito: `curl -0 https://search.maven.org/remotecontent?filepath=org/mockito/mockito-core/3.2.0/mockito-core-3.2.0.jar -o ./.breathecode/mockito.jar`,
-  objenesis: `curl -0 https://repo1.maven.org/maven2/org/objenesis/objenesis/3.1/objenesis-3.1.jar -o ./.breathecode/objenesis.jar`,
-  bytebuddy: `curl -0 https://search.maven.org/remotecontent?filepath=net/bytebuddy/byte-buddy/1.10.4/byte-buddy-1.10.4.jar -o ./.breathecode/bytebuddy.jar`,
-  junit: `curl -0 https://search.maven.org/remotecontent?filepath=junit/junit/4.13-rc-1/junit-4.13-rc-1.jar -o ./.breathecode/junit.jar`,
-  hamcrest: `curl -0 https://search.maven.org/remotecontent?filepath=org/hamcrest/hamcrest/2.2/hamcrest-2.2.jar -o ./.breathecode/hamcrest.jar`
-};
+const installCommands = (config) => ({
+  jmock: `curl -0 https://repo1.maven.org/maven2/org/jmock/jmock-junit4/2.12.0/jmock-junit4-2.12.0.jar -o ${config.configPath.base}/jmock.jar`,
+  mockito: `curl -0 https://search.maven.org/remotecontent?filepath=org/mockito/mockito-core/3.2.0/mockito-core-3.2.0.jar -o ${config.configPath.base}/mockito.jar`,
+  objenesis: `curl -0 https://repo1.maven.org/maven2/org/objenesis/objenesis/3.1/objenesis-3.1.jar -o ${config.configPath.base}/objenesis.jar`,
+  bytebuddy: `curl -0 https://search.maven.org/remotecontent?filepath=net/bytebuddy/byte-buddy/1.10.4/byte-buddy-1.10.4.jar -o ${config.configPath.base}/bytebuddy.jar`,
+  junit: `curl -0 https://search.maven.org/remotecontent?filepath=junit/junit/4.13-rc-1/junit-4.13-rc-1.jar -o ${config.configPath.base}/junit.jar`,
+  hamcrest: `curl -0 https://search.maven.org/remotecontent?filepath=org/hamcrest/hamcrest/2.2/hamcrest-2.2.jar -o ${config.configPath.base}/hamcrest.jar`
+});
 
 module.exports = (files, config, slug) => ({
   config: {
@@ -26,20 +26,20 @@ module.exports = (files, config, slug) => ({
       throw TestingError(`🚫 You need to have ${packageName} installed to run test the exercises`);
     }
 
-    if (!fs.existsSync('./.breathecode/mockito.jar')){
+    if (!fs.existsSync(`${config.configPath.base}/mockito.jar`)){
       if(!this.install('mockito') || !this.install('bytebuddy') || !this.install('objenesis')){
         Console.error("There was a problem instaling mockito");
         throw TestingError("There was a problem instaling mockito");
       }
     }
 
-    if (!fs.existsSync('./.breathecode/junit.jar')){
+    if (!fs.existsSync(`${config.configPath.base}/junit.jar`)){
       if(!this.install('junit')){
         Console.error("There was a problem instaling jUnit");
         throw TestingError("There was a problem instaling jUnit");
       }
     }
-    if (!fs.existsSync('./.breathecode/hamcrest.jar')){
+    if (!fs.existsSync(`${config.configPath.base}/hamcrest.jar`)){
       if(!this.install('hamcrest')){
         Console.error("There was a problem instaling hamcrest");
         throw TestingError("There was a problem instaling hamcrest");
@@ -48,7 +48,7 @@ module.exports = (files, config, slug) => ({
   },
   install: (library) => {
     Console.info("Downloading "+library+"...");
-    let child = shell.exec(installCommands[library], { silent: true });
+    let child = shell.exec(installCommands(config)[library], { silent: true });
     return child.code === 0;
   },
   getEntryPath: () => {
@@ -68,8 +68,8 @@ module.exports = (files, config, slug) => ({
 
     const rootPath = this.getEntryPath().replace('Test.java', '');
     const cmd = `
-      javac -cp ./.breathecode/mockito.jar:./.breathecode/junit.jar ${this.getEntryPath()} ${appPath} &&
-      java -cp ${rootPath}:./.breathecode/hamcrest.jar:./.breathecode/objenesis.jar:./.breathecode/bytebuddy.jar:./.breathecode/mockito.jar:./.breathecode/junit.jar org.junit.runner.JUnitCore Test
+      javac -cp ${config.configPath.base}/mockito.jar:${config.configPath.base}/junit.jar ${this.getEntryPath()} ${appPath} &&
+      java -cp ${rootPath}:${config.configPath.base}/hamcrest.jar:${config.configPath.base}/objenesis.jar:${config.configPath.base}/bytebuddy.jar:${config.configPath.base}/mockito.jar:${config.configPath.base}/junit.jar org.junit.runner.JUnitCore Test
     `;
     return cmd
   },

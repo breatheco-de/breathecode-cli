@@ -3,8 +3,9 @@ const shell = require('shelljs')
 const fetch = require('node-fetch');
 const readlineSync = require('readline-sync');
 const v = require('validator');
-const { ValidationError } = require('./errors');
+const { ValidationError, InternalError } = require('./errors');
 const moment = require('moment');
+const fs = require('fs');
 const storage = require('node-persist');
 
 module.exports = {
@@ -13,7 +14,9 @@ module.exports = {
     currentCohort: null,
     initialize: async function(){
       if(!this.sessionStarted){
-        await storage.init({ dir: '.breathecode/.session'});
+        if(fs.existsSync('.learn')) await storage.init({ dir: '.learn/.session' });
+        else if(fs.existsSync('.breathecode')) await storage.init({ dir: '.breathecode/.session' });
+        else throw InternalError('.learn configuration folder not found');
         this.sessionStarted = true;
       }
       return true

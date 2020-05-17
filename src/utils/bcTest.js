@@ -16,9 +16,9 @@ module.exports = async function({ socket, files, config, slug }){
 
       if(config.ignoreTests) throw TestingError('Grading is disabled on learn.json file.');
 
-      if (!fs.existsSync('./.breathecode/reports')){
-        fs.mkdirSync('./.breathecode/reports');
-        Console.debug("Creating the ./.breathecode/reports directory");
+      if (!fs.existsSync(`${config.configPath.base}/reports`)){
+        fs.mkdirSync(`${config.configPath.base}/reports`);
+        Console.debug(`Creating the ${config.configPath.base}/reports directory`);
       }
 
       Console.info('Running tests...');

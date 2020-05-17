@@ -42,7 +42,7 @@ def pytest_generate_tests(metafunc):
 
     if 'app' in metafunc.fixturenames:
         try:
-          sys.path.append('${config.outputPath}')
+          sys.path.append('${config.configPath.output}')
           import cached_app
           metafunc.parametrize("app",[cached_app.execute_app])
         except SyntaxError:
@@ -72,7 +72,7 @@ def pytest_generate_tests(metafunc):
         Console.debug("Adding main function for all the code");
         content = `def execute_app():\n${indent(content, 4)}`;
       }
-      const directory = `${config.outputPath}/cached_app.py`;
+      const directory = `${config.configPath.output}/cached_app.py`;
       fs.writeFileSync(directory, content);
     }
     else if(config.grading === "isolated") throw TestingError(`🚫 No app.py script found on the exercise files`);

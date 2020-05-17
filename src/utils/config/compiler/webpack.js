@@ -33,8 +33,8 @@ module.exports = async ({ files, config, socket }) => {
     modules: false
   };
   // the url were webpack will publish the preview
-  webpackConfig.devServer.contentBase = config.outputPath;
-  webpackConfig.output.path = process.cwd() + '/' + config.outputPath;
+  webpackConfig.devServer.contentBase = config.configPath.output;
+  webpackConfig.output.path = process.cwd() + '/' + config.configPath.output;
   //the base directory for the preview, the bundle will be dropped here
   webpackConfig.output.publicPath = config.publicPath;
 
@@ -69,7 +69,7 @@ module.exports = async ({ files, config, socket }) => {
 
       const formatted = prettier.format(content, { parser: "html", ...prettyConfig });
       fs.writeFileSync(file.path, formatted);
-      fs.writeFileSync(`${config.outputPath}/${file.name}`, formatted);
+      fs.writeFileSync(`${config.configPath.output}/${file.name}`, formatted);
       return null;
     });
 

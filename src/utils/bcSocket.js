@@ -12,6 +12,10 @@ module.exports = {
         }
     },
     addAllowed: function(action){
+
+        //avoid adding the "test" action if grading is disabled
+        if(action === "test" && this.config.disable_grading) return;
+
                                                       //remove duplicates
         this.allowedActions = this.allowedActions.filter(a => a !== action).concat([action]);
     },

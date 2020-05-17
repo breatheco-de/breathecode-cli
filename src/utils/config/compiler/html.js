@@ -11,7 +11,7 @@ module.exports = async function({ files, config, socket }){
     if(!files) return;
 
     if(typeof config.htmlTemplatePath !== 'undefined'){
-        if(fs.existsSync(config.htmlTemplatePath)){
+        if(config.htmlTemplatePath && fs.existsSync(config.htmlTemplatePath)){
             Console.info('Compiling with special template detected and found: '+config.htmlTemplatePath);
             const htmlPlug = webpackConfig.plugins.find((plugin) => plugin instanceof HtmlWebpackPlugin);
             if(htmlPlug) htmlPlug.options.template = config.htmlTemplatePath;

@@ -43,7 +43,7 @@ module.exports = async ({ files, config, socket }) => {
     `webpack-dev-server/client?http://${config.address}:${config.port}`
   ];
   if(typeof config.webpack_template !== 'undefined'){
-    if(fs.existsSync(config.webpack_template)){
+    if(config.webpack_template && fs.existsSync(config.webpack_template)){
       Console.info('Compiling with special template '+config.webpack_template);
       webpackConfig.plugins.push(new HtmlWebpackPlugin({
         template: config.webpack_template,
@@ -66,10 +66,14 @@ module.exports = async ({ files, config, socket }) => {
       // const result = (async () => { return JSON.parse(await htmlValidate({ data: content })) })();
       // const errors = result.messages.filter(m => m.type === "error");
       // if(errors.length > 0) return errors;
-
-      const formatted = prettier.format(content, { parser: "html", ...prettyConfig });
-      fs.writeFileSync(file.path, formatted);
-      fs.writeFileSync(`${config.configPath.output}/${file.name}`, formatted);
+      try{
+        const formatted = prettier.format(content, { parser: "html", ...prettyConfig });
+        fs.writeFileSync(file.path, formatted);
+        fs.writeFileSync(`${config.configPath.output}/${file.name}`, formatted);
+      }
+      catch(error){
+        //throw CompilerError(error.message);
+      }
       return null;
     });
 

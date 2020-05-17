@@ -59,7 +59,6 @@ module.exports = {
       })
     },
     reload: function(files=null, exercises=null){
-      console.log("emit")
       this.emit('reload', files, exercises);
     },
     log: function(status, messages=[],report=[], data=null){

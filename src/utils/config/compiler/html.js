@@ -4,6 +4,7 @@ const fs = require('fs');
 const prettier = require("prettier");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 let Console = require('../../console');
+const { CompilerError } = require('../../errors.js');
 const bcActivity = require('../../bcActivity.js');
 
 module.exports = async function({ files, config, socket }){

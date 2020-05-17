@@ -1,7 +1,7 @@
 let shell = require('shelljs');
 const path = require('path');
 const fs = require('fs');
-const { InternalError, TestingError } = require('../../../errors.js');
+const { InternalError, TestingError, CompilerError } = require('../../../errors.js');
 const color = require('colors');
 const nodeModulesPath = path.resolve(__dirname, '../../../../../node_modules');
 

@@ -72,7 +72,7 @@ module.exports = async ({ files, config, socket }) => {
         fs.writeFileSync(`${config.configPath.output}/${file.name}`, formatted);
       }
       catch(error){
-        //throw CompilerError(error.message);
+        return error;
       }
       return null;
     });

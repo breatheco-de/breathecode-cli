@@ -5,7 +5,8 @@
   "author": "Alejandro Sanchez",
   "bin": {
     "breathecode": "./bin/run",
-    "bc": "./bin/run"
+    "bc": "./bin/run",
+    "learnpack": "./bin/run"
   },
   "bugs": "https://github.com/breatheco-de/breathecode-cli/issues",
   "dependencies": {

@@ -78,6 +78,7 @@ class StartExercisesComand extends Command {
         grading = choices.grading;
         language = choices.language;
       }
+      if(typeof _defaults[language] === "undefined") throw new Error("Invalid language "+language);
 
       const config = Object.assign(_defaults[language]);
       config.grading = grading;
@@ -95,10 +96,11 @@ class StartExercisesComand extends Command {
       }
 
       fs.readdir('./', function(err, files) {
-          files = files.filter(f => f !== '.node-persist' || f !== '.git');
+          files = files.filter(f => f !== '.node-persist' && f !== '.git');
           if (err) {
             Console.error(err.message);
           } else {
+            console.log("files", files);
             if (!files.length) {
                 const templatesDir = "../../utils/templates";
                 fs.writeFileSync('./learn.json', JSON.stringify(config, null, 2));

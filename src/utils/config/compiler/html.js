@@ -18,7 +18,7 @@ module.exports = async function({ files, config, socket }){
         }
         else{
             Console.warning('Template not found '+config.htmlTemplatePath);
-            Console.help('Check your bc.json template property and fix the path. Using the default template for now.');
+            Console.help('Check your learn.json template property and fix the path. Using the default template for now.');
 
         }
     }

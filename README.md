@@ -43,7 +43,7 @@ $ npm install -g breathecode-cli
 $ breathecode COMMAND
 running command...
 $ breathecode (-v|--version|version)
-breathecode-cli/1.2.58 linux-x64 node-v10.15.3
+breathecode-cli/1.2.59 linux-x64 node-v10.15.3
 $ breathecode --help [COMMAND]
 USAGE
   $ breathecode COMMAND
@@ -80,7 +80,7 @@ ALIASES
   $ breathecode download:exercises
 ```
 
-_See code: [src/commands/download/exercises.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.2.58/src/commands/download/exercises.js)_
+_See code: [src/commands/download/exercises.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.2.59/src/commands/download/exercises.js)_
 
 ## download:template
 
@@ -100,7 +100,7 @@ ALIASES
   $ breathecode download:template
 ```
 
-_See code: [src/commands/download/template.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.2.58/src/commands/download/template.js)_
+_See code: [src/commands/download/template.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.2.59/src/commands/download/template.js)_
 
 ## help [COMMAND]
 
@@ -132,7 +132,7 @@ OPTIONS
   -l, --language=language  specify what language you want: [html, css, react, vanilajs, node, python]
 ```
 
-_See code: [src/commands/init.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.2.58/src/commands/init.js)_
+_See code: [src/commands/init.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.2.59/src/commands/init.js)_
 
 ## login
 
@@ -148,7 +148,7 @@ OPTIONS
   -t, --type=js|jsx|scss|css|md|html|py  [default: js] file extensions to look for
 ```
 
-_See code: [src/commands/login.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.2.58/src/commands/login.js)_
+_See code: [src/commands/login.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.2.59/src/commands/login.js)_
 
 ## publish
 
@@ -159,7 +159,7 @@ USAGE
   $ breathecode publish
 ```
 
-_See code: [src/commands/publish.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.2.58/src/commands/publish.js)_
+_See code: [src/commands/publish.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.2.59/src/commands/publish.js)_
 
 ## run
 
@@ -170,6 +170,7 @@ USAGE
   $ breathecode run
 
 OPTIONS
+  -c, --create_mode                   start the exercises on create mode (for teachers)
   -d, --debug                         debugger mode for more verbage
   -d, --disable_grading               disble grading functionality
   -e, --editor=standalone|gitpod      [standalone, gitpod]
@@ -179,7 +180,7 @@ OPTIONS
   -p, --port=port                     server port
 ```
 
-_See code: [src/commands/run.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.2.58/src/commands/run.js)_
+_See code: [src/commands/run.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.2.59/src/commands/run.js)_
 
 ## update [CHANNEL]
 
@@ -205,5 +206,5 @@ OPTIONS
   -t, --type=js|jsx|scss|css|md|html|py  [default: js] file extensions to look for
 ```
 
-_See code: [src/commands/utils/todo.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.2.58/src/commands/utils/todo.js)_
+_See code: [src/commands/utils/todo.js](https://github.com/breatheco-de/breathecode-cli/blob/v1.2.59/src/commands/utils/todo.js)_
 <!-- commandsstop -->

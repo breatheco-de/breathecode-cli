@@ -20,9 +20,14 @@ const merge = (target, ...sources) =>
       .reduce((obj, [key, value]) => (obj[key] = value, obj), {})
   ));
 
+const getConfigPath = (basePath, possibleFileNames) => {
+  const possibleFileNames = ['learn.json', 'bc.json', '.breathecode/bc.json', '.learn/learn.json'];
+  return possibleFileNames.find(path => fs.existsSync(basePath+path)) || null;
+}
+
 module.exports = (filePath, { grading, editor, language, disable_grading }) => {
 
-    const confPath = (fs.existsSync(filePath+'bc.json')) ? './bc.json' : (fs.existsSync(filePath+'./.bc.json')) ? './.bc.json' : (fs.existsSync(filePath+'.breathecode/.bc.json')) ? '.breathecode/.bc.json' : '.breathecode/bc.json';
+    const confPath = getConfigPath(filePath);
 
     let config = { language };
     if (fs.existsSync(confPath)){
@@ -36,14 +41,14 @@ module.exports = (filePath, { grading, editor, language, disable_grading }) => {
       config = merge(jsonConfig,{ language, disable_grading });
       Console.debug("This is your configuration file: ",config);
       if(typeof config.language == 'undefined' && typeof config.compiler == 'undefined'){
-        Console.error("The language has to be specified in the bc.json or as the -l=[language] flag");
-        throw new Error("The language has to be specified in the bc.json or as the -l=[language] flag");
+        Console.error("The language has to be specified in the learn.json or as the -l=[language] flag");
+        throw new Error("The language has to be specified in the learn.json or as the -l=[language] flag");
       }
     }
     else{
       if(typeof config.language == 'undefined' && typeof config.compiler == 'undefined'){
-        Console.error("The language has to be specified in the bc.json or as the -l=[language] flag");
-        throw new Error("The language has to be specified in the bc.json or as the -l=[language] flag");
+        Console.error("The language has to be specified in the learn.json or as the -l=[language] flag");
+        throw new Error("The language has to be specified in the learn.json or as the -l=[language] flag");
       }
 
       if (!fs.existsSync('./.breathecode')) fs.mkdirSync('./.breathecode');

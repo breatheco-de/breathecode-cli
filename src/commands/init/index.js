@@ -101,12 +101,12 @@ class StartExercisesComand extends Command {
           } else {
             if (!files.length) {
                 const templatesDir = "../../utils/templates";
-                fs.writeFileSync('./bc.json', JSON.stringify(config, null, 2));
+                fs.writeFileSync('./learn.json', JSON.stringify(config, null, 2));
 
                 fs.writeFileSync('./.gitignore', fs.readFileSync(path.resolve(__dirname,`${templatesDir}/gitignore.${grading}.txt`)));
 
                 let basePath = "";
-                if (grading == "incremental") basePath = ".breathecode/";
+                if (grading == "incremental") basePath = ".learn/";
 
                 if(!fs.existsSync(`./${basePath}exercises`)){
                     if(basePath != '' && !fs.existsSync(`./${basePath}`)) fs.mkdirSync(`./${basePath}`);

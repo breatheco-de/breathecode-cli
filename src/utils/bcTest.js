@@ -14,7 +14,7 @@ module.exports = async function({ socket, files, config, slug }){
       const testingConfig = require(configPath)(files, config, slug);
       testingConfig.validate();
 
-      if(config.ignoreTests) throw TestingError('Grading is disabled on bc.json file.');
+      if(config.ignoreTests) throw TestingError('Grading is disabled on learn.json file.');
 
       if (!fs.existsSync('./.breathecode/reports')){
         fs.mkdirSync('./.breathecode/reports');

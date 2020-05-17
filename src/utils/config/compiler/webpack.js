@@ -52,7 +52,7 @@ module.exports = async ({ files, config, socket }) => {
     }
     else{
       Console.warning('Template not found '+config.webpack_template);
-      Console.help('Check your bc.json template property and fix the path. Using the default template for now.');
+      Console.help('Check your learn.json template property and fix the path. Using the default template for now.');
     }
   }
 

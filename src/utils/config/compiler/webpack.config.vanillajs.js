@@ -1,6 +1,6 @@
 const webpack = require('webpack');
 const path = require('path');
-const prettyConfig = require('../prettier/react.config.js');
+const prettyConfig = require('../prettier/vanillajs.config.js');
 const PrettierPlugin = require("../prettier/plugin.js");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const nodeModulesPath = path.resolve(__dirname, '../../../../node_modules');
@@ -20,8 +20,7 @@ module.exports = (exerciseSlug) => ({
               loader: 'babel-loader',
               options: {
                 presets: [
-                  nodeModulesPath+'/@babel/preset-env',
-                  nodeModulesPath+'/@babel/preset-react'
+                  nodeModulesPath+'/@babel/preset-env'
                 ],
                 plugins:[
                   require(nodeModulesPath+'/babel-plugin-syntax-dynamic-import')
@@ -31,7 +30,7 @@ module.exports = (exerciseSlug) => ({
             {
                 loader: 'eslint-loader',
                 options: {
-                  configFile: path.resolve(__dirname,'../eslint/react.lint.json')
+                  configFile: path.resolve(__dirname,'../eslint/vanillajs.lint.json')
                 }
             }
           ]

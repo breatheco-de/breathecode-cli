@@ -7,7 +7,7 @@
 		"strict": 0,
 		"no-unused-vars": 0,
 		"no-console": 0,
-		"semi": ["error", "always"],
+		"semi": 0,
 		"allowImportExportEverywhere": false,
 		"comma-dangle": [1, {
 			"arrays": "never",

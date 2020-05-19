@@ -55,6 +55,11 @@ module.exports = {
     getCurrentCohort: function(data){
         if(this.currentCohort) return this.currentCohort;
 
+        if(!Array.isArray(data.full_cohorts)){
+          this.currentCohort = null;
+          return this.currentCohort;
+        }
+
         const currentCohorts = data.full_cohorts.filter(c => {
             return moment().isBetween(c['kickoff_date'], c['ending_date']);
         });

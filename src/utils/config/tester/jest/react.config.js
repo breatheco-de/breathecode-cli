@@ -40,7 +40,7 @@ module.exports = (files, config, slug='') => ({
   getErrors: () => {
     let stdout = [];
     if (fs.existsSync(`${config.configPath.base}/reports/${slug}.json`)){
-      const _text = fs.readFileSync(`.${config.configPath.base}/reports/${slug}.json`);
+      const _text = fs.readFileSync(`${config.configPath.base}/reports/${slug}.json`);
       const errors = JSON.parse(_text);
 
       stdout = errors.testResults.map(r => r.message);

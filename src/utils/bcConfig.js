@@ -211,7 +211,7 @@ module.exports = ({ grading, editor, language, disable_grading }) => {
 
             // TODO we could use npm library front-mater to read the title of the exercises from the README.md
             config.exercises = getDirectories(config.configPath.exercises).map((ex, i) => {
-              const slug = ex.substring(ex.indexOf('exercises/')+10);
+              const slug = ex.substring(ex.indexOf('exercises'+path.sep)+10);
               return {
                 slug, title: slug,
                 //if the exercises was on the config before I may keep the status done

@@ -1,7 +1,7 @@
 
 const shared_defaults = {
   port: 3000,
-  address: "https://localhost",
+  address: "http://localhost",
   editor: null,
   configPath: './learn.json',
   outputPath: './.learn/dist',

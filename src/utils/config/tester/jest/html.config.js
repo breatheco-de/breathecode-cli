@@ -11,7 +11,7 @@ module.exports = (files, config, slug='') => ({
       moduleDirectories: [nodeModulesPath],
       prettierPath: nodeModulesPath+'/prettier',
   },
-  validate: ()=>{
+  validate: async ()=>{
     if (!fs.existsSync(nodeModulesPath+'/prettier')) throw TestingError(`Uknown prettier path`);
 
     if (!shell.which('jest')) {
@@ -21,6 +21,8 @@ module.exports = (files, config, slug='') => ({
         message: `🚫 You need to have ${packageName} installed to run test the exercises, run $ npm i ${packageName} -g`
       });
     }
+
+    return true;
   },
   getEntryPath: () => {
 

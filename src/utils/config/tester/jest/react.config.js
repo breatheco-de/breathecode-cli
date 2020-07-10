@@ -15,7 +15,7 @@ module.exports = (files, config, slug='') => ({
         "^.+\\.js?$": babelTransformPath
       }
   },
-  validate: ()=>{
+  validate: async ()=>{
     if (!fs.existsSync(nodeModulesPath+'/prettier')) throw InternalError(`Uknown prettier path`);
 
     if (!shell.which('jest')) {
@@ -25,6 +25,8 @@ module.exports = (files, config, slug='') => ({
         slug: "install-jest"
       });
     }
+
+    return true;
   },
   getEntryPath: () => {
 

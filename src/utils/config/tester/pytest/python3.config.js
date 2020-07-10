@@ -11,7 +11,7 @@ module.exports = (files, config, slug) => ({
     capture: "sys",
     color: "yes",
   },
-  validate: function(){
+  validate: async function(){
     if (!shell.which('python3')) {
       const packageName = "python3";
       throw TestingError(`🚫 You need to have ${packageName} installed to run test the exercises`);
@@ -56,7 +56,7 @@ def pytest_generate_tests(metafunc):
         metafunc.parametrize("config", [json.loads('${JSON.stringify(config)}')])
 `)
 
-
+    return true;
   },
   getEntryPath: () => {
 

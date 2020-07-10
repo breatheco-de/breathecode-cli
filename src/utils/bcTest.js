@@ -12,7 +12,7 @@ module.exports = async function({ socket, files, config, slug }){
   if (!fs.existsSync(configPath)) throw CompilerError(`Uknown testing engine for compiler: '${config.language}'`);
 
       const testingConfig = require(configPath)(files, config, slug);
-      testingConfig.validate();
+      if(!await testingConfig.validate())  throw TestingError(`Error validating the ${config.language} testing environment`);
 
       if(config.ignoreTests) throw TestingError('Grading is disabled on learn.json file.');
 
@@ -23,8 +23,16 @@ module.exports = async function({ socket, files, config, slug }){
 
       Console.info('Running tests...');
 
-      const command = await testingConfig.getCommand(socket)
-      const { stdout, stderr, code } = shell.exec(command);
+      let commands = await testingConfig.getCommand(socket)
+      if(!Array.isArray(commands)) commands = [commands];
+      let stdout, stderr, code = [null, null, null];
+      for(let cycle = 0; cycle<commands.length; cycle++){
+        let resp = shell.exec(commands[cycle], { silent: true });
+        stdout = resp.stdout;
+        code = resp.code;
+        stderr = resp.stderr;
+        if(code != 0) break;
+      }
 
       if(code != 0){
         const errors = typeof(testingConfig.getErrors === 'function') ? testingConfig.getErrors(stdout || stderr) : [];

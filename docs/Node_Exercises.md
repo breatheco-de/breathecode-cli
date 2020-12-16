@@ -4,14 +4,24 @@
 ```js
     const app = rewire('./app.js');
     const total = app.__get__('total');
+    expect(typeof(total)).not.toBe('undefined');
+```
+
+### Testing Function or variable specific value in Node
+```js
+    const app = rewire('./app.js');
+    const total = app.__get__('total');
     expect(total).toBe(3434);
 ```
-![Testing Function or variable declaration in Node](https://ucarecdn.com/c7e1835e-07a9-49e8-8e20-9a1a0c47a262/testing_function_declaration.jpg)
 
 ### Testing Function or variable call in Node
-![Testing Function call in Node](https://ucarecdn.com/4e338df2-80d3-4534-a5ed-8cb210e7fa60/testing_function_execution.jpg)
+```js
+    const app = rewire('./app.js');
+    const sum = app.__get__('sum');
+    expect(sum).toBeHaveBeenCalled(3434);
+```
 
-### Testing Stdout (console.log) in Node
+### Testing Stdout (console.log) call with particular value
 
 ```js
   //mock the console log
@@ -37,6 +47,5 @@ global.prompt = jest.fn(() => __stdin.shift());
 expect(global.prompt).toHaveBeenCalledWith("Hello");
 ```
 
-![Testing Stdin in Node](https://ucarecdn.com/1da6ad7f-0cfd-41af-a6c3-ae8aa50f48e8/testing_stdin_with_prompt.jpg)
 
 

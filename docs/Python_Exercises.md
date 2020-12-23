@@ -57,7 +57,7 @@ import sys
 def test_for_file_output(capsys, app):
     app()
     captured = capsys.readouterr()
-    assert "red!\n" == captured.out
+    assert "red\n" == captured.out
 ```
 
 ### 5) Testing console output (stdout) for just one function.  

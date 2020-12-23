@@ -16,6 +16,7 @@ def test_output():
     content = f.read()
     assert content.find("print(") > 0
 ```
+
 ### 1) Testing that the student solution contains a particular regex or string
 ```py
 @pytest.mark.it("1. Create a variable named 'color' with the string value red")
@@ -36,7 +37,6 @@ def test_variable_exists(app):
     except AttributeError:
         raise AttributeError("The variable 'myVariable' should exist on app.py")
 ```
-![Testing Functions in Python](https://ucarecdn.com/ab3f9bbd-beff-492e-ad37-3be3fba18cfe/testingfunctionspythonbreathecodecli.jpg)
 
 ### 3) Testing Function or variable value
 ```py
@@ -47,7 +47,6 @@ def test_variable_exists(app):
     except AttributeError:
         raise AttributeError("The variable 'myVariable' should exist on app.py")
 ```
-![Testing Functions in Python](https://ucarecdn.com/ab3f9bbd-beff-492e-ad37-3be3fba18cfe/testingfunctionspythonbreathecodecli.jpg)
 
 ### 4) Testing a print (stdout) in the entire app.py
 ```py
@@ -60,7 +59,6 @@ def test_for_file_output(capsys, app):
     captured = capsys.readouterr()
     assert "red!\n" == captured.out
 ```
-![Testing Stdout in Python](https://ucarecdn.com/c95e4deb-0e57-4aa3-8f89-486b4f1eb1cc/testingstdoutpythonbreathecodecli.jpg)
 
 ### 5) Testing console output (stdout) for just one function.  
 
@@ -85,5 +83,3 @@ def test_add_variables(capsys):
       captured = capsys.readouterr()
       assert captured.out == "9\n"
 ```
-
-![Testing Stdin in Python](https://ucarecdn.com/eb33c3dd-3bda-4aeb-83be-b61cfd82ffae/testingstdinpythonbreathecodecli.jpg)

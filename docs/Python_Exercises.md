@@ -8,7 +8,7 @@
 5. Testing console output (stdout) for just one function.
 6. Testing `input` (stdin)
 
-### 0) Use the print function
+### 0) Find a particular exact string on the file
 ```py
 @pytest.mark.it("Use the print function")
 def test_output():
@@ -33,9 +33,9 @@ def test_declare_variable():
 @pytest.mark.it('1. You should create a variable named variables_are_cool')
 def test_variable_exists(app):
     try:
-        app.myVariable
+        app.variables_are_cool
     except AttributeError:
-        raise AttributeError("The variable 'myVariable' should exist on app.py")
+        raise AttributeError("The variable 'variables_are_cool' should exist on app.py")
 ```
 
 ### 3) Testing Function or variable value

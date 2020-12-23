@@ -40,12 +40,12 @@ def test_variable_exists(app):
 
 ### 3) Testing Function or variable value
 ```py
-@pytest.mark.it('1. You should create a variable named variables_are_cool')
+@pytest.mark.it('1. You should create a variable named myVariable with the value "Hello"')
 def test_variable_exists(app):
     try:
         assert app.myVariable == "Hello"
     except AttributeError:
-        raise AttributeError("The variable 'myVariable' should exist on app.py")
+        raise AttributeError("The variable 'myVariable' should have the variable Hello")
 ```
 
 ### 4) Testing a print (stdout) in the entire app.py

@@ -18,7 +18,7 @@
 ```js
     const app = rewire('./app.js');
     const sum = app.__get__('sum');
-    expect(sum).toBeHaveBeenCalled(3434);
+    expect(sum).toHaveBeenCalledWith(3434);
 ```
 
 ### Testing Stdout (console.log) call with particular value
